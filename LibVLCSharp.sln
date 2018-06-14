@@ -48,6 +48,10 @@ Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "LibVLCSharp.Tests", "LibVLC
 EndProject
 Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "LibVLCSharp.WPF", "LibVLCSharp.WPF\LibVLCSharp.WPF.csproj", "{8ADD47B3-4F4A-438E-9DDC-53075B8A366E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibVLCSharp.Platforms.Gtk", "LibVLCSharp.Platforms.Gtk\LibVLCSharp.Platforms.Gtk.csproj", "{B5E48E05-2204-49BA-997E-EA6A67246472}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibVLCSharp.Gtk.Sample", "LibVLCSharp.Gtk.Sample\LibVLCSharp.Gtk.Sample.csproj", "{5FFB321D-C5B9-4761-A112-F7BF18EE18B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
@@ -806,6 +810,7 @@ Global
 		{8ADD47B3-4F4A-438E-9DDC-53075B8A366E}.Release|x64.Build.0 = Release|Any CPU
 		{8ADD47B3-4F4A-438E-9DDC-53075B8A366E}.Release|x86.ActiveCfg = Release|Any CPU
 		{8ADD47B3-4F4A-438E-9DDC-53075B8A366E}.Release|x86.Build.0 = Release|Any CPU
+GTK# implementation
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -824,6 +829,7 @@ Global
 		{DAFCBC34-7847-4EF9-ACC0-E025D6E3FBA4} = {799A84A2-2161-4676-878B-5610E3586137}
 		{B829A790-FAA7-40F7-83FC-75D53867EC4D} = {FC68D8B7-758E-4164-945B-9F922FA883F6}
 		{8771EDCF-0DA5-4AF8-80CE-5D3DC4999C7B} = {FC68D8B7-758E-4164-945B-9F922FA883F6}
+GTK# implementation
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB1424F9-871B-444A-9278-18227672889C}
