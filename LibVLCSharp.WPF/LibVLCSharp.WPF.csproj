@@ -1,7 +1,10 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.46">
   <PropertyGroup>
-    <Title>LibVLCSharp.WPF</Title>
-    <TargetFramework>net461</TargetFramework>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DA7A2677-0944-481F-A59B-9128FC54FD5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LibVLCSharp.WPF</RootNamespace>
     <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
     <AssemblyName>LibVLCSharp.WPF</AssemblyName>
