@@ -47,11 +47,6 @@ namespace LibVLCSharp.Shared
 #else
             InitializeDesktop(appExecutionDirectory);
 #endif
-            // Initializes X threads before calling VLC. This is required for vlc plugins like the VDPAU hardware acceleration plugin.
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                Native.XInitThreads();
-            }
         }
 
 #if ANDROID
@@ -98,6 +93,12 @@ namespace LibVLCSharp.Shared
                 {
                     throw new VLCException($"Failed to load required native library {Constants.LibraryName}.dll");
                 }
+            }
+
+             // Initializes X threads before calling VLC. This is required for vlc plugins like the VDPAU hardware acceleration plugin.
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Native.XInitThreads();
             }
         }
 
