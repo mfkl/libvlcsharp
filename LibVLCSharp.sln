@@ -50,7 +50,11 @@ Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "LibVLCSharp.WPF", "LibVLCSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibVLCSharp.Platforms.Gtk", "LibVLCSharp.Platforms.Gtk\LibVLCSharp.Platforms.Gtk.csproj", "{B5E48E05-2204-49BA-997E-EA6A67246472}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibVLCSharp.Gtk.Sample", "LibVLCSharp.Gtk.Sample\LibVLCSharp.Gtk.Sample.csproj", "{5FFB321D-C5B9-4761-A112-F7BF18EE18B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibVLCSharp.Gtk.Sample", "LibVLCSharp.Gtk.Sample\LibVLCSharp.Gtk.Sample.csproj", "{5FFB321D-C5B9-4761-A112-F7BF18EE18B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibVLCSharp.Forms.Platforms.Gtk", "LibVLCSharp.Forms.Platforms.Gtk\LibVLCSharp.Forms.Platforms.Gtk.csproj", "{E7CF7907-5363-4EBF-8DD5-C2179FFD26C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibVLCSharp.Forms.Gtk.Sample", "LibVLCSharp.Forms.Gtk.Sample\LibVLCSharp.Forms.Gtk.Sample.csproj", "{726527A2-15C7-4336-AF3D-9858D4DEEE9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
