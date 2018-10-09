@@ -8,6 +8,9 @@ using Java.Interop;
 
 namespace LibVLCSharp.Shared
 {
+    /// <summary>
+    /// This class is used to manage interaction with the native libvlc library in a crossplatform way. Loading, initializating and unloading notably.
+    /// </summary>
     public static class Core
     {
         struct Native
