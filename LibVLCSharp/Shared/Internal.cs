@@ -22,6 +22,8 @@ namespace LibVLCSharp.Shared
         /// </summary>
         protected bool IsDisposed;
 
+        /// <param name="release">A release Action that takes the native pointer to that C# instance's native code reprensentation
+        /// and performs the release call in native code. It will be called once when the C# instance gets disposed.</param>
         protected Internal(Func<IntPtr> create, Action<IntPtr> release)
         {
             Release = release;
