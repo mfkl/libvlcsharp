@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using LibVLCSharp.Shared.Structures;
 
 namespace LibVLCSharp.Shared
 {
+    /// <summary>
+    /// Main LibVLC API object representing a libvlc instance in native code. 
+    /// Note: You may create multiple mediaplayers from a single LibVLC instance
+    /// </summary>
     public class LibVLC : Internal
     {
         protected bool Equals(LibVLC other)
@@ -264,11 +267,11 @@ namespace LibVLCSharp.Shared
             return obj1?.NativeReference != obj2?.NativeReference;
         }
 
-        /**
-         * Try to start a user interface for the libvlc instance.
-         *
-         * \param name  interface name, or empty string for default
-        */
+        /// <summary>
+        /// Try to start a user interface for the libvlc instance.
+        /// </summary>
+        /// <param name="name">interface name, or empty string for default</param>
+        /// <returns>true if successfuly, false otherwise</returns>
         public bool AddInterface(string name)
         {
             return Native.LibVLCAddInterface(NativeReference, name ?? string.Empty) == 0;
@@ -343,6 +346,9 @@ namespace LibVLCSharp.Shared
             _logCallback = null;
         }
 
+        /// <summary>
+        /// Unset dialog callbacks if previously set
+        /// </summary>
         public void UnsetDialogHandlers()
         {
             if (_dialogCbsPtr != IntPtr.Zero)
@@ -542,6 +548,14 @@ namespace LibVLCSharp.Shared
 
         readonly Dictionary<IntPtr, CancellationTokenSource> _cts = new Dictionary<IntPtr, CancellationTokenSource>();
 
+        /// <summary>
+        /// Register callbacks in order to handle VLC dialogs.
+        /// </summary>
+        /// <param name="error">Called when an error message needs to be displayed.</param>
+        /// <param name="login">Called when a login dialog needs to be displayed.</param>
+        /// <param name="question">Called when a question dialog needs to be displayed.</param>
+        /// <param name="displayProgress">Called when a progress dialog needs to be displayed.</param>
+        /// <param name="updateProgress">Called when a progress dialog needs to be updated.</param>
         public void SetDialogHandlers(DisplayError error, DisplayLogin login, DisplayQuestion question,
             DisplayProgress displayProgress, UpdateProgress updateProgress)
         {
@@ -600,8 +614,15 @@ namespace LibVLCSharp.Shared
             Native.LibVLCDialogSetCallbacks(NativeReference, _dialogCbsPtr, IntPtr.Zero);
         }
 
+        /// <summary>
+        /// True of dialog handlers have been set
+        /// </summary>
         public bool DialogHandlersSet => _dialogCbsPtr != IntPtr.Zero;
 
+        /// <summary>
+        /// Get media discoverer services.
+        /// Note: LibVLC 3.0.0 and later
+        /// </summary>
         public RendererDescription[] RendererList
         {
             get
@@ -632,11 +653,26 @@ namespace LibVLCSharp.Shared
             }
         }
 
+        /// <summary>
+        /// Description of a renderer
+        /// </summary>
         public struct RendererDescription
         {
+            /// <summary>
+            /// Name
+            /// </summary>
             public string Name { get; }
+
+            /// <summary>
+            /// LongName
+            /// </summary>
             public string LongName { get; }
 
+            /// <summary>
+            /// Main constructor
+            /// </summary>
+            /// <param name="name">Name</param>
+            /// <param name="longName">LongName</param>
             public RendererDescription(string name, string longName)
             {
                 Name = name;
@@ -721,8 +757,13 @@ namespace LibVLCSharp.Shared
         Error = 4
     }
 
-#region Callbacks
+    #region Callbacks
 
+    /// <summary>
+    /// Registers a callback for the LibVLC exit event. 
+    /// This is mostly useful if the VLC playlist and/or at least one interface are started with libvlc_playlist_play() 
+    /// or AddInterface() respectively. Typically, this function will wake up your application main loop (from another thread).
+    /// </summary>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void ExitCallback();
 
