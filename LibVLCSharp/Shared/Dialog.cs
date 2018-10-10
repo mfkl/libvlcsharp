@@ -40,6 +40,9 @@ namespace LibVLCSharp.Shared
         }
 
         /// <summary>
+        /// <summary>
+        /// Dispose of the dialog. The dialog instance will not be valid anymore.
+        /// </summary>
         /// Post a login answer.
         /// After this call, the instance won't be valid anymore
         /// </summary>
@@ -112,8 +115,19 @@ namespace LibVLCSharp.Shared
     /// </summary>
     public enum DialogQuestionType
     {
+        /// <summary>
+        /// Normal dialog
+        /// </summary>
         Normal = 0,
+
+        /// <summary>
+        /// Warning dialog
+        /// </summary>
         Warning = 1,
+
+        /// <summary>
+        /// Critical dialog
+        /// </summary>
         Critical = 2
     }
 

@@ -86,6 +86,10 @@ namespace LibVLCSharp.Shared
         internal protected abstract void DetachEvent<T>(EventType eventType, EventHandler<T> eventHandler) where T : EventArgs;
     }
 
+    /// <summary>
+    /// Callback function definition for libvlc events.
+    /// </summary>
+    /// <param name="args">the event triggering the callback</param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void EventCallback(IntPtr args);
 }

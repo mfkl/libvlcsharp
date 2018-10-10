@@ -27,6 +27,7 @@ namespace LibVLCSharp.Shared
         }
         LogCallback _logCallback;
         readonly object _logLock = new object();
+
         /// <summary>
         /// The real log event handlers.
         /// </summary>
@@ -180,8 +181,7 @@ namespace LibVLCSharp.Shared
         /// <para>This functions accept a list of &quot;command line&quot; arguments similar to the</para>
         /// <para>main(). These arguments affect the LibVLC instance default configuration.</para>
         /// </summary>
-        /// <param name="argc">the number of arguments (should be 0)</param>
-        /// <param name="args">list of arguments (should be NULL)</param>
+        /// <param name="args">list of arguments (can be NULL)</param>
         /// <returns>the libvlc instance or NULL in case of error</returns>
         /// <remarks>
         /// <para>LibVLC may create threads. Therefore, any thread-unsafe process</para>
@@ -370,6 +370,10 @@ namespace LibVLCSharp.Shared
             return MarshalUtils.Close(_logFileHandle);
         }
 
+        /// <summary>
+        /// Registers a log callback
+        /// </summary>
+        /// <param name="cb">The method that will be called whenever a log is available.</param>
         public void SetLog(LogCallback cb)
         {
             if (cb == null) throw new ArgumentException(nameof(cb));

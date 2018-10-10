@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace LibVLCSharp.Shared
 {
     /// <summary>
-    /// Equalizer settings can be applied to a media player using this type
+    /// Equalizer settings can be applied to a media player.
     /// </summary>
     public class Equalizer : Internal
     {
