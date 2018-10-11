@@ -6,163 +6,278 @@ namespace LibVLCSharp.Shared
     /// <summary>LibVLCEvent types</summary>
     public enum EventType
     {
+        /// <summary>
+        /// Metadata of a media item changed.
+        /// </summary>
         MediaMetaChanged = 0,
+
+        /// <summary>
+        /// Subitem was added to a media item. 
+        /// </summary>
         MediaSubItemAdded = 1,
+
+        /// <summary>
+        /// Duration of a media item changed.
+        /// </summary>
         MediaDurationChanged = 2,
+
+        /// <summary>
+        /// Parsing state of a media item changed.
+        /// </summary>
         MediaParsedChanged = 3,
+
+        /// <summary>
+        /// A media item was freed.
+        /// </summary>
         MediaFreed = 4,
+
+        /// <summary>
+        /// State of a media item changed
+        /// </summary>
         MediaStateChanged = 5,
+
+        /// <summary>
+        /// Subitem tree was added to a media item.
+        /// </summary>
         MediaSubItemTreeAdded = 6,
+
+        /// <summary>
+        /// Media changed in the media player.
+        /// </summary>
         MediaPlayerMediaChanged = 256,
+
+        /// <summary>
+        /// Nothing special happening.
+        /// </summary>
         MediaPlayerNothingSpecial = 257,
+
+        /// <summary>
+        /// Mediaplayer is opening a media
+        /// </summary>
         MediaPlayerOpening = 258,
+
+        /// <summary>
+        /// Mediaplayer is buffering a media
+        /// </summary>
         MediaPlayerBuffering = 259,
+
+        /// <summary>
+        /// Mediaplayer is playing a media
+        /// </summary>
         MediaPlayerPlaying = 260,
+
+        /// <summary>
+        /// Mediaplayer is paused
+        /// </summary>
         MediaPlayerPaused = 261,
+
+        /// <summary>
+        /// Mediaplayer is stopped
+        /// </summary>
         MediaPlayerStopped = 262,
+
+        /// <summary>
+        /// Mediaplayer is seeking forward
+        /// </summary>
         MediaPlayerForward = 263,
+
+        /// <summary>
+        /// Mediaplayer is rewinding backward
+        /// </summary>
         MediaPlayerBackward = 264,
+
+        /// <summary>
+        /// Mediaplayer playback end reached
+        /// </summary>
         MediaPlayerEndReached = 265,
+
+        /// <summary>
+        /// Mediaplayer encountered an error
+        /// </summary>
         MediaPlayerEncounteredError = 266,
+
+        /// <summary>
+        /// Mediaplayer time changed
+        /// </summary>
         MediaPlayerTimeChanged = 267,
+
+        /// <summary>
+        /// Mediaplayer position changed
+        /// </summary>
         MediaPlayerPositionChanged = 268,
+
+        /// <summary>
+        /// Mediaplayer seekable capability changed
+        /// </summary>
         MediaPlayerSeekableChanged = 269,
+
+        /// <summary>
+        /// Mediaplayer pausable capability changed
+        /// </summary>
         MediaPlayerPausableChanged = 270,
+
+        /// <summary>
+        /// Mediaplayer media title changed
+        /// </summary>
         MediaPlayerTitleChanged = 271,
+
+        /// <summary>
+        /// Mediaplayer took a snapshot
+        /// </summary>
         MediaPlayerSnapshotTaken = 272,
+
+        /// <summary>
+        /// Media length changed in mediaplayer
+        /// </summary>
         MediaPlayerLengthChanged = 273,
+
+        /// <summary>
+        /// Mediaplayer has a new vout
+        /// </summary>
         MediaPlayerVout = 274,
+
+        /// <summary>
+        /// Mediaplayer has a new scrambled state
+        /// </summary>
         MediaPlayerScrambledChanged = 275,
+
+        /// <summary>
+        /// Mediaplayer has a new Elementary Stream (ES)
+        /// </summary>
         MediaPlayerESAdded = 276,
+
+        /// <summary>
+        /// Mediaplayer has one less Elementary Stream (ES)
+        /// </summary>
         MediaPlayerESDeleted = 277,
+
+        /// <summary>
+        /// Mediaplayer has selected a Elementary Stream (ES)
+        /// </summary>
         MediaPlayerESSelected = 278,
+
+        /// <summary>
+        /// The playback is paused automatically for a higher priority audio stream
+        /// </summary>
         MediaPlayerCorked = 279,
+
+        /// <summary>
+        /// The playback is unpaused automatically after a higher priority audio stream ends
+        /// </summary>
         MediaPlayerUncorked = 280,
+
+        /// <summary>
+        /// The audio of the mediaplayer is muted
+        /// </summary>
         MediaPlayerMuted = 281,
+
+        /// <summary>
+        /// The audio of the mediaplayer is unmuted
+        /// </summary>
         MediaPlayerUnmuted = 282,
+
+        /// <summary>
+        /// The current audio volume changes
+        /// </summary>
         MediaPlayerAudioVolume = 283,
+
+        /// <summary>
+        /// The current audio output device changes
+        /// </summary>
         MediaPlayerAudioDevice = 284,
+
+        /// <summary>
+        /// The current chapter changes
+        /// </summary>
         MediaPlayerChapterChanged = 285,
+
+        /// <summary>
+        /// A media item was added to a media list.
+        /// </summary>
         MediaListItemAdded = 512,
+
+        /// <summary>
+        /// A media item is about to get added to a media list.
+        /// </summary>
         MediaListWillAddItem = 513,
+
+        /// <summary>
+        /// A media item was deleted from a media list.
+        /// </summary>
         MediaListItemDeleted = 514,
+
+        /// <summary>
+        /// A media item is about to get deleted from a media list.
+        /// </summary>
         MediaListWillDeleteItem = 515,
+
+        /// <summary>
+        /// A media list has reached the end.
+        /// All items were either added (in case of a libvlc_media_discoverer_t) or parsed (preparser)
+        /// </summary>
         MediaListEndReached = 516,
-        MediaListViewItemAdded = 768,
-        MediaListViewWillAddItem = 769,
-        MediaListViewItemDeleted = 770,
-        MediaListViewWillDeleteItem = 771,
+
+        /// <summary>
+        /// Playback of a media list player has started.
+        /// </summary>
         MediaListPlayerPlayed = 1024,
+
+        /// <summary>
+        /// The current item of a media list player has changed to a different item.
+        /// </summary>
         MediaListPlayerNextItemSet = 1025,
+
+        /// <summary>
+        /// Playback of a media list player has stopped.
+        /// </summary>
         MediaListPlayerStopped = 1026,
 
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_start()</para>
-        /// </remarks>
+        /// <summary>
+        /// Useless event, it will be triggered only when calling libvlc_media_discoverer_start()
+        /// </summary>
         MediaDiscovererStarted = 1280,
 
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
+        /// <summary>
+        /// Useless event, it will be triggered only when calling libvlc_media_discoverer_stop()
+        /// </summary>
         MediaDiscovererStopped = 1281,
 
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
+        /// <summary>
+        /// A new renderer item was found by a renderer discoverer.
+        /// The renderer item is valid until deleted. 
+        /// </summary>
         RendererDiscovererItemAdded = 1282,
 
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
+        /// <summary>
+        /// A previously discovered renderer item was deleted by a renderer discoverer.
+        /// The renderer item is no longer valid. 
+        /// </summary>
         RendererDiscovererItemDeleted = 1283,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaAdded = 1536,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaRemoved = 1537,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaChanged = 1538,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStarted = 1539,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStopped = 1540,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStatusInit = 1541,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStatusOpening = 1542,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStatusPlaying = 1543,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStatusPause = 1544,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStatusEnd = 1545,
-
-        /// <remarks>
-        /// <para>Useless event, it will be triggered only when calling</para>
-        /// <para>libvlc_media_discoverer_stop()</para>
-        /// </remarks>
-        VlmMediaInstanceStatusError = 1546
     }
-
-    /// <summary>Renderer item</summary>
-    /// <remarks>
-    /// <para>This struct is passed by a</para>
-    /// <para>or deleted.</para>
-    /// <para>An item is valid until the</para>
-    /// <para>is called with the same pointer.</para>
-    /// <para>libvlc_renderer_discoverer_event_manager()</para>
-    /// </remarks>
-    /// <summary>A LibVLC event</summary>
+    
+    /// <summary>
+    /// A LibVLC event
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct LibVLCEvent
     {
+        /// <summary>
+        /// Type of the event
+        /// </summary>
         public EventType Type;
 
+        /// <summary>
+        /// Native reference to the sender
+        /// </summary>
         public IntPtr Sender;
 
+        /// <summary>
+        /// Native reference to a RendererItem
+        /// </summary>
+
+        /// <summary>
+        /// Event union
+        /// </summary>
         public EventUnion Union;
 
         [StructLayout(LayoutKind.Explicit)]
@@ -215,14 +330,11 @@ namespace LibVLCSharp.Shared
             public MediaListWillDeleteItem MediaListWillDeleteItem;
             [FieldOffset(0)]
             public MediaListPlayerNextItemSet MediaListPlayerNextItemSet;
-
             // mediaplayer
             [FieldOffset(0)]
             public MediaPlayerSnapshotTaken MediaPlayerSnapshotTaken;
             [FieldOffset(0)]
             public MediaPlayerLengthChanged MediaPlayerLengthChanged;
-            [FieldOffset(0)]
-            public VlmMediaEvent VlmMediaEvent;
             [FieldOffset(0)]
             public MediaPlayerMediaChanged MediaPlayerMediaChanged;
             [FieldOffset(0)]
@@ -416,12 +528,6 @@ namespace LibVLCSharp.Shared
         }
 
         #endregion MediaList
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct VlmMediaEvent
-        {
-            public IntPtr MediaName;
-            public IntPtr InstanceName;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -434,7 +540,6 @@ namespace LibVLCSharp.Shared
         public struct RendererDiscovererItemDeleted
         {
             public IntPtr item;
-        }
     }
 
     #region Media events
@@ -782,6 +887,7 @@ namespace LibVLCSharp.Shared
     }
 
     #endregion
+
     public sealed class LogEventArgs : EventArgs
     {
         public LogEventArgs(LogLevel level, string message, string module, string sourceFile, uint? sourceLine)
