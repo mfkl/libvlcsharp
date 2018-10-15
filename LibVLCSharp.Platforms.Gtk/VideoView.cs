@@ -33,6 +33,10 @@ namespace LibVLCSharp.Platforms.Gtk
             {
                 MediaPlayer.XWindow = NativeReferences.gdk_x11_drawable_get_xid(this.GdkWindow.Handle);
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                MediaPlayer.NsObject = NativeReferences.gdk_quartz_window_get_nswindow(GdkWindow.Handle);
+            }
             else
             {
                 throw new PlatformNotSupportedException();
@@ -48,6 +52,10 @@ namespace LibVLCSharp.Platforms.Gtk
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 MediaPlayer.XWindow = 0;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                MediaPlayer.NsObject = IntPtr.Zero;
             }
             else
             {

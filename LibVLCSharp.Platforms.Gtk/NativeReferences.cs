@@ -25,5 +25,11 @@
         /// <returns>The window's XID</returns>
         [DllImport("libgdk-x11-2.0.so.0", CallingConvention = CallingConvention.Cdecl)]
         internal static extern uint gdk_x11_drawable_get_xid(IntPtr gdkWindow);
+
+        [DllImport("libgdk-quartz-2.0.0.dylib")]
+        internal static extern IntPtr gdk_quartz_window_get_nswindow(IntPtr handle);
+
+        [DllImport("libgdk-quartz-2.0.0.dylib")]
+        internal static extern IntPtr gdk_quartz_window_get_nsview(IntPtr handle);
     }
 }

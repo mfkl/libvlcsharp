@@ -25,7 +25,6 @@
     <None Include="Platforms\**\*.cs" />
     <!-- MSBuild.Sdk.Extras is only required for Xamarin, and fails the build under linux -->
     <PackageReference Condition="!$([MSBuild]::IsOsPlatform('Linux'))" Include="MSBuild.Sdk.Extras" Version="1.2.0" PrivateAssets="All" />
-    <Compile Include="Shared\**\*.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
   </ItemGroup>
