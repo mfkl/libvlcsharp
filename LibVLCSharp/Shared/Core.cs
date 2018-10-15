@@ -95,11 +95,13 @@ namespace LibVLCSharp.Shared
                 }
             }
 
+#if !NET40
              // Initializes X threads before calling VLC. This is required for vlc plugins like the VDPAU hardware acceleration plugin.
             if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 Native.XInitThreads();
             }
+#endif
         }
 
         //TODO: check if Store app

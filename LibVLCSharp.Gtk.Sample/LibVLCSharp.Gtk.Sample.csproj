@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <PlatformTarget>x86</PlatformTarget>
     <VlcWindowsX86TargetDir>.</VlcWindowsX86TargetDir>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Condition="!$([MSBuild]::IsOSUnixLike())" Include="VideoLAN.LibVLC.Windows" Version="3.0.0-alpha3" />
+    <PackageReference Include="VideoLAN.LibVLC.Mac" Version="3.1.2-alpha" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,17 +33,44 @@
     </Reference>
   </ItemGroup>
 
-  <!-- References when building on Linux -->
-  <ItemGroup>
-    <Reference Include="gdk-sharp" Condition="$([MSBuild]::IsOSUnixLike())">
-      <HintPath>/usr/lib/cli/gdk-sharp-2.0/gdk-sharp.dll</HintPath>
+ <ItemGroup>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>/Library/Frameworks/Mono.framework/Versions/5.12.0/lib/mono/gtk-sharp-2.0/atk-sharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="glib-sharp" Condition="$([MSBuild]::IsOSUnixLike())">
-      <HintPath>/usr/lib/cli/glib-sharp-2.0/glib-sharp.dll</HintPath>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>/Library/Frameworks/Mono.framework//Versions/5.12.0/lib/mono/gtk-sharp-2.0/gdk-sharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="gtk-sharp" Condition="$([MSBuild]::IsOSUnixLike())">
-      <HintPath>/usr/lib/cli/gtk-sharp-2.0/gtk-sharp.dll</HintPath>
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>/Library/Frameworks/Mono.framework//Versions/5.12.0/lib/mono/gtk-sharp-2.0/glade-sharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-  </ItemGroup>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>/Library/Frameworks/Mono.framework//Versions/5.12.0/lib/mono/gtk-sharp-2.0/glib-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>/Library/Frameworks/Mono.framework//Versions/5.12.0/lib/mono/gtk-sharp-2.0/gtk-dotnet.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>/Library/Frameworks/Mono.framework//Versions/5.12.0/lib/mono/gtk-sharp-2.0/gtk-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Cairo" />
+    
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>/Library/Frameworks/Mono.framework//Versions/5.12.0/lib/mono/gtk-sharp-2.0/pango-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+</ItemGroup>
 
 </Project>
