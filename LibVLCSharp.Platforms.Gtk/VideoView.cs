@@ -35,6 +35,7 @@ namespace LibVLCSharp.Platforms.Gtk
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
+                // https://github.com/mono/xwt/blob/master/Xwt.Gtk.Mac/GtkQuartz.cs
                 MediaPlayer.NsObject = NativeReferences.gdk_quartz_window_get_nswindow(GdkWindow.Handle);
             }
             else

@@ -2,11 +2,10 @@
 using LibVLCSharp.Platforms.Gtk;
 using LibVLCSharp.Shared;
 using System.Runtime.InteropServices;
+using System;
 
 namespace LibVLCSharp.Gtk.Sample
 {
-    using System;
-
     public class Program
     {
         public static void Main()
