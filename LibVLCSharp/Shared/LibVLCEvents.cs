@@ -280,42 +280,105 @@ namespace LibVLCSharp.Shared
         /// </summary>
         public EventUnion Union;
 
+        /// <summary>
+        /// Union definition of all event types
+        /// </summary>
         [StructLayout(LayoutKind.Explicit)]
         public struct EventUnion
         {
-            // media
+            /// <summary>
+            /// Metadata of a media item changed.
+            /// </summary>
             [FieldOffset(0)]
             public MediaMetaChanged MediaMetaChanged;
+
+            /// <summary>
+            /// Subitem was added to a media item. 
+            /// </summary>
             [FieldOffset(0)]
             public MediaSubItemAdded MediaSubItemAdded;
+
+            /// <summary>
+            /// Duration of a media item changed.
+            /// </summary>
             [FieldOffset(0)]
             public MediaDurationChanged MediaDurationChanged;
+
+            /// <summary>
+            /// Parsing state of a media item changed.
+            /// </summary>
             [FieldOffset(0)]
             public MediaParsedChanged MediaParsedChanged;
+
+            /// <summary>
+            /// A media item was freed.
+            /// </summary>
             [FieldOffset(0)]
             public MediaFreed MediaFreed;
+
+            /// <summary>
+            /// State of a media item changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaStateChanged MediaStateChanged;
+
+            /// <summary>
+            /// Subitem tree was added to a media item.
+            /// </summary>
             [FieldOffset(0)]
             public MediaSubItemTreeAdded MediaSubItemTreeAdded;
 
-            // mediaplayer
+            /// <summary>
+            /// Mediaplayer is buffering a media
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerBuffering MediaPlayerBuffering;
+
+            /// <summary>
+            /// The current chapter changes
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerChapterChanged MediaPlayerChapterChanged;
+
+            /// <summary>
+            /// Mediaplayer position changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerPositionChanged MediaPlayerPositionChanged;
+
+            /// <summary>
+            /// Mediaplayer time changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerTimeChanged MediaPlayerTimeChanged;
+
+            /// <summary>
+            /// MediaPlayer title changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerTitleChanged MediaPlayerTitleChanged;
+
+            /// <summary>
+            /// Mediaplayer seekable changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerSeekableChanged MediaPlayerSeekableChanged;
+
+            /// <summary>
+            /// Mediaplayer pausable changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerPausableChanged MediaPlayerPausableChanged;
+
+            /// <summary>
+            /// Mediaplayer scrambled changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerScrambledChanged MediaPlayerScrambledChanged;
+
+            /// <summary>
+            /// Mediaplayer vout changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerVoutChanged MediaPlayerVoutChanged;
 
@@ -333,22 +396,50 @@ namespace LibVLCSharp.Shared
             // mediaplayer
             [FieldOffset(0)]
             public MediaPlayerSnapshotTaken MediaPlayerSnapshotTaken;
+
+            /// <summary>
+            /// Mediaplayer length changed
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerLengthChanged MediaPlayerLengthChanged;
+
+            /// <summary>
+            /// Media changed in the media player.
+            /// </summary>
             [FieldOffset(0)]
             public MediaPlayerMediaChanged MediaPlayerMediaChanged;
+
+            /// <summary>
+            /// Mediaplayer has a new Elementary Stream (ES)
+            /// </summary>
             [FieldOffset(0)]
             public EsChanged EsChanged;
+
+            /// <summary>
+            /// The current audio volume changes
+            /// </summary>
             [FieldOffset(0)]
             public VolumeChanged MediaPlayerVolumeChanged;
+
+            /// <summary>
+            /// The current audio output device changes
+            /// </summary>
             [FieldOffset(0)]
             public AudioDeviceChanged AudioDeviceChanged;
 
-            // renderer discoverer
+            /// <summary>
+            /// A media item is about to get deleted from a media list
+            /// </summary>
             [FieldOffset(0)]
             public RendererDiscovererItemAdded RendererDiscovererItemAdded;
+
+            /// <summary>
+            /// The current item of a media list player has changed to a different item
+            /// </summary>
             [FieldOffset(0)]
             public RendererDiscovererItemDeleted RendererDiscovererItemDeleted; 
+
+            
         }
 
         #region Media
