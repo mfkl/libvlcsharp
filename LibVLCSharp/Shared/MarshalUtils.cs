@@ -11,11 +11,11 @@ namespace LibVLCSharp.Shared
         { 
             #region Windows
 
-            [DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, SetLastError = true)]
-            public static extern int _wfopen_s(out IntPtr pFile, string filename, string mode = Write);
+            //[DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, SetLastError = true)]
+            //public static extern int _wfopen_s(out IntPtr pFile, string filename, string mode = Write);
 
-            [DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", SetLastError = true)]
-            public static extern int fcloseWindows(IntPtr stream);
+            //[DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", SetLastError = true)]
+            //public static extern int fcloseWindows(IntPtr stream);
 
             #endregion
 
@@ -116,12 +116,13 @@ namespace LibVLCSharp.Shared
                     fileHandle = Native.fopenLinux(filename);
                     return fileHandle != IntPtr.Zero;
                 default:
-                    return Native._wfopen_s(out fileHandle, filename) == 0;
+                    return true;
+                    //return Native._wfopen_s(out fileHandle, filename) == 0;
             }
 #else
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                if(Native._wfopen_s(out fileHandle, filename) != 0) return false;
+                //if(Native._wfopen_s(out fileHandle, filename) != 0) return false;
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -150,7 +151,8 @@ namespace LibVLCSharp.Shared
                 case PlatformID.Unix:
                     return Native.fcloseLinux(fileHandle) == 0;
                 default:
-                    return Native.fcloseWindows(fileHandle) == 0;
+                    return true;
+                    //return Native.fcloseWindows(fileHandle) == 0;
             }
 #else
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -163,8 +165,9 @@ namespace LibVLCSharp.Shared
             }
             else
             {
-                return Native.fcloseWindows(fileHandle) == 0;
+                //return Native.fcloseWindows(fileHandle) == 0;
             }
+            return false;
 #endif
         }
     }

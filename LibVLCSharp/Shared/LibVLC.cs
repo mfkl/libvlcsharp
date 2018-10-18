@@ -141,14 +141,14 @@ namespace LibVLCSharp.Shared
             internal static extern void LibVLCMediaPlayerSetAndroidContext(IntPtr mediaPlayer, IntPtr aWindow);
 #endif
 
-            /// <summary>
-            /// Compute the size required by vsprintf to print the parameters.
-            /// </summary>
-            /// <param name="format"></param>
-            /// <param name="ptr"></param>
-            /// <returns></returns>
-            [DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl)]
-            public static extern int _vscprintf(string format, IntPtr ptr);
+            ///// <summary>
+            ///// Compute the size required by vsprintf to print the parameters.
+            ///// </summary>
+            ///// <param name="format"></param>
+            ///// <param name="ptr"></param>
+            ///// <returns></returns>
+            //[DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl)]
+            //public static extern int _vscprintf(string format, IntPtr ptr);
 
             /// <summary>
             /// Format a string using printf style markers
@@ -160,11 +160,11 @@ namespace LibVLCSharp.Shared
             /// <param name="format">The message format</param>
             /// <param name="args">The variable arguments list pointer. We do not know what it is, but the pointer must be given as-is from C back to sprintf.</param>
             /// <returns>A negative value on failure, the number of characters written otherwise.</returns>
-            [DllImport(Constants.Msvcrt, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-            public static extern int vsprintf(
-                IntPtr buffer,
-                string format,
-                IntPtr args);
+            //[DllImport(Constants.Msvcrt, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+            //public static extern int vsprintf(
+            //    IntPtr buffer,
+            //    string format,
+            //    IntPtr args);
         }
     
         internal static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, LibVLC> NativeToManagedMap 
@@ -376,7 +376,7 @@ namespace LibVLCSharp.Shared
                     _log += value;
                     if (!_logAttached)
                     {
-                        SetLog(OnLogInternal);
+                        //SetLog(OnLogInternal);
                         _logAttached = true;
                     }
                 }
@@ -642,35 +642,35 @@ namespace LibVLCSharp.Shared
         /// <param name="ctx"></param>
         /// <param name="format"></param>
         /// <param name="args"></param>
-        void OnLogInternal(IntPtr data, LogLevel level, IntPtr ctx, string format, IntPtr args)
-        {
-            if (_log == null) return;
+//        void OnLogInternal(IntPtr data, LogLevel level, IntPtr ctx, string format, IntPtr args)
+//        {
+//            if (_log == null) return;
 
-            // Original source for va_list handling: https://stackoverflow.com/a/37629480/2663813
-            var byteLength = Native._vscprintf(format, args) + 1;
-            var utf8Buffer = Marshal.AllocHGlobal(byteLength);
+//            // Original source for va_list handling: https://stackoverflow.com/a/37629480/2663813
+//            var byteLength = Native._vscprintf(format, args) + 1;
+//            var utf8Buffer = Marshal.AllocHGlobal(byteLength);
 
-            string formattedDecodedMessage;
-            try
-            {
-                Native.vsprintf(utf8Buffer, format, args);
+//            string formattedDecodedMessage;
+//            try
+//            {
+//                Native.vsprintf(utf8Buffer, format, args);
 
-                formattedDecodedMessage = (string)Utf8StringMarshaler.GetInstance().MarshalNativeToManaged(utf8Buffer);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(utf8Buffer);
-            }
+//                formattedDecodedMessage = (string)Utf8StringMarshaler.GetInstance().MarshalNativeToManaged(utf8Buffer);
+//            }
+//            finally
+//            {
+//                Marshal.FreeHGlobal(utf8Buffer);
+//            }
 
-            GetLogContext(ctx, out var module, out var file, out var line);
+//            GetLogContext(ctx, out var module, out var file, out var line);
 
-            // Do the notification on another thread, so that VLC is not interrupted by the logging
-#if NET40
-            Task.Factory.StartNew(() => _log?.Invoke(NativeReference, new LogEventArgs(level, formattedDecodedMessage, module, file, line)));
-#else
-            Task.Run(() => _log?.Invoke(NativeReference, new LogEventArgs(level, formattedDecodedMessage, module, file, line)));
-#endif
-        }
+//            // Do the notification on another thread, so that VLC is not interrupted by the logging
+//#if NET40
+//            Task.Factory.StartNew(() => _log?.Invoke(NativeReference, new LogEventArgs(level, formattedDecodedMessage, module, file, line)));
+//#else
+//            Task.Run(() => _log?.Invoke(NativeReference, new LogEventArgs(level, formattedDecodedMessage, module, file, line)));
+//#endif
+//        }
 
         /// <summary>
         /// Gets log message debug infos.

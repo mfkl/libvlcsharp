@@ -12,11 +12,11 @@ namespace LibVLCSharp.Shared
     {
         struct Native
         {
-            [DllImport("kernel32.dll", SetLastError = true)]
-            internal static extern IntPtr LoadPackagedLibrary(string dllToLoad);
+            //[DllImport("kernel32.dll", SetLastError = true)]
+            //internal static extern IntPtr LoadPackagedLibrary(string dllToLoad);
 
-            [DllImport("kernel32.dll", SetLastError = true)]
-            internal static extern IntPtr LoadLibrary(string dllToLoad);
+            //[DllImport("kernel32.dll", SetLastError = true)]
+            //internal static extern IntPtr LoadLibrary(string dllToLoad);
 #if ANDROID
             [DllImport(Constants.LibraryName, EntryPoint = "JNI_OnLoad")]
             internal static extern int JniOnLoad(IntPtr javaVm, IntPtr reserved = default(IntPtr));
@@ -101,7 +101,8 @@ namespace LibVLCSharp.Shared
                 return IntPtr.Zero;
             }
 #endif
-            return Native.LoadLibrary(libraryPath);// TODO: cross-platform load
+            return IntPtr.Zero;
+            //return Native.LoadLibrary(libraryPath);// TODO: cross-platform load
         }
 
         static bool IsWindows
