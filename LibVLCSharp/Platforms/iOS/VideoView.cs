@@ -12,7 +12,7 @@ namespace LibVLCSharp.Platforms.iOS
         {
             LibVLC = new LibVLC(cliOptions);
             MediaPlayer = new Shared.MediaPlayer(LibVLC);
-            
+
             Attach();
         }
 

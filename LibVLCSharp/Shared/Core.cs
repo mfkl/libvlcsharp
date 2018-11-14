@@ -17,6 +17,9 @@ namespace LibVLCSharp.Shared
 
             [DllImport("kernel32.dll", SetLastError = true)]
             internal static extern IntPtr LoadLibrary(string dllToLoad);
+
+            [DllImport(Constants.libSystem)]
+            internal static extern IntPtr dlopen(string libraryPath, int mode = 1);
 #if ANDROID
             [DllImport(Constants.LibraryName, EntryPoint = "JNI_OnLoad")]
             internal static extern int JniOnLoad(IntPtr javaVm, IntPtr reserved = default(IntPtr));
@@ -53,7 +56,7 @@ namespace LibVLCSharp.Shared
         //TODO: Add Unload library func using handles
         static void InitializeDesktop(string appExecutionDirectory = null)
         {
-            if(appExecutionDirectory == null)
+            if (appExecutionDirectory == null)
             {
 #if NETSTANDARD1_1
                 throw new ArgumentNullException(nameof(appExecutionDirectory),
@@ -73,22 +76,30 @@ namespace LibVLCSharp.Shared
                 var librariesFolder = Path.Combine(appExecutionDirectory, Constants.LibrariesRepositoryFolderName, arch);
 
                 _libvlccoreHandle = PreloadNativeLibrary(librariesFolder, $"{Constants.CoreLibraryName}.dll");
-                
-                if(_libvlccoreHandle == IntPtr.Zero)
+
+                if (_libvlccoreHandle == IntPtr.Zero)
                 {
                     throw new VLCException($"Failed to load required native library {Constants.CoreLibraryName}.dll");
                 }
 
                 _libvlcHandle = PreloadNativeLibrary(librariesFolder, $"{Constants.LibraryName}.dll");
-                
-                if(_libvlcHandle == IntPtr.Zero)
+
+                if (_libvlcHandle == IntPtr.Zero)
                 {
                     throw new VLCException($"Failed to load required native library {Constants.LibraryName}.dll");
                 }
             }
+            else if (IsMac)
+            {
+                _libvlcHandle = PreloadNativeLibrary(appExecutionDirectory, $"{Constants.LibraryName}.dylib");
+                if (_libvlcHandle == IntPtr.Zero)
+                {
+                    throw new VLCException($"Failed to load required native library {Constants.LibraryName}.dylib");
+                }
+            }
         }
 
-        //TODO: check if Store app
+        //TODO: Add dlopen for UWP, Linux
         static IntPtr PreloadNativeLibrary(string nativeLibrariesPath, string libraryName)
         {
             Debug.WriteLine($"Loading {libraryName}");
@@ -101,7 +112,7 @@ namespace LibVLCSharp.Shared
                 return IntPtr.Zero;
             }
 #endif
-            return Native.LoadLibrary(libraryPath);// TODO: cross-platform load
+            return IsMac ? Native.dlopen(libraryPath) : Native.LoadLibrary(libraryPath);
         }
 
         static bool IsWindows
@@ -113,13 +124,18 @@ namespace LibVLCSharp.Shared
 #endif
         }
 
-        static bool IsX64BitProcess
+        static bool IsMac
         {
 #if NET40
-            get => Environment.Is64BitProcess;
+            get => (int)Environment.OSVersion.Platform == 6;
 #else
-            get => RuntimeInformation.OSArchitecture == Architecture.X64;
+            get => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 #endif
+        }
+
+        static bool IsX64BitProcess
+        {
+            get => IntPtr.Size == 8;
         }
     }
 
@@ -127,8 +143,6 @@ namespace LibVLCSharp.Shared
     {
 #if IOS
         internal const string LibraryName = "@rpath/DynamicMobileVLCKit.framework/DynamicMobileVLCKit";
-#elif MAC
-        internal const string LibraryName = "@rpath/VLCKit.framework/VLCKit";
 #elif UNITY_ANDROID
         /// <summary>
         /// The vlc-unity C++ plugin which handles rendering (opengl/d3d) libvlc callbacks
