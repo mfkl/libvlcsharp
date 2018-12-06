@@ -1,0 +1,1 @@
+msbuild LibVLCSharp/LibVLCSharp.csproj /t:Restore,Clean,Build /p:Configuration=Release
