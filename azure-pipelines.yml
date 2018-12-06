@@ -1,0 +1,22 @@
+jobs:
+- job: macOS
+  pool:
+    vmImage: 'macOS 10.13'
+  steps:
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core sdk 2.1.403'
+    inputs:
+      version: 2.1.403
+  - powershell: ./build.ps1
+    displayName: 'build'
+- job: Windows
+  pool:
+    vmImage: 'VS2017-Win2016'
+  steps:
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core sdk 2.1.403'
+    inputs:
+      version: 2.1.403
+  - task: UseRubyVersion@0
+  - powershell: ./build.ps1 
+displayName: 'build'
