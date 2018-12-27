@@ -60,10 +60,12 @@ namespace LibVLCSharp.Shared
                             () => _mediaListItemDeleted += eventHandler as EventHandler<MediaListItemDeletedEventArgs>,
                             () => _mediaListItemDeletedCallback = OnItemDeleted);
                         break;
+                    case EventType.MediaListWillDeleteItem:
                         Attach(eventType,
                             ref _mediaListWillDeleteItemRegistrationCount,
                             () => _mediaListWillDeleteItem += eventHandler as EventHandler<MediaListWillDeleteItemEventArgs>,
                             () => _mediaListWillDeleteItemCallback = OnWillDeleteItem);
+                        break;
                     case EventType.MediaListEndReached:
                         Attach(eventType,
                             ref _mediaListEndReachedRegistrationCount,
