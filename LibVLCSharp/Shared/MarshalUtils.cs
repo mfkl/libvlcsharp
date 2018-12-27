@@ -5,37 +5,37 @@ using System.Text;
 
 namespace LibVLCSharp.Shared
 {
-    public static class MarshalUtils
+    internal static class MarshalUtils
     {
         internal struct Native
         { 
             #region Windows
 
             [DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, SetLastError = true)]
-            public static extern int _wfopen_s(out IntPtr pFile, string filename, string mode = Write);
+            internal static extern int _wfopen_s(out IntPtr pFile, string filename, string mode = Write);
 
             [DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", SetLastError = true)]
-            public static extern int fcloseWindows(IntPtr stream);
+            internal static extern int fcloseWindows(IntPtr stream);
 
             #endregion
 
             #region Linux
 
             [DllImport(Constants.Libc, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fopen", CharSet = CharSet.Ansi, SetLastError = true)]
-            public static extern IntPtr fopenLinux(string filename, string mode = Write);
+            internal static extern IntPtr fopenLinux(string filename, string mode = Write);
 
             [DllImport(Constants.Libc, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", CharSet = CharSet.Ansi, SetLastError = true)]
-            public static extern int fcloseLinux(IntPtr file);
+            internal static extern int fcloseLinux(IntPtr file);
 
             #endregion
 
             #region Mac
 
             [DllImport(Constants.libSystem, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fopen", SetLastError = true)]
-            public static extern IntPtr fopenMac(string path, string mode = Write);
+            internal static extern IntPtr fopenMac(string path, string mode = Write);
 
             [DllImport(Constants.libSystem, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", SetLastError = true)]
-            public static extern int fcloseMac(IntPtr file);
+            internal static extern int fcloseMac(IntPtr file);
 
             #endregion
 
@@ -43,7 +43,7 @@ namespace LibVLCSharp.Shared
             const string Write = "w";
         }
 
-        public static TU[] Retrieve<T, TU>(Func<IntPtr> getRef, Func<IntPtr, T> retrieve,
+        internal static TU[] Retrieve<T, TU>(Func<IntPtr> getRef, Func<IntPtr, T> retrieve,
             Func<T, TU> create, Func<TU, TU> next, Action<IntPtr> releaseRef)
         {
             var nativeRef = getRef();
@@ -74,7 +74,7 @@ namespace LibVLCSharp.Shared
         /// </summary>
         /// <param name="args"></param>
         /// <returns>Array of pointer you need to release when you're done with Marshal.FreeHGlobal</returns>
-        public static IntPtr[] ToUtf8(string[] args)
+        internal static IntPtr[] ToUtf8(string[] args)
         {
             var utf8Args = new IntPtr[args?.Length ?? 0];
             
@@ -90,7 +90,7 @@ namespace LibVLCSharp.Shared
             return utf8Args;
         }
 
-        public static T PtrToStructure<T>(IntPtr ptr)
+        internal static T PtrToStructure<T>(IntPtr ptr)
         {
 #if NETSTANDARD1_1 || NET40
             return (T)Marshal.PtrToStructure(ptr, typeof(T));
@@ -103,7 +103,7 @@ namespace LibVLCSharp.Shared
         /// Crossplatform dlopen
         /// </summary>
         /// <returns>true if successful</returns>
-        public static bool Open(string filename, out IntPtr fileHandle)
+        internal static bool Open(string filename, out IntPtr fileHandle)
         {
             fileHandle = IntPtr.Zero;
 #if NET40
@@ -140,7 +140,7 @@ namespace LibVLCSharp.Shared
         /// </summary>
         /// <param name="file handle"></param>
         /// <returns>true if successful</returns>
-        public static bool Close(IntPtr fileHandle)
+        internal static bool Close(IntPtr fileHandle)
         {
 #if NET40
             switch (Environment.OSVersion.Platform)
