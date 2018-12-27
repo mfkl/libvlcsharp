@@ -210,16 +210,16 @@ namespace LibVLCSharp.Shared
     /// <summary>Dialog callbacks to be implemented</summary>
     internal struct DialogCallbacks
     {
-        public DisplayErrorCallback DisplayError;
+        internal DisplayErrorCallback DisplayError;
 
-        public DisplayLoginCallback DisplayLogin;
+        internal DisplayLoginCallback DisplayLogin;
 
-        public DisplayQuestionCallback DisplayQuestion;
+        internal DisplayQuestionCallback DisplayQuestion;
 
-        public DisplayProgressCallback DisplayProgress;
+        internal DisplayProgressCallback DisplayProgress;
 
-        public CancelCallback Cancel;
+        internal CancelCallback Cancel;
 
-        public UpdateProgressCallback UpdateProgress;
+        internal UpdateProgressCallback UpdateProgress;
     }
 }
