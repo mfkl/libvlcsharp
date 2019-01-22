@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>LibVLCSharp.WinForms</Title>
+    <TargetFrameworks>net40</TargetFrameworks>
+    <Description>WinForm integration for LibVLCSharp.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibVLCSharp\LibVLCSharp.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+</Project>
