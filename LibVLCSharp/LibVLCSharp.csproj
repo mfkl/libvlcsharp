@@ -26,7 +26,8 @@ Features:
 - DVD playback and menu navigation.
     </Description>
     <TargetFrameworks>netstandard2.0;netstandard1.1;net40;net471</TargetFrameworks>
-    <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
@@ -66,9 +67,16 @@ Features:
   <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac'))">
     <Compile Include="Platforms\Mac\**\*.cs" />
   </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
+    <Compile Include="Platforms\UAP\**\*.cs" />
+  </ItemGroup>
   <Target Name="IncludeAWindow" Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
     <ItemGroup>
       <BuildOutputInPackage Include="$(OutputPath)LibVLCSharp.Android.AWindow.dll" />
     </ItemGroup>
+  </Target>
+  <Target Name="IncludeUWP" Condition="$(TargetFramework.StartsWith('uap'))">
+    <!--TODO: Include DLLs for 3 arch in nuget and bin/output-->
+    <BuildOutputInPackage Include="$(OutputPath)LibVLCSharp.UWP.dll" />
   </Target>
 </Project>
