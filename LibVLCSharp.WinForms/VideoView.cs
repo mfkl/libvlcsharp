@@ -19,11 +19,31 @@ namespace LibVLCSharp.WinForms
             get => _mp;
             set
             {
+                if (ReferenceEquals(_mp, value))
+                {
+                    return;
+                }
+
+                Detach();
                 _mp = value;
-                if (_mp != null)
-                    _mp.Hwnd = Handle;
-                else _mp.Hwnd = IntPtr.Zero;
+                Attach();
             }
+        }
+
+        void Detach()
+        {
+            if (_mp == null)
+                return;
+
+            _mp.Hwnd = IntPtr.Zero;
+        }
+
+        void Attach()
+        {
+            if (_mp == null)
+                return;
+
+            _mp.Hwnd = Handle;
         }
 
         public void BeginInit()
