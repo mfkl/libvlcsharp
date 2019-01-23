@@ -28,7 +28,8 @@ Features:
     <TargetFrameworks>netstandard2.0;netstandard1.1;net40;net471</TargetFrameworks>
     <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow;IncludeUWP</TargetsForTfmSpecificBuildOutput>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
+    <TargetsForTfmSpecificBuildOutput Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetsForTfmSpecificBuildOutput);IncludeUWP</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>7.3</LangVersion>
@@ -69,6 +70,10 @@ Features:
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <Compile Include="Platforms\UAP\**\*.cs" />
+    <!-- This ain't working. LibVLCSharp should build LibVLCSharp.UWP before itself if uap target is included.
+    So we need to manually build LibVLCSharp.UWP right now. -->
+    
+    <!--<ProjectReference Include="..\LibVLCSharp.UWP\LibVLCSharp.UWP.vcxproj" />-->
   </ItemGroup>
   <Target Name="IncludeAWindow" Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
     <ItemGroup>
