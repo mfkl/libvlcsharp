@@ -5,8 +5,14 @@ using System.Windows.Forms;
 
 namespace LibVLCSharp.WinForms
 {
+    /// <summary>
+    /// WinForms VideoView control with a LibVLCSharp MediaPlayer
+    /// </summary>
     public class VideoView : Control, ISupportInitialize, IVideoView, IDisposable
     {
+        /// <summary>
+        /// The VideoView constructor.
+        /// </summary>
         public VideoView()
         {
             BackColor = System.Drawing.Color.Black;
@@ -14,6 +20,9 @@ namespace LibVLCSharp.WinForms
 
         MediaPlayer _mp;
 
+        /// <summary>
+        /// The MediaPlayer attached to this view (or null)
+        /// </summary>
         public MediaPlayer MediaPlayer
         {
             get => _mp;
@@ -27,6 +36,42 @@ namespace LibVLCSharp.WinForms
                 Detach();
                 _mp = value;
                 Attach();
+            }
+        }
+
+        /// <summary>
+        /// This currently does not do anything
+        /// </summary>
+        void ISupportInitialize.BeginInit()
+        {
+        }
+
+        /// <summary>
+        /// This attaches the mediaplayer to the view (if any)
+        /// </summary>
+        void ISupportInitialize.EndInit()
+        {
+            if (IsInDesignMode)
+                return;
+
+            Attach();
+        }
+
+        bool IsInDesignMode
+        {
+            get
+            {
+                if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                    return true;
+
+                Control ctrl = this;
+                while (ctrl != null)
+                {
+                    if ((ctrl.Site != null) && ctrl.Site.DesignMode)
+                        return true;
+                    ctrl = ctrl.Parent;
+                }
+                return false;
             }
         }
 
@@ -46,39 +91,6 @@ namespace LibVLCSharp.WinForms
             _mp.Hwnd = Handle;
         }
 
-        public void BeginInit()
-        {
-        }
-
-        public void EndInit()
-        {
-            if (IsInDesignMode)
-                return;
-
-            if(MediaPlayer != null)
-                MediaPlayer.Hwnd = Handle;
-        }
-
-        private bool IsInDesignMode
-        {
-            get
-            {
-                if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                    return true;
-
-                Control ctrl = this;
-                while (ctrl != null)
-                {
-                    if ((ctrl.Site != null) && ctrl.Site.DesignMode)
-                        return true;
-                    ctrl = ctrl.Parent;
-                }
-                return false;
-            }
-        }
-
-        #region IDisposable Support
-
         bool disposedValue;
         protected override void Dispose(bool disposing)
         {
@@ -94,8 +106,6 @@ namespace LibVLCSharp.WinForms
                 
                 disposedValue = true;
             }
-        }
-
-        #endregion
+        }   
     }
 }
