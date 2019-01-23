@@ -28,7 +28,7 @@ Features:
     <TargetFrameworks>netstandard2.0;netstandard1.1;net40;net471</TargetFrameworks>
     <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow;IncludeUWP</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>7.3</LangVersion>
@@ -76,7 +76,19 @@ Features:
     </ItemGroup>
   </Target>
   <Target Name="IncludeUWP" Condition="$(TargetFramework.StartsWith('uap'))">
-    <!--TODO: Include DLLs for 3 arch in nuget and bin/output-->
-    <BuildOutputInPackage Include="$(OutputPath)LibVLCSharp.UWP.dll" />
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)Win32\LibVLCSharp.UWP.dll">
+        <TargetPath>x86</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(OutputPath)x64\LibVLCSharp.UWP.dll">
+        <TargetPath>x64</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(OutputPath)ARM\LibVLCSharp.UWP.dll">
+        <TargetPath>ARM</TargetPath>
+      </BuildOutputInPackage>
+      <BuildOutputInPackage Include="$(OutputPath)ARM64\LibVLCSharp.UWP.dll">
+        <TargetPath>ARM64</TargetPath>
+      </BuildOutputInPackage>
+    </ItemGroup>
   </Target>
 </Project>
