@@ -79,6 +79,9 @@ namespace LibVLCSharp.Shared
 
             if (PlatformHelper.IsWindows)
             {
+#if UAP
+                
+#else
                 var arch = PlatformHelper.IsX64BitProcess ? ArchitectureNames.Win64 : ArchitectureNames.Win86;
 
                 var librariesFolder = Path.Combine(appExecutionDirectory, Constants.LibrariesRepositoryFolderName, arch);
@@ -96,6 +99,7 @@ namespace LibVLCSharp.Shared
                 {
                     throw new VLCException($"Failed to load required native library {Constants.LibraryName}.dll");
                 }
+#endif
             }
             else if (PlatformHelper.IsMac)
             {
@@ -117,7 +121,7 @@ namespace LibVLCSharp.Shared
             }
         }
 
-        //TODO: Add dlopen for UWP, Linux
+        //TODO: Add dlopen for UWP
         static IntPtr PreloadNativeLibrary(string nativeLibrariesPath, string libraryName)
         {
             Debug.WriteLine($"Loading {libraryName}");

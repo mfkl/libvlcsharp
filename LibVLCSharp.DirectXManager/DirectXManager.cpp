@@ -28,7 +28,7 @@
 
  //HACK HACK HACK
 using namespace Windows::Graphics::Display;
-using namespace LibVLCSharpUWP;
+using namespace LibVLCSharp_UWP;
 
 DirectXManager::DirectXManager()
 {
@@ -142,7 +142,7 @@ void DirectXManager::SetupSwapChainPanel(SwapChainPanel^ panel) {
 	swapChainPanel = panel;
 }
 
-void DirectXManager::InitializeHack(char** argv, unsigned int & nbArgs)
+void DirectXManager::InitializeHack(Platform::Array<Platform::String^>^* argv, uint32 nbArgs)
 {
 	SetupSwapChainPanel(swapChainPanel);
 
@@ -151,11 +151,11 @@ void DirectXManager::InitializeHack(char** argv, unsigned int & nbArgs)
 
 	char ptr_d3dcstring[64];
 	sprintf_s(ptr_d3dcstring, "--winrt-d3dcontext=0x%p", cp_d3dContext);
-	argv[nbArgs++] = _strdup(ptr_d3dcstring);
+	//argv[nbArgs++] = _strdup(ptr_d3dcstring);
 
 	char ptr_scstring[64];
 	sprintf_s(ptr_scstring, "--winrt-swapchain=0x%p", cp_swapChain);
-	argv[nbArgs++] = _strdup(ptr_scstring);
+	//argv[nbArgs++] = _strdup(ptr_scstring);
 }
 
 static const GUID SWAPCHAIN_WIDTH = { 0xf1b59347, 0x1643, 0x411a,{ 0xad, 0x6b, 0xc7, 0x80, 0x17, 0x7a, 0x6, 0xb6 } };

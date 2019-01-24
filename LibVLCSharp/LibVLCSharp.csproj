@@ -29,7 +29,7 @@ Features:
     <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
-    <TargetsForTfmSpecificBuildOutput Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetsForTfmSpecificBuildOutput);IncludeUWP</TargetsForTfmSpecificBuildOutput>
+    <!--<TargetsForTfmSpecificBuildOutput Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetsForTfmSpecificBuildOutput);IncludeUWP</TargetsForTfmSpecificBuildOutput>-->
     <RootNamespace>LibVLCSharp</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>7.3</LangVersion>
@@ -46,6 +46,8 @@ Features:
     <PackageIconUrl>https://code.videolan.org/videolan/LibVLCSharp/raw/master/Assets/icon.png</PackageIconUrl>
     <PackageReleaseNotes>https://code.videolan.org/videolan/LibVLCSharp/blob/master/NEWS</PackageReleaseNotes>
     <PackageTags>libvlc;vlc;videolan;native;c/c++;video;audio;player;media;mediaplayer;codec;ffmpeg;xamarin;graphics;ios;android;linux;windows;macos;cross-platform</PackageTags>
+    <ExtrasBuildEachRuntimeIdentifier Condition="$(TargetFramework.StartsWith('uap'))">true</ExtrasBuildEachRuntimeIdentifier>
+    <RuntimeIdentifiers Condition="$(TargetFramework.StartsWith('uap'))">win10-x86</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="$(UNITY_ANDROID)=='true'">
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -53,6 +55,10 @@ Features:
   </PropertyGroup>
   <PropertyGroup Condition="$(NETSTANDARD_ONLY)=='true'">
     <TargetFrameworks>netstandard2.0;netstandard1.1</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />
@@ -70,30 +76,11 @@ Features:
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <Compile Include="Platforms\UAP\**\*.cs" />
-    <!-- This ain't working. LibVLCSharp should build LibVLCSharp.UWP before itself if uap target is included.
-    So we need to manually build LibVLCSharp.UWP right now. -->
-    
-    <!--<ProjectReference Include="..\LibVLCSharp.UWP\LibVLCSharp.UWP.vcxproj" />-->
+    <None Include="$(OutputPath)..\Win32\LibVLCSharp.DirectXManager.dll" PackagePath="runtimes/win10-x86/native" Pack="true" />
   </ItemGroup>
   <Target Name="IncludeAWindow" Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
     <ItemGroup>
       <BuildOutputInPackage Include="$(OutputPath)LibVLCSharp.Android.AWindow.dll" />
-    </ItemGroup>
-  </Target>
-  <Target Name="IncludeUWP" Condition="$(TargetFramework.StartsWith('uap'))">
-    <ItemGroup>
-      <BuildOutputInPackage Include="$(OutputPath)Win32\LibVLCSharp.UWP.dll">
-        <TargetPath>x86</TargetPath>
-      </BuildOutputInPackage>
-      <BuildOutputInPackage Include="$(OutputPath)x64\LibVLCSharp.UWP.dll">
-        <TargetPath>x64</TargetPath>
-      </BuildOutputInPackage>
-      <BuildOutputInPackage Include="$(OutputPath)ARM\LibVLCSharp.UWP.dll">
-        <TargetPath>ARM</TargetPath>
-      </BuildOutputInPackage>
-      <BuildOutputInPackage Include="$(OutputPath)ARM64\LibVLCSharp.UWP.dll">
-        <TargetPath>ARM64</TargetPath>
-      </BuildOutputInPackage>
     </ItemGroup>
   </Target>
 </Project>

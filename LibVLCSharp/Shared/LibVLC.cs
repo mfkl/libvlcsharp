@@ -5,6 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using LibVLCSharp.Shared.Helpers;
 using LibVLCSharp.Shared.Structures;
+#if UAP
+using LibVLCSharp.Platforms.UAP;
+#endif
 
 namespace LibVLCSharp.Shared
 {
@@ -210,10 +213,17 @@ namespace LibVLCSharp.Shared
         /// </summary>
         /// <param name="options">list of arguments (should be NULL)</param>
         /// <returns>the libvlc instance or NULL in case of error</returns>
+#if UAP
+        public LibVLC(VideoView videoView = null, params string[] options)
+           : base(() => MarshalUtils.CreateWithVideoViewAndOptions(videoView, options, Native.LibVLCNew), Native.LibVLCRelease)
+        {
+        }
+#else
         public LibVLC(params string[] options)
             : base(() => MarshalUtils.CreateWithOptions(options, Native.LibVLCNew), Native.LibVLCRelease)
         {
         }
+#endif
 
         protected override void Dispose(bool disposing)
         {

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+#if UAP
+using LibVLCSharp.Platforms.UAP;
+//using LibVLCSharp_UWP;
+#endif
 
 namespace LibVLCSharp.Shared.Helpers
 {
@@ -9,7 +13,7 @@ namespace LibVLCSharp.Shared.Helpers
     {
         internal readonly struct Native
         { 
-            #region Windows
+#region Windows
 
             [DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, SetLastError = true)]
             public static extern int _wfopen_s(out IntPtr pFile, string filename, string mode = Write);
@@ -17,9 +21,9 @@ namespace LibVLCSharp.Shared.Helpers
             [DllImport(Constants.Msvcrt, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", SetLastError = true)]
             public static extern int fcloseWindows(IntPtr stream);
 
-            #endregion
+#endregion
 
-            #region Linux
+#region Linux
 
             [DllImport(Constants.Libc, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fopen", CharSet = CharSet.Ansi, SetLastError = true)]
             public static extern IntPtr fopenLinux(string filename, string mode = Write);
@@ -27,9 +31,9 @@ namespace LibVLCSharp.Shared.Helpers
             [DllImport(Constants.Libc, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", CharSet = CharSet.Ansi, SetLastError = true)]
             public static extern int fcloseLinux(IntPtr file);
 
-            #endregion
+#endregion
 
-            #region Mac
+#region Mac
 
             [DllImport(Constants.libSystem, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fopen", SetLastError = true)]
             public static extern IntPtr fopenMac(string path, string mode = Write);
@@ -37,7 +41,7 @@ namespace LibVLCSharp.Shared.Helpers
             [DllImport(Constants.libSystem, CallingConvention = CallingConvention.Cdecl, EntryPoint = "fclose", SetLastError = true)]
             public static extern int fcloseMac(IntPtr file);
 
-            #endregion
+#endregion
 
             
             const string Write = "w";
@@ -68,6 +72,17 @@ namespace LibVLCSharp.Shared.Helpers
                 }
             }
         }
+#if UAP
+        //DirectXManager _directXManager;
+
+        internal static IntPtr CreateWithVideoViewAndOptions(VideoView videoView, string[] options, Func<int, IntPtr[], IntPtr> create)
+        {
+            if (videoView == null)
+                throw new ArgumentNullException(nameof(videoView));
+
+            return CreateWithOptions(options, create);
+        }
+#endif
 
         /// <summary>
         /// Generic marshalling function to retrieve structs from a libvlc linked list

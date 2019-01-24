@@ -32,13 +32,15 @@ using namespace Microsoft::WRL;
 using namespace Windows::Media::Devices;
 using namespace Windows::UI::Xaml::Controls;
 
-namespace LibVLCSharpUWP {
-	class DirectXManager
+namespace LibVLCSharp_UWP {
+	public ref class DirectXManager sealed
 	{
 	public:
 		DirectXManager();
 		void SetupSwapChainPanel(SwapChainPanel^ panel);
-		void InitializeHack(char** argv, unsigned int & nbArgs);
+		void InitializeHack(Platform::Array<Platform::String^>^* argv, uint32 nbArgs);
+
+		//void InitializeHack(char** argv, unsigned int & nbArgs);
 		void Trim();
 		void UpdateScale(float scaleX, float scaleY);
 		void UpdateSize(float x, float y);
@@ -49,8 +51,6 @@ namespace LibVLCSharpUWP {
 		SwapChainPanel^				swapChainPanel;
 		unsigned int m_width;
 		unsigned int m_height;
-
-	public:
 		ComPtr<ID3D11Device>        cp_d3dDevice;
 		ComPtr<ID3D11DeviceContext> cp_d3dContext;
 		ComPtr<IDXGISwapChain1>     cp_swapChain;
