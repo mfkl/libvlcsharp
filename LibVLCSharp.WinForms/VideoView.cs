@@ -80,7 +80,18 @@ namespace LibVLCSharp.WinForms
             if (_mp == null)
                 return;
 
-            _mp.Hwnd = IntPtr.Zero;
+            if(PlatformHelper.IsWindows)
+            {
+                _mp.Hwnd = IntPtr.Zero;
+            }
+            else if(PlatformHelper.IsLinux)
+            {
+                _mp.XWindow = 0;
+            }
+            else if(PlatformHelper.IsMac)
+            {
+                _mp.NsObject = IntPtr.Zero;
+            }
         }
 
         void Attach()
@@ -88,7 +99,18 @@ namespace LibVLCSharp.WinForms
             if (_mp == null)
                 return;
 
-            _mp.Hwnd = Handle;
+            if(PlatformHelper.IsWindows)
+            {
+                _mp.Hwnd = Handle;
+            }
+            else if(PlatformHelper.IsLinux)
+            {
+                _mp.XWindow = (uint)Handle;
+            }
+            else if(PlatformHelper.IsMac)
+            {
+                _mp.NsObject = Handle;
+            }
         }
 
         bool disposedValue;
@@ -98,10 +120,7 @@ namespace LibVLCSharp.WinForms
             {
                 if (disposing)
                 {
-                    if (MediaPlayer != null)
-                    {
-                        MediaPlayer.Hwnd = IntPtr.Zero;
-                    }
+                    Detach();
                 }
                 
                 disposedValue = true;
