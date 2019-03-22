@@ -34,7 +34,7 @@ namespace LibVLCSharp.Shared
             internal static extern int XInitThreads();
 
 #elif ANDROID
-            [DllImport(Constants.LibraryName, EntryPoint = "JNI_OnLoad")]
+            [DllImport(Constants.LibVLCJNI, EntryPoint = "JNI_OnLoad")]
             internal static extern int JniOnLoad(IntPtr javaVm, IntPtr reserved = default(IntPtr));
 #endif
         }
@@ -249,6 +249,7 @@ namespace LibVLCSharp.Shared
         internal const string libSystem = "libSystem";
         internal const string Kernel32 = "kernel32";
         internal const string libX11 = "libX11";
+        internal const string LibVLCJNI = "libvlcjni";
         internal const string WindowsLibraryExtension = ".dll";
         internal const string MacLibraryExtension = ".dylib";
     }
