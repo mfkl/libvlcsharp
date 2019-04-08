@@ -7,6 +7,7 @@
     using SharpDX.Mathematics.Interop;
     using System;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
@@ -32,8 +33,9 @@
             _panel = new SwapChainPanel();
             Content = _panel;
             Loaded += (s, e) => CreateSwapChain();
-            Unloaded += (s, e) => DestroySwapChain();
 
+            Unloaded += (s, e) => DestroySwapChain();
+            
             Application.Current.Suspending += (s, e) => { Trim(); };
 
             _panel.SizeChanged += (s, eventArgs) =>
@@ -60,18 +62,21 @@
         /// be displayed in your application.
         /// </summary>
         /// <returns>The list of arguments to be given to the <see cref="LibVLC"/> constructor.</returns>
-        public string[] GetSwapChainOptions()
+        public string[] SwapChainOptions
         {
-            if (!_loaded)
-            {
-                throw new InvalidOperationException("You must wait for the VideoView to be loaded before calling GetSwapChainOptions()");
-            }
+            get
+            { 
+                if (!_loaded)
+                {
+                    throw new InvalidOperationException("You must wait for the VideoView to be loaded before calling GetSwapChainOptions()");
+                }
 
-            return new string[]
-            {
-                $"--winrt-d3dcontext=0x{_d3D11Device.ImmediateContext.NativePointer.ToString("x")}",
-                $"--winrt-swapchain=0x{_swapChain.NativePointer.ToString("x")}"
-            };
+                return new string[]
+                {
+                    $"--winrt-d3dcontext=0x{_d3D11Device.ImmediateContext.NativePointer.ToString("x")}",
+                    $"--winrt-swapchain=0x{_swapChain.NativePointer.ToString("x")}"
+                };
+            }
         }
 
         /// <summary>
@@ -281,6 +286,5 @@
                 }
             }
         }
-
     }
 }

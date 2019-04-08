@@ -27,6 +27,7 @@ Features:
     </Description>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
     <RootNamespace>LibVLCSharp.Forms</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>7.3</LangVersion>
@@ -63,5 +64,8 @@ Features:
   <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.Mac'))">
     <Reference Include="netstandard" />
     <Compile Include="Platforms\Mac\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
+    <Compile Include="Platforms\UWP\**\*.cs" />
   </ItemGroup>
 </Project>

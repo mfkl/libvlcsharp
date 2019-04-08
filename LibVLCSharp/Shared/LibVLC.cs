@@ -211,7 +211,7 @@ namespace LibVLCSharp.Shared
         /// <param name="options">list of arguments (should be NULL)</param>
         /// <returns>the libvlc instance or NULL in case of error</returns>
         public LibVLC(params string[] options)
-            : base(() => MarshalUtils.CreateWithOptions(PatchOptions(options), Native.LibVLCNew), Native.LibVLCRelease)
+            : base(() => MarshalUtils.CreateWithOptions(PatchOptions(options: options), Native.LibVLCNew), Native.LibVLCRelease)
         {
         }
 
@@ -220,10 +220,10 @@ namespace LibVLCSharp.Shared
         /// </summary>
         /// <param name="options">The options given by the user</param>
         /// <returns>The patched options</returns>
-        static string[] PatchOptions(string[] options)
+        static string[] PatchOptions(params string[] options)
         {
 #if UWP
-            return options.Concat(new[] {"--aout=winstore"}).ToArray();
+            return options.Concat(new[] { "--aout=winstore" }).ToArray();
 #else
             return options;
 #endif

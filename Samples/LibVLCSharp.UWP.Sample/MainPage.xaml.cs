@@ -15,19 +15,19 @@ namespace LibVLCSharp.UWP.Sample
         public MainPage()
         {
             InitializeComponent();
-            Loaded += (s, e) =>
+            VideoView.Loaded += (s, e) =>
             {
-                _libVLC = new LibVLC(VideoView.GetSwapChainOptions());
+                _libVLC = new LibVLC(VideoView.SwapChainOptions);
                 _mediaPlayer = new MediaPlayer(_libVLC);
                 VideoView.MediaPlayer = _mediaPlayer;
-                this._mediaPlayer.Play(new Media(_libVLC, "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4", FromType.FromLocation));
+                _mediaPlayer.Play(new Media(_libVLC, "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4", FromType.FromLocation));
             };
 
             Unloaded += (s, e) =>
             {
                 VideoView.MediaPlayer = null;
-                this._mediaPlayer.Dispose();
-                this._libVLC.Dispose();
+                _mediaPlayer.Dispose();
+                _libVLC.Dispose();
             };
         }
     }

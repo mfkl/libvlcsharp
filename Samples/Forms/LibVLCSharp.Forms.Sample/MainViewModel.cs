@@ -38,18 +38,18 @@ namespace LibVLCSharp.Forms.Sample
         private void Initialize()
         {
             Core.Initialize();
+        }
 
-            LibVLC = new LibVLC();
+        public void OnAppearing(params string[] libvlcOptions)
+        {
+            LibVLC = new LibVLC(libvlcOptions);
             MediaPlayer = new MediaPlayer(LibVLC)
             {
                 Media = new Media(LibVLC,
                     "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4",
                     FromType.FromLocation)
             };
-        }
 
-        public void OnAppearing()
-        {
             IsLoaded = true;
             Play();
         }

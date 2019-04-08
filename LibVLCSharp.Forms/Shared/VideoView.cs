@@ -24,6 +24,11 @@ namespace LibVLCSharp.Forms.Shared
                 propertyChanged: OnMediaPlayerChanged);
 
         /// <summary>
+        /// UWP only
+        /// </summary>
+        public string[] SwapChainOptions { get; set; }
+
+        /// <summary>
         /// The MediaPlayer object attached to this view
         /// </summary>
         public LibVLCSharp.Shared.MediaPlayer MediaPlayer

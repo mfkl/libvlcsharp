@@ -3,10 +3,10 @@
 using LibVLCSharp.Forms.Platforms.iOS;
 using LibVLCSharp.Forms.Shared;
 
-using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using UIKit;
 using System;
+using Xamarin.Forms;
 
 [assembly: ExportRenderer(typeof(LibVLCSharp.Forms.Shared.VideoView), typeof(VideoViewRenderer))]
 namespace LibVLCSharp.Forms.Platforms.iOS

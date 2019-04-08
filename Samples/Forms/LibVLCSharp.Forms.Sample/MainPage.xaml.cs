@@ -1,4 +1,5 @@
 ﻿using LibVLCSharp.Shared;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace LibVLCSharp.Forms.Sample
@@ -13,7 +14,13 @@ namespace LibVLCSharp.Forms.Sample
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ((MainViewModel)BindingContext).OnAppearing();
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                var options = VideoView.SwapChainOptions;
+                ((MainViewModel)BindingContext).OnAppearing(Device.RuntimePlatform == Device.UWP ? options : null);
+            });
+           
         }
 
         private void VideoView_MediaPlayerChanged(object sender, MediaPlayerChangedEventArgs e)
