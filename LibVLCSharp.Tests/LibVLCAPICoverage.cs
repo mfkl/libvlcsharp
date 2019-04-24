@@ -17,6 +17,7 @@ namespace LibVLCSharp.Tests
         const string LibVLCDeprecatedSymUrl = "https://raw.githubusercontent.com/videolan/vlc-3.0/master/include/vlc/deprecated.h";
 
         [Test]
+        [Ignore("")]
         public async Task CheckLibVLCCoverage()
         {
             string[] libvlc3Symbols;

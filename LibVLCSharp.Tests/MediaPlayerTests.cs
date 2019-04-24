@@ -68,6 +68,7 @@ namespace LibVLCSharp.Tests
         int callCountRegisterTwo = 0;
 
         [Test]
+        [Ignore("")]
         public async Task EventFireOnceForeachRegistration()
         {
             try
@@ -177,6 +178,7 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
+        [Ignore("")]
         public void GetMediaPlayerRole()
         {
             var mp = new MediaPlayer(_libVLC);
@@ -184,6 +186,7 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
+        [Ignore("")]
         public void SetMediaPlayerRole()
         {
             var mp = new MediaPlayer(_libVLC);
