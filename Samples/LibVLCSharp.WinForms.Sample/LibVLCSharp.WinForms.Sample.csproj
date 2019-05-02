@@ -1,17 +1,16 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.46">
   <PropertyGroup>
     <Title>LibVLCSharp.WinForms.Sample</Title>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net40</TargetFramework>
     <RootNamespace>LibVLCSharp.WinForms.Sample</RootNamespace>
-    <UseWindowsForms>true</UseWindowsForms> 
+    <ExtrasEnableWinFormsProjectSetup>true</ExtrasEnableWinFormsProjectSetup> 
     </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LibVLCSharp.WinForms\LibVLCSharp.WinForms.csproj" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Form1.cs">
