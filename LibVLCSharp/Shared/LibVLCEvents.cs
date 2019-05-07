@@ -243,7 +243,7 @@ namespace LibVLCSharp.Shared
         [StructLayout(LayoutKind.Sequential)]
         internal readonly struct MediaMetaChanged
         {
-            internal readonly MetadataType MetaType;
+       //     internal readonly MetadataType MetaType;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -261,7 +261,7 @@ namespace LibVLCSharp.Shared
         [StructLayout(LayoutKind.Sequential)]
         internal readonly struct MediaParsedChanged
         {
-            internal readonly MediaParsedStatus NewStatus;
+            //internal readonly MediaParsedStatus NewStatus;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -273,7 +273,7 @@ namespace LibVLCSharp.Shared
         [StructLayout(LayoutKind.Sequential)]
         internal readonly struct MediaStateChanged
         {
-            internal readonly VLCState NewState;
+            //internal readonly VLCState NewState;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -355,7 +355,7 @@ namespace LibVLCSharp.Shared
         [StructLayout(LayoutKind.Sequential)]
         internal readonly struct EsChanged
         {
-            internal readonly TrackType Type;
+            //internal readonly TrackType Type;
             internal readonly int Id;
         }
 
@@ -436,7 +436,7 @@ namespace LibVLCSharp.Shared
             internal readonly IntPtr item;
         }
     }
-
+    /*
     #region Media events
 
     public class MediaMetaChangedEventArgs : EventArgs
@@ -782,6 +782,7 @@ namespace LibVLCSharp.Shared
     }
 
     #endregion
+
     public sealed class LogEventArgs : EventArgs
     {
         internal LogEventArgs(LogLevel level, string message, string module, string sourceFile, uint? sourceLine)
@@ -821,4 +822,5 @@ namespace LibVLCSharp.Shared
         /// </summary>
         public uint? SourceLine { get; }
     }
+    */
 }

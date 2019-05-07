@@ -1,4 +1,4 @@
-﻿using LibVLCSharp.Shared.Structures;
+﻿//using LibVLCSharp.Shared.Structures;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -8,6 +8,7 @@ namespace LibVLCSharp.Shared.Helpers
 {
     internal static class MarshalExtensions
     {
+        /*
         /// <summary>
         /// Helper method that creates a user friendly type from the internal interop structure.
         /// </summary>
@@ -92,6 +93,7 @@ namespace LibVLCSharp.Shared.Helpers
         /// <returns>public SubtitleTrack to be consumed by the user</returns>
         internal static SubtitleTrack Build(this SubtitleTrackStructure s) => new SubtitleTrack(s.Encoding.FromUtf8());
 
+  */
         /// <summary>
         /// Helper method that creates a user friendly type from the internal interop structure.
         /// </summary>
@@ -99,7 +101,7 @@ namespace LibVLCSharp.Shared.Helpers
         /// <returns>public MediaDiscovererDescription to be consumed by the user</returns>
         internal static MediaDiscovererDescription Build(this MediaDiscovererDescriptionStructure s) =>
             new MediaDiscovererDescription(s.Name.FromUtf8(), s.LongName.FromUtf8(), s.Category);
-
+/*
         /// <summary>
         /// Helper method that creates a user friendly type from the internal interop structure.
         /// </summary>
@@ -107,7 +109,7 @@ namespace LibVLCSharp.Shared.Helpers
         /// <returns>public RendererDescription to be consumed by the user</returns>
         internal static RendererDescription Build(this RendererDescriptionStructure s) => 
             new RendererDescription(s.Name.FromUtf8(), s.LongName.FromUtf8());
-
+*/
         /// <summary>
         /// Helper method that marshals a UTF16 managed string to a UTF8 native string ptr
         /// </summary>

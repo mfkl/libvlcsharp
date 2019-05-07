@@ -10,7 +10,7 @@ namespace LibVLCSharp.Shared
     public class MediaDiscoverer : Internal
     {
         MediaDiscovererEventManager _eventManager;
-        MediaList _mediaList;
+      //  MediaList _mediaList;
 
         readonly struct Native
         {
@@ -46,18 +46,18 @@ namespace LibVLCSharp.Shared
                 EntryPoint = "libvlc_media_discoverer_media_list")]
             internal static extern IntPtr LibVLCMediaDiscovererMediaList(IntPtr discovererMediaList);
         }
-        
+
         /// <summary>
         /// Media discoverer constructor
         /// </summary>
         /// <param name="libVLC">libvlc instance this will be attached to</param>
         /// <param name="name">name from one of LibVLC.MediaDiscoverers</param>
-        public MediaDiscoverer(LibVLC libVLC, string name) 
+        public MediaDiscoverer(/*LibVLC libVLC, */string name)
             : base(() =>
             {
                 var nameUtf8 = name.ToUtf8();
-                return MarshalUtils.PerformInteropAndFree(() => 
-                    Native.LibVLCMediaDiscovererNew(libVLC.NativeReference, nameUtf8), nameUtf8);
+                return MarshalUtils.PerformInteropAndFree(() =>
+                    Native.LibVLCMediaDiscovererNew(/*libVLC.NativeReference*/IntPtr.Zero, nameUtf8), nameUtf8);
             }, Native.LibVLCMediaDiscovererRelease)
         {
         }
@@ -104,7 +104,7 @@ namespace LibVLCSharp.Shared
         public bool IsRunning => NativeReference != IntPtr.Zero ? 
             Native.LibVLCMediaDiscovererIsRunning(NativeReference) != 0 
             : false;
-
+        /*
         /// <summary>
         /// The MediaList attached to this MediaDiscoverer
         /// </summary>
@@ -123,7 +123,7 @@ namespace LibVLCSharp.Shared
                 return _mediaList;
             }
         }
-
+        */
         #region Events
 
         /// <summary>
@@ -157,11 +157,11 @@ namespace LibVLCSharp.Shared
 
             if(disposing)
             {
-                if(_mediaList != null)
-                {
-                    _mediaList.Dispose();
-                    _mediaList = null;
-                }
+                //if(_mediaList != null)
+                //{
+                //    _mediaList.Dispose();
+                //    _mediaList = null;
+                //}
 
                 if(IsRunning)
                 {
