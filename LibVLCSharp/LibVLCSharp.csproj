@@ -24,6 +24,7 @@
     <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0</TargetFrameworks>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
+    <OutputType>winmdobj</OutputType>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>7.3</LangVersion>
     <PackageVersion>0.8.1</PackageVersion>
