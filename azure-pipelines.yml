@@ -13,7 +13,7 @@ jobs:
 
 - job: macOS
   pool:
-    vmImage: 'macOS-10.13'
+    name: 'Default'
   steps:
   - template: scripts/mac-build.yml
 
