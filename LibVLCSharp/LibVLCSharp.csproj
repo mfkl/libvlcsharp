@@ -25,7 +25,7 @@
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.2</LangVersion>
     <PackageVersion>0.8.1</PackageVersion>
     <PackageId>LibVLCSharp</PackageId>
     <Authors>VideoLAN</Authors>
