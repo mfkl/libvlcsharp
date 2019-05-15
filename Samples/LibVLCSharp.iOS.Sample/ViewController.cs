@@ -1,6 +1,6 @@
 ﻿using LibVLCSharp.Platforms.iOS;
 using LibVLCSharp.Shared;
-
+using System.Diagnostics;
 using UIKit;
 
 namespace LibVLCSharp.iOS.Sample
@@ -16,6 +16,7 @@ namespace LibVLCSharp.iOS.Sample
             base.ViewDidLoad();
 
             _libVLC = new LibVLC();
+            _libVLC.Log += _libVLC_Log;
             _mediaPlayer = new Shared.MediaPlayer(_libVLC);
 
             _videoView = new VideoView { MediaPlayer = _mediaPlayer };
@@ -23,6 +24,11 @@ namespace LibVLCSharp.iOS.Sample
             View = _videoView;
 
             _videoView.MediaPlayer.Play(new Media(_libVLC, "http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4", FromType.FromLocation));
+        }
+
+        private void _libVLC_Log(object sender, LogEventArgs e)
+        {
+            Debug.WriteLine($"{e.Level}: {e.Module} -> {e.Message}");
         }
     }
 }

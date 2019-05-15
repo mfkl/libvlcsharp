@@ -44,8 +44,19 @@ namespace LibVLCSharp.Shared.Helpers
             public static extern void LibVLCFree(IntPtr ptr);
 
             const string Write = "w";
-        }
+#if !NETSTANDARD1_1 && !UAP
 
+            [DllImport(Constants.libSystem)]
+            public static extern int vsprintf(IntPtr buffer, IntPtr format, IntPtr argptr);
+#endif
+
+        }
+#if !NETSTANDARD1_1 && !UAP
+        internal static int vsprintf(IntPtr buffer, IntPtr format, IntPtr argptr)
+        {
+            return Native.vsprintf(buffer, format, argptr);
+        }
+#endif
         /// <summary>
         /// Helper for libvlc_new
         /// </summary>
