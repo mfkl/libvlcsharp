@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LibVLCSharp.Platforms.UWP
+namespace LibVLCSharp.Platforms.Uno
 {
     /// <summary>
     /// Provides data for the <see cref="VideoView.Initialized"/> event.

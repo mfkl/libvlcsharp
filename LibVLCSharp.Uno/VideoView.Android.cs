@@ -1,6 +1,6 @@
 ﻿using Uno.UI;
 
-namespace LibVLCSharp.Platforms.UWP
+namespace LibVLCSharp.Platforms.Uno
 {
     /// <summary>
     /// Video view

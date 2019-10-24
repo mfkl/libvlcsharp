@@ -1,4 +1,4 @@
-﻿using LibVLCSharp.Platforms.UWP;
+﻿using LibVLCSharp.Platforms.Uno;
 using Windows.UI.Xaml.Controls;
 
 namespace LibVLCSharp.Uno.Sample
