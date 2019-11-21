@@ -1,5 +1,4 @@
 ﻿using LibVLCSharp.Shared;
-using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -11,7 +10,7 @@ namespace LibVLCSharp.Forms.Sample
 
         public MainViewModel()
         {
-            Task.Run((Action)Initialize);
+            Task.Run(Initialize);
         }
 
         private LibVLC LibVLC { get; set; }
@@ -39,12 +38,14 @@ namespace LibVLCSharp.Forms.Sample
         {
             Core.Initialize();
 
-            LibVLC = new LibVLC();
+            LibVLC = new LibVLC("--verbose=2", "--force-equirectangular", "--vout=gles2");
+            var media = new Media(LibVLC,
+                    "http://40.121.205.100:1935/live/video_small_optimized/playlist.m3u8",
+                    FromType.FromLocation);
+
             MediaPlayer = new MediaPlayer(LibVLC)
             {
-                Media = new Media(LibVLC,
-                    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                    FromType.FromLocation)
+                Media = media
             };
         }
 
