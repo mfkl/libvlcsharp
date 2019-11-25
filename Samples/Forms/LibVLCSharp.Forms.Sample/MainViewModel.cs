@@ -1,6 +1,9 @@
 ﻿using LibVLCSharp.Shared;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace LibVLCSharp.Forms.Sample
 {
@@ -38,7 +41,18 @@ namespace LibVLCSharp.Forms.Sample
         {
             Core.Initialize();
 
-            LibVLC = new LibVLC("--verbose=2", "--force-equirectangular", "--vout=gles2");
+            var options = new List<string>
+            {
+                "--verbose=2", "--force-equirectangular"
+            };
+
+            if(Device.RuntimePlatform == Device.Android)
+            {
+                options.Add("--vout=gles2");
+            }
+
+            LibVLC = new LibVLC(options.ToArray());
+            LibVLC.Log += LibVLC_Log;
             var media = new Media(LibVLC,
                     "http://40.121.205.100:1935/live/video_small_optimized/playlist.m3u8",
                     FromType.FromLocation);
@@ -47,6 +61,11 @@ namespace LibVLCSharp.Forms.Sample
             {
                 Media = media
             };
+        }
+
+        private void LibVLC_Log(object sender, LogEventArgs e)
+        {
+            Debug.WriteLine(e.Message);
         }
 
         public void OnAppearing()
