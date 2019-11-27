@@ -7,14 +7,18 @@
     <ContentPage.BindingContext>
         <local:MainViewModel />
     </ContentPage.BindingContext>
-    <shared:VideoView x:Name="videoView" 
-                    MediaPlayer="{Binding MediaPlayer}" 
-                    MediaPlayerChanged="VideoView_MediaPlayerChanged"
-                    HorizontalOptions="FillAndExpand" 
-                    VerticalOptions="FillAndExpand">
-        <shared:VideoView.GestureRecognizers>
-            <PinchGestureRecognizer PinchUpdated="OnPinchUpdated" />
-            <PanGestureRecognizer PanUpdated="OnPanUpdated" />
-        </shared:VideoView.GestureRecognizers>
-    </shared:VideoView>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.GestureRecognizers>
+                <PinchGestureRecognizer PinchUpdated="OnPinchUpdated" />
+                <PanGestureRecognizer PanUpdated="OnPanUpdated" />
+            </Grid.GestureRecognizers>
+            <shared:VideoView x:Name="videoView" 
+                MediaPlayer="{Binding MediaPlayer}" 
+                MediaPlayerChanged="VideoView_MediaPlayerChanged"
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand"
+                InputTransparent="True" />
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>
