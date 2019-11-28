@@ -25,6 +25,13 @@ namespace LibVLCSharp.Forms.Sample
             private set => Set(nameof(MediaPlayer), ref _mediaPlayer, value);
         }
 
+        private bool _isBuffering;
+        public bool IsBuffering
+        {
+            get => _isBuffering;
+            private set => Set(nameof(IsBuffering), ref _isBuffering, value);
+        }
+
         private bool IsLoaded { get; set; }
         private bool IsVideoViewInitialized { get; set; }
 
@@ -61,8 +68,11 @@ namespace LibVLCSharp.Forms.Sample
             {
                 Media = media
             };
+
+            MediaPlayer.Buffering += MediaPlayer_Buffering;
         }
 
+        private void MediaPlayer_Buffering(object sender, MediaPlayerBufferingEventArgs e) => IsBuffering = e.Cache != 100;
         private void LibVLC_Log(object sender, LogEventArgs e)
         {
             Debug.WriteLine(e.Message);

@@ -13,12 +13,16 @@
                 <PinchGestureRecognizer PinchUpdated="OnPinchUpdated" />
                 <PanGestureRecognizer PanUpdated="OnPanUpdated" />
             </Grid.GestureRecognizers>
-            <shared:VideoView x:Name="videoView" 
-                MediaPlayer="{Binding MediaPlayer}" 
-                MediaPlayerChanged="VideoView_MediaPlayerChanged"
-                HorizontalOptions="FillAndExpand" 
-                VerticalOptions="FillAndExpand"
-                InputTransparent="True" />
+            <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <shared:VideoView x:Name="videoView" 
+                    MediaPlayer="{Binding MediaPlayer}" 
+                    MediaPlayerChanged="VideoView_MediaPlayerChanged"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="FillAndExpand"
+                    InputTransparent="True" />
+                <ActivityIndicator Color="Red" 
+                                   IsRunning="{Binding IsBuffering}" />
+            </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
