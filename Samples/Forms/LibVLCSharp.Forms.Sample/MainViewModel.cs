@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace LibVLCSharp.Forms.Sample
 {
@@ -48,18 +49,51 @@ namespace LibVLCSharp.Forms.Sample
         {
             Core.Initialize();
 
+            // check video filter list and information here: https://wiki.videolan.org/Documentation:Command_line/#Filters
+
             var options = new List<string>
             {
-                "--verbose=2", "--force-equirectangular"
+                "--verbose=2",
+                "--force-equirectangular",
+
+                // adding the WAVE video filter
+                "--video-filter=wave"
             };
 
-            if(Device.RuntimePlatform == Device.Android)
+            // wave video filter example
+            //"--video-filter=wave"
+
+            // sepia video filter example
+            //"--video-filter=sepia"
+
+            // old movie video filter example
+            //"--video-filter=oldmovie"
+
+            // another example
+            //"--rotate-angle=180", // or 90, 270...
+
+            // another example
+            //"--video-filter=adjust",
+            //"--contrast=.9",
+            //"--brightness=.4",
+            //"--gamma=3"
+
+            // another example
+            //"--video-filter=transform:croppadd", 
+            //"--transform-type=270",
+            //"--croppadd-croptop=300"
+
+            if (Device.RuntimePlatform == Device.Android)
             {
                 options.Add("--vout=gles2");
             }
 
             LibVLC = new LibVLC(options.ToArray());
             LibVLC.Log += LibVLC_Log;
+
+            // printing list of available video filters
+            LibVLC.VideoFilters.ForEach(filter => Debug.WriteLine(filter.Name));
+
             var media = new Media(LibVLC,
                     "http://40.121.205.100:1935/live/video_small_optimized/playlist.m3u8",
                     FromType.FromLocation);
@@ -73,6 +107,7 @@ namespace LibVLCSharp.Forms.Sample
         }
 
         private void MediaPlayer_Buffering(object sender, MediaPlayerBufferingEventArgs e) => IsBuffering = e.Cache != 100;
+
         private void LibVLC_Log(object sender, LogEventArgs e)
         {
             Debug.WriteLine(e.Message);
