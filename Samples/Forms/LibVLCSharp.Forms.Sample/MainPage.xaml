@@ -17,8 +17,8 @@
                 <shared:VideoView x:Name="videoView" 
                     MediaPlayer="{Binding MediaPlayer}" 
                     MediaPlayerChanged="VideoView_MediaPlayerChanged"
-                    HorizontalOptions="FillAndExpand" 
-                    VerticalOptions="FillAndExpand"
+                    AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    AbsoluteLayout.LayoutFlags="All"
                     InputTransparent="True" />
                 <ActivityIndicator Color="Red" 
                                    IsRunning="{Binding IsBuffering}" />
