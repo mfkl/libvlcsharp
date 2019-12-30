@@ -57,7 +57,7 @@ namespace LibVLCSharp.Forms.Sample
                 "--force-equirectangular",
 
                 // adding the WAVE video filter
-                "--video-filter=wave"
+                //"--video-filter=wave"
             };
 
             // wave video filter example
@@ -95,7 +95,8 @@ namespace LibVLCSharp.Forms.Sample
             LibVLC.VideoFilters.ForEach(filter => Debug.WriteLine(filter.Name));
 
             var media = new Media(LibVLC,
-                    "http://40.121.205.100:1935/live/video_small_optimized/playlist.m3u8",
+                    "rtsp://40.121.205.100:1935/live/video_small_optimized",
+                    //"http://40.121.205.100:1935/live/video_small_optimized/playlist.m3u8",
                     FromType.FromLocation);
 
             MediaPlayer = new MediaPlayer(LibVLC)
