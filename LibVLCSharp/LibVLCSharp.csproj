@@ -25,12 +25,12 @@ This package also contains the views for the following platforms:
 - tvOS
 - UWP
 
-If you need Xamarin.Forms support, see LibVLCSharp.Forms. 
+If you need Xamarin.Forms support, see LibVLCSharp.Forms.
 
 LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Description>
     <TargetFrameworks>netstandard2.0;netstandard1.1;net40;net471</TargetFrameworks>
-    <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);MonoAndroid81</TargetFrameworks>
+    <!--<TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0;uap10.0.16299</TargetFrameworks>-->
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
@@ -49,7 +49,7 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes>https://code.videolan.org/videolan/LibVLCSharp/blob/master/NEWS</PackageReleaseNotes>
     <PackageTags>libvlc;vlc;videolan;native;c/c++;video;audio;player;media;mediaplayer;codec;ffmpeg;xamarin;graphics;ios;android;linux;windows;macos;cross-platform</PackageTags>
-  </PropertyGroup>
+    </PropertyGroup>
   <PropertyGroup Condition="$(UNITY_ANDROID)=='true'">
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>$(DefineConstants);UNITY_ANDROID</DefineConstants>
@@ -70,6 +70,8 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
     <Compile Include="Platforms\Android\**\*.cs" />
+    <AndroidResource Include="Platforms\Android\Resources\**\*.axml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
+    <AndroidResource Include="Platforms\Android\Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
     <ProjectReference Include="..\LibVLCSharp.Android.AWindow\LibVLCSharp.Android.AWindow.csproj" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS'))">
