@@ -17,8 +17,7 @@ namespace LibVLCSharp.Platforms.Android
         /// <param name="context"></param>
         public VLCVideoLayout(Context context) : base(context)
         {
-            var id = Resources.GetIdentifier("vlc_video_layout", "layout", Context.PackageName);
-            System.Diagnostics.Debug.WriteLine(id);
+
         }
 
         /// <summary>
