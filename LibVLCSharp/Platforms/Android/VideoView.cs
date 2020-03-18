@@ -1,16 +1,232 @@
 ﻿using System;
-
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
-
+using Android.Widget;
 using LibVLCSharp.Shared;
 
 using Org.Videolan.Libvlc;
+using Orientation = Android.Content.Res.Orientation;
 
 namespace LibVLCSharp.Platforms.Android
 {
+    /// <summary>
+    ///
+    /// </summary>
+    public interface IOnNewVideoLayoutListener
+    {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="vlcVout"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="visibleWidth"></param>
+        /// <param name="visibleHeight"></param>
+        /// <param name="sarNum"></param>
+        /// <param name="sarDen"></param>
+        void OnNewVideoLayout(IVLCVout vlcVout, int width, int height,
+                              int visibleWidth, int visibleHeight, int sarNum, int sarDen);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public class VideoHelper : IOnNewVideoLayoutListener
+    {
+        private int mVideoWidth;
+        private int mVideoHeight;
+        private int mVideoVisibleWidth;
+        private int mVideoVisibleHeight;
+        private int mVideoSarNum;
+        private int mVideoSarDen;
+        private IVLCVout mVlcVout;
+
+        private FrameLayout mVideoSurfaceFrame;
+        private SurfaceView mVideoSurface = null;
+        private SurfaceView mSubtitlesSurface = null;
+        private TextureView mVideoTexture = null;
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="surfaceFrame"></param>
+        /// <param name="subtitles"></param>
+        /// <param name="textureView"></param>
+        public VideoHelper(VLCVideoLayout surfaceFrame, bool subtitles, bool textureView)
+        {
+            mVideoSurfaceFrame = surfaceFrame.FindViewById<FrameLayout>(Resource.Id.player_surface_frame);
+
+            if (!textureView)
+            {
+                var stub = mVideoSurfaceFrame.FindViewById<ViewStub>(Resource.Id.surface_stub);
+                mVideoSurface = stub != null ? (SurfaceView)stub.Inflate()
+                    : mVideoSurfaceFrame.FindViewById<SurfaceView>(Resource.Id.surface_video);
+                if (subtitles)
+                {
+                    stub = mVideoSurfaceFrame.FindViewById<ViewStub>(Resource.Id.subtitles_surface_stub);
+                    mSubtitlesSurface = stub != null ? (SurfaceView)stub.Inflate()
+                        : mVideoSurfaceFrame.FindViewById<SurfaceView>(Resource.Id.surface_subtitles);
+                    mSubtitlesSurface.SetZOrderMediaOverlay(true);
+                    mSubtitlesSurface.Holder.SetFormat(Format.Translucent);
+                }
+            }
+            else
+            {
+                var stub = mVideoSurfaceFrame.FindViewById<ViewStub>(Resource.Id.texture_stub);
+                mVideoTexture = stub != null ? (TextureView)stub.Inflate()
+                    : mVideoSurfaceFrame.FindViewById<TextureView>(Resource.Id.texture_video);
+                ;
+            }
+
+        }
+
+//        void attachViews()
+//        {
+//            if (mVideoSurface == null && mVideoTexture == null)
+//                return;
+//            final IVLCVout vlcVout = mMediaPlayer.getVLCVout();
+//            if (mVideoSurface != null)
+//            {
+//                vlcVout.setVideoView(mVideoSurface);
+//                if (mSubtitlesSurface != null)
+//                    vlcVout.setSubtitlesView(mSubtitlesSurface);
+//            }
+//            else if (mVideoTexture != null)
+//                vlcVout.setVideoView(mVideoTexture);
+//            else
+//                return;
+//            vlcVout.attachViews(this);
+
+//            if (mOnLayoutChangeListener == null)
+//            {
+//                mOnLayoutChangeListener = new View.OnLayoutChangeListener()
+//                {
+//                private final Runnable runnable = new Runnable()
+//        {
+//            @Override
+//                    public void run()
+//            {
+//                if (mVideoSurfaceFrame != null && mOnLayoutChangeListener != null)
+//                    updateVideoSurfaces();
+//            }
+//        };
+//        @Override
+//                public void onLayoutChange(View v, int left, int top, int right,
+//                                           int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
+//        {
+//            if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom)
+//            {
+//                mHandler.removeCallbacks(runnable);
+//                mHandler.post(runnable);
+//            }
+//        }
+//    };
+//}
+//mVideoSurfaceFrame.addOnLayoutChangeListener(mOnLayoutChangeListener);
+//        mMediaPlayer.setVideoTrackEnabled(true);
+//    }
+
+//    void detachViews()
+//{
+//    if (mOnLayoutChangeListener != null && mVideoSurfaceFrame != null)
+//    {
+//        mVideoSurfaceFrame.removeOnLayoutChangeListener(mOnLayoutChangeListener);
+//        mOnLayoutChangeListener = null;
+//    }
+//    mMediaPlayer.setVideoTrackEnabled(false);
+//    mMediaPlayer.getVLCVout().detachViews();
+//}
+
+
+/// <summary>
+///
+/// </summary>
+/// <param name="vlcVout"></param>
+/// <param name="width"></param>
+/// <param name="height"></param>
+/// <param name="visibleWidth"></param>
+/// <param name="visibleHeight"></param>
+/// <param name="sarNum"></param>
+/// <param name="sarDen"></param>
+public void OnNewVideoLayout(IVLCVout vlcVout, int width, int height, int visibleWidth, int visibleHeight, int sarNum, int sarDen)
+        {
+            mVideoWidth = width;
+            mVideoHeight = height;
+            mVideoVisibleWidth = visibleWidth;
+            mVideoVisibleHeight = visibleHeight;
+            mVideoSarNum = sarNum;
+            mVideoSarDen = sarDen;
+            mVlcVout = vlcVout;
+            UpdateVideoSurfaces();
+        }
+
+        private void UpdateVideoSurfaces()
+        {
+            if (mVlcVout.AreViewsAttached())
+                return;
+
+            // get screen size
+            var sw = mVideoSurfaceFrame.Width;
+            var sh = mVideoSurfaceFrame.Height;
+
+            // sanity check
+            if (sw * sh == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("error surface size 0");
+                return;
+            }
+
+            mVlcVout.SetWindowSize(sw, sh);
+
+            var lp = mVideoSurface.LayoutParameters;
+
+            double dw = sw, dh = sh;
+
+            var isPortrait = mVideoSurfaceFrame.Resources.Configuration.Orientation == Orientation.Portrait;
+
+            if (sw > sh && isPortrait || sw < sh && !isPortrait)
+            {
+                dw = sh;
+                dh = sw;
+            }
+
+            // compute the aspect ratio
+            double ar, vw;
+            if (mVideoSarDen == mVideoSarNum)
+            {
+                /* No indication about the density, assuming 1:1 */
+                vw = mVideoVisibleWidth;
+                ar = mVideoVisibleWidth / mVideoVisibleHeight;
+            }
+            else
+            {
+                /* Use the specified aspect ratio */
+                vw = mVideoVisibleWidth * mVideoSarNum / mVideoSarDen;
+                ar = vw / mVideoVisibleHeight;
+            }
+
+            // compute the display aspect ratio
+            var dar = dw / dh;
+            if (dar < ar)
+                dh = dw / ar;
+            else
+                dw = dh * ar;
+
+            // set display size
+            lp.Width = (int)Math.Ceiling(dw * mVideoWidth / mVideoVisibleWidth);
+            lp.Height = (int)Math.Ceiling(dh * mVideoHeight / mVideoVisibleHeight);
+            mVideoSurface.LayoutParameters = lp;
+            if (mSubtitlesSurface != null)
+                mSubtitlesSurface.LayoutParameters = lp;
+            mVideoSurface.Invalidate();
+            if (mSubtitlesSurface != null)
+                mSubtitlesSurface.Invalidate();
+        }
+    }
+
     /// <summary>
     /// VideoView implementation for the Android platform
     /// </summary>
@@ -98,17 +314,19 @@ namespace LibVLCSharp.Platforms.Android
             if (_mediaPlayer == null)
                 throw new NullReferenceException(nameof(_mediaPlayer));
 
-            var t = new VLCVideoLayout(Context);
+            var vh = new VideoHelper(new VLCVideoLayout(Context), true, false);
 
-            _awindow = new AWindow(this);
-            _awindow.AddCallback(this);
-            _awindow.SetVideoView(this);
-            _awindow.AttachViews();
+
+
+            //_awindow = new AWindow(this);
+            //_awindow.AddCallback(this);
+            //_awindow.SetVideoView(this);
+            //_awindow.AttachViews();
 
             _mediaPlayer.SetAndroidContext(_awindow.Handle);
 
-            _layoutListener = new LayoutChangeListener(_awindow);
-            AddOnLayoutChangeListener(_layoutListener);
+            //_layoutListener = new LayoutChangeListener(_awindow);
+            //AddOnLayoutChangeListener(_layoutListener);
         }
 
         void Detach()

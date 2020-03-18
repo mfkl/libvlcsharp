@@ -1,7 +1,7 @@
-﻿using System;
-using Android.Content;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Graphics;
 using Android.Util;
+using Android.Views;
 using Android.Widget;
 
 namespace LibVLCSharp.Platforms.Android
@@ -47,9 +47,20 @@ namespace LibVLCSharp.Platforms.Android
             : base(context, attrs, defStyleAttr, defStyleRes)
                 => SetupLayout(context);
 
-        void SetupLayout(Context context)
+        void SetupLayout(Context context) => Inflate(context, Resource.Layout.vlc_video_layout, this);
+
+        /// <summary>
+        ///
+        /// </summary>
+        protected override void OnAttachedToWindow()
         {
-            var r = Resource.Layout.vlc_video_layout;
+            base.OnAttachedToWindow();
+
+            SetBackgroundColor(Color.Black);
+            var lp = LayoutParameters;
+            lp.Height = ViewGroup.LayoutParams.MatchParent;
+            lp.Width = ViewGroup.LayoutParams.MatchParent;
+            LayoutParameters = lp;
         }
     }
 }
