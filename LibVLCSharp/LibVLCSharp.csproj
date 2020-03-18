@@ -51,12 +51,6 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     <PackageTags>libvlc;vlc;videolan;native;c/c++;video;audio;player;media;mediaplayer;codec;ffmpeg;xamarin;graphics;ios;android;linux;windows;macos;cross-platform</PackageTags>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
-    <AndroidResgenFile>Platforms\Android\Resources\Resource.designer.cs</AndroidResgenFile>
-    <AndroidUseAapt2>true</AndroidUseAapt2>
-    <OutputPath>bin\Debug\</OutputPath>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
-  </PropertyGroup>
   <PropertyGroup Condition="$(UNITY_ANDROID)=='true'">
     <TargetFramework>netstandard2.0</TargetFramework>
     <DefineConstants>$(DefineConstants);UNITY_ANDROID</DefineConstants>
@@ -74,12 +68,9 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-  <!--<Import Condition="$(TargetFramework.StartsWith('MonoAndroid'))" Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />-->
-
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
     <Compile Include="Platforms\Android\**\*.cs" />
-    <AndroidResource Include="Platforms\Android\Resources\layout\vlc_video_layout.axml" Generator="MSBuild:UpdateAndroidResources" />
-    <!--<AndroidResource Include="Platforms\Android\Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />-->
+    <AndroidResource Include="Resources\**\*.axml" />
     <ProjectReference Include="..\LibVLCSharp.Android.AWindow\LibVLCSharp.Android.AWindow.csproj" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS'))">
