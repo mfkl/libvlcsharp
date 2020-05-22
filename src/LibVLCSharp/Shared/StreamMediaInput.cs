@@ -10,7 +10,7 @@ namespace LibVLCSharp.Shared
     public class StreamMediaInput : MediaInput
     {
         private readonly Stream _stream;
-        private readonly byte[] _readBuffer = new byte[0x4000];
+        private readonly byte[] _readBuffer = new byte[0x100_000];
 
         /// <summary>
         /// Initializes a new instance of <see cref="StreamMediaInput"/>, which reads from the given .NET stream.
@@ -20,6 +20,7 @@ namespace LibVLCSharp.Shared
         public StreamMediaInput(Stream stream)
         {
             _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+            CanSeek = stream.CanSeek;
         }
 
         /// <summary>
