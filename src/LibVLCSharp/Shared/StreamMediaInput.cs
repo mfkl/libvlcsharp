@@ -66,6 +66,11 @@ namespace LibVLCSharp.Shared
         {
             try
             {
+                if(_stream.CanSeek)
+                {
+                    if (_stream.Position == _stream.Length)
+                        return 0;
+                }
                 var read = _stream.Read(_readBuffer, 0, Math.Min((int)len, _readBuffer.Length));
                 Marshal.Copy(_readBuffer, 0, buf, read);
 
