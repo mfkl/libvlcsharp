@@ -185,7 +185,8 @@ namespace LibVLCSharp.Shared
 #if !NETSTANDARD1_1
             if (PlatformHelper.IsMac)
             {
-                Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", "@executable_path/../MonoBundle/plugins");
+                var pluginPath = Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "plugins");
+                Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", pluginPath);
             }
 #endif
 
