@@ -23,12 +23,15 @@ namespace LibVLCSharp.Shared
 #if UWP
             [DllImport(Constants.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
             internal static extern IntPtr LoadPackagedLibrary(string dllToLoad, uint reserved = 0);
-#elif NETFRAMEWORK || NETSTANDARD
+#elif NETFRAMEWORK || NETSTANDARD || MAC
             [DllImport(Constants.Kernel32, SetLastError = true)]
             internal static extern IntPtr LoadLibrary(string dllToLoad);
 
             [DllImport(Constants.LibSystem, EntryPoint = "dlopen")]
             internal static extern IntPtr Dlopen(string libraryPath, int mode = 1);
+
+            [DllImport(Constants.LibSystem, EntryPoint = "dlsym")]
+            internal static extern IntPtr Dlsym(IntPtr handle, string symbol);
 
             /// <summary>
             /// Initializes the X threading system
@@ -50,10 +53,10 @@ namespace LibVLCSharp.Shared
         }
 
 
-#if NETFRAMEWORK || NETSTANDARD || UWP
+#if NETFRAMEWORK || NETSTANDARD || UWP || MAC
         static IntPtr LibvlcHandle;
 #endif
-#if !UWP && NETFRAMEWORK || NETSTANDARD
+#if !UWP && NETFRAMEWORK || NETSTANDARD || MAC
         static IntPtr LibvlccoreHandle;
 #endif
 
@@ -74,8 +77,8 @@ namespace LibVLCSharp.Shared
             InitializeAndroid();
 #elif UWP
             InitializeUWP();
-#elif NETFRAMEWORK || NETSTANDARD
-            DisableMessageErrorBox();
+#elif NETFRAMEWORK || NETSTANDARD || MAC
+            //DisableMessageErrorBox();
             InitializeDesktop(libvlcDirectoryPath);
 #endif
 #if !UWP10_0 && !NETSTANDARD1_1
@@ -90,11 +93,22 @@ namespace LibVLCSharp.Shared
         /// </summary>
         static void EnsureVersionsMatch()
         {
-            var libvlcMajorVersion = int.Parse(Native.LibVLCVersion().FromUtf8()?.Split('.').FirstOrDefault() ?? "0");
-            var libvlcsharpMajorVersion = Assembly.GetExecutingAssembly().GetName().Version.Major;
-            if(libvlcMajorVersion != libvlcsharpMajorVersion)
-                throw new VLCException($"Version mismatch between LibVLC {libvlcMajorVersion} and LibVLCSharp {libvlcsharpMajorVersion}. " +
-                    $"They must share the same major version number");
+#if MAC
+            //var r = Native.Dlsym(LibvlcHandle, "libvlc_new");
+            ////var l = r.FromUtf8();
+            //Debug.WriteLine(r);
+            ////var libvlcMajorVersion = int.Parse(l ?? "0");
+            ////Debug.WriteLine(libvlcMajorVersion);
+#endif
+
+            //var v = Native.LibVLCVersion();
+            Debug.WriteLine(int.Parse(Native.LibVLCVersion().FromUtf8()?.Split('.').FirstOrDefault() ?? "0"));
+            Debug.WriteLine("t");
+            //var libvlcMajorVersion = int.Parse(Native.LibVLCVersion().FromUtf8()?.Split('.').FirstOrDefault() ?? "0");
+            //var libvlcsharpMajorVersion = Assembly.GetExecutingAssembly().GetName().Version.Major;
+            //if(libvlcMajorVersion != libvlcsharpMajorVersion)
+            //    throw new VLCException($"Version mismatch between LibVLC {libvlcMajorVersion} and LibVLCSharp {libvlcsharpMajorVersion}. " +
+            //        $"They must share the same major version number");
         }
 #endif
 #if ANDROID
@@ -130,26 +144,26 @@ namespace LibVLCSharp.Shared
             }
         }
 
-#elif NETFRAMEWORK || NETSTANDARD
-        /// <summary>
-        /// Disable error dialogs in case of dll loading failures on older Windows versions.
-        /// <para/>
-        /// This is mostly to fix Windows XP support (https://code.videolan.org/videolan/LibVLCSharp/issues/173),
-        /// though it may happen under other conditions (broken plugins/wrong ABI).
-        /// <para/>
-        /// As libvlc may load additional plugins later in the lifecycle of the application, 
-        /// we should not unset this on exiting <see cref="Initialize(string)"/>
-        /// </summary>
-        static void DisableMessageErrorBox()
-        {
-            if (!PlatformHelper.IsWindows)
-                return;
+#elif NETFRAMEWORK || NETSTANDARD || MAC
+            /// <summary>
+            /// Disable error dialogs in case of dll loading failures on older Windows versions.
+            /// <para/>
+            /// This is mostly to fix Windows XP support (https://code.videolan.org/videolan/LibVLCSharp/issues/173),
+            /// though it may happen under other conditions (broken plugins/wrong ABI).
+            /// <para/>
+            /// As libvlc may load additional plugins later in the lifecycle of the application, 
+            /// we should not unset this on exiting <see cref="Initialize(string)"/>
+            /// </summary>
+            //static void DisableMessageErrorBox()
+            //{
+            //    if (!PlatformHelper.IsWindows)
+            //        return;
 
-            var oldMode = Native.SetErrorMode(ErrorModes.SYSTEM_DEFAULT);
-            Native.SetErrorMode(oldMode | ErrorModes.SEM_FAILCRITICALERRORS | ErrorModes.SEM_NOOPENFILEERRORBOX);
-        }
+            //    var oldMode = Native.SetErrorMode(ErrorModes.SYSTEM_DEFAULT);
+            //    Native.SetErrorMode(oldMode | ErrorModes.SEM_FAILCRITICALERRORS | ErrorModes.SEM_NOOPENFILEERRORBOX);
+            //}
 
-        static void InitializeDesktop(string? libvlcDirectoryPath = null)
+            static void InitializeDesktop(string? libvlcDirectoryPath = null)
         {
             if(PlatformHelper.IsLinux)
             {
@@ -167,6 +181,13 @@ namespace LibVLCSharp.Shared
                 }
                 return;
             }
+
+#if !NETSTANDARD1_1
+            if (PlatformHelper.IsMac)
+            {
+                Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", "@executable_path/../MonoBundle/plugins");
+            }
+#endif
 
             // full path to directory location of libvlc and libvlccore has been provided
             if (!string.IsNullOrEmpty(libvlcDirectoryPath))
@@ -195,11 +216,10 @@ namespace LibVLCSharp.Shared
 
             foreach(var path in paths)
             {
-                if (PlatformHelper.IsWindows)
-                {
-                    LoadNativeLibrary(path.libvlccore, out LibvlccoreHandle);
-                }
-                var loadResult = LoadNativeLibrary(path.libvlc, out LibvlcHandle);
+                //if (PlatformHelper.IsWindows)
+                var loadResult = LoadNativeLibrary(path.libvlccore, out LibvlccoreHandle);
+                
+                loadResult = LoadNativeLibrary(path.libvlc, out LibvlcHandle);
                 if (loadResult) break;
             }
 
@@ -236,7 +256,7 @@ namespace LibVLCSharp.Shared
                 libvlccorePath1 = LibVLCCorePath(libvlcDirPath1);
             }
             var libvlcPath1 = LibVLCPath(libvlcDirPath1);
-            paths.Add((libvlccorePath1, libvlcPath1));
+            //paths.Add((libvlccorePath1, libvlcPath1));
 
             var assemblyLocation = Assembly.GetEntryAssembly()?.Location ?? Assembly.GetExecutingAssembly()?.Location;
 
@@ -250,21 +270,39 @@ namespace LibVLCSharp.Shared
             }
 
             var libvlcPath2 = LibVLCPath(libvlcDirPath2);
-            paths.Add((libvlccorePath2, libvlcPath2));
+            //paths.Add((libvlccorePath2, libvlcPath2));
 
             var libvlcPath3 = LibVLCPath(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location));
 
-            paths.Add((string.Empty, libvlcPath3));
+            //paths.Add((string.Empty, libvlcPath3));
+
+            var libvlccorePath4 = LibVLCCorePath(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "lib"));
+            //var libvlccorePath4 = LibVLCCorePath(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location));
+
+            var libvlcPath4 = LibVLCPath(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "lib"));
+            //var libvlcPath4 = LibVLCPath(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location));
+
+            libnamepath = libvlcPath4;
+
+            paths.Add((libvlccorePath4, libvlcPath4));
+
+            foreach (var p in paths)
+            {
+                Debug.WriteLine(p.Item1, p.Item2);
+                Debug.WriteLine("---");
+            }
             return paths;
         }
 #endif
         static string LibVLCCorePath(string dir) => Path.Combine(dir, $"{Constants.CoreLibraryName}{LibraryExtension}");
 
-        static string LibVLCPath(string dir) => Path.Combine(dir, $"{Constants.LibraryName}{LibraryExtension}");
+        static string LibVLCPath(string dir) => Path.Combine(dir, $"{Constants.LibVLC}{LibraryExtension}");
 
         static string LibraryExtension => PlatformHelper.IsWindows ? Constants.WindowsLibraryExtension : Constants.MacLibraryExtension;
 
         static bool Loaded => LibvlcHandle != IntPtr.Zero;
+
+        static string libnamepath = string.Empty;
 
         static void Log(string message)
         {
@@ -307,11 +345,15 @@ namespace LibVLCSharp.Shared
         internal const string LibraryName = "@rpath/DynamicMobileVLCKit.framework/DynamicMobileVLCKit";
 #elif TVOS
         internal const string LibraryName = "@rpath/DynamicTVVLCKit.framework/DynamicTVVLCKit";
+#elif MAC
+        internal const string LibraryName = "@executable_path/../MonoBundle/lib/libvlc.dylib";
 #else
         internal const string LibraryName = "libvlc";
 #endif
         internal const string CoreLibraryName = "libvlccore";
 
+        internal const string LibVLC = "libvlc";
+        //internal const string Mac = "@executable_path/../MonoBundle/lib/libvlc.dylib";
         /// <summary>
         /// The name of the folder that contains the per-architecture folders
         /// </summary>
