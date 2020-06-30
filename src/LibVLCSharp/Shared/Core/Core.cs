@@ -6,19 +6,17 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-#if ANDROID
-using Java.Interop;
-#endif
 
 namespace LibVLCSharp.Shared
 {
+#if !ANDROID
     /// <summary>
-    /// The Core class handles libvlc loading intricacies on various platforms as well as 
+    /// The Core class handles libvlc loading intricacies on various platforms as well as
     /// the libvlc/libvlcsharp version match check.
     /// </summary>
-    public static class Core
+    public static partial class Core
     {
-        struct Native
+        partial struct Native
         {
 #if UWP
             [DllImport(Constants.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
@@ -40,13 +38,7 @@ namespace LibVLCSharp.Shared
 
             [DllImport(Constants.Kernel32, SetLastError = true)]
             internal static extern ErrorModes SetErrorMode(ErrorModes uMode);
-#elif ANDROID
-            [DllImport(Constants.LibraryName, EntryPoint = "JNI_OnLoad")]
-            internal static extern int JniOnLoad(IntPtr javaVm, IntPtr reserved = default);
 #endif
-            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
-                EntryPoint = "libvlc_get_version")]
-            internal static extern IntPtr LibVLCVersion();
         }
 
 
@@ -70,9 +62,7 @@ namespace LibVLCSharp.Shared
         /// </param>
         public static void Initialize(string? libvlcDirectoryPath = null)
         {
-#if ANDROID
-            InitializeAndroid();
-#elif UWP
+#if UWP
             InitializeUWP();
 #elif NETFRAMEWORK || NETSTANDARD
             DisableMessageErrorBox();
@@ -82,43 +72,7 @@ namespace LibVLCSharp.Shared
             EnsureVersionsMatch();
 #endif
         }
-
-#if !UWP10_0 && !NETSTANDARD1_1
-        /// <summary>
-        /// Checks whether the major version of LibVLC and LibVLCSharp match <para/>
-        /// Throws an NotSupportedException if the major versions mismatch
-        /// </summary>
-        static void EnsureVersionsMatch()
-        {
-            var libvlcMajorVersion = int.Parse(Native.LibVLCVersion().FromUtf8()?.Split('.').FirstOrDefault() ?? "0");
-            var libvlcsharpMajorVersion = Assembly.GetExecutingAssembly().GetName().Version.Major;
-            if(libvlcMajorVersion != libvlcsharpMajorVersion)
-                throw new VLCException($"Version mismatch between LibVLC {libvlcMajorVersion} and LibVLCSharp {libvlcsharpMajorVersion}. " +
-                    $"They must share the same major version number");
-        }
-#endif
-#if ANDROID
-        static void LoadLibCpp()
-        {
-            try
-            {               
-                Java.Lang.JavaSystem.LoadLibrary("c++_shared");
-            }
-            catch(Java.Lang.UnsatisfiedLinkError exception)
-            {
-                throw new VLCException($"failed to load libc++_shared {nameof(exception)} {exception.Message}");
-            }
-        }
-        static void InitializeAndroid()
-        {
-            LoadLibCpp();
-
-            var initLibvlc = Native.JniOnLoad(JniRuntime.CurrentRuntime.InvocationPointer);
-            if(initLibvlc == -1)
-                throw new VLCException("failed to initialize libvlc with JniOnLoad " +
-                                       $"{nameof(JniRuntime.CurrentRuntime.InvocationPointer)}: {JniRuntime.CurrentRuntime.InvocationPointer}");
-        }
-#elif UWP
+#if UWP
         static void InitializeUWP()
         {
             LibvlcHandle = Native.LoadPackagedLibrary(Constants.LibraryName);
@@ -137,7 +91,7 @@ namespace LibVLCSharp.Shared
         /// This is mostly to fix Windows XP support (https://code.videolan.org/videolan/LibVLCSharp/issues/173),
         /// though it may happen under other conditions (broken plugins/wrong ABI).
         /// <para/>
-        /// As libvlc may load additional plugins later in the lifecycle of the application, 
+        /// As libvlc may load additional plugins later in the lifecycle of the application,
         /// we should not unset this on exiting <see cref="Initialize(string)"/>
         /// </summary>
         static void DisableMessageErrorBox()
@@ -227,7 +181,7 @@ namespace LibVLCSharp.Shared
                 arch = PlatformHelper.IsX64BitProcess ? ArchitectureNames.Win64 : ArchitectureNames.Win86;
             }
 
-            var libvlcDirPath1 = Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), 
+            var libvlcDirPath1 = Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location),
                 Constants.LibrariesRepositoryFolderName, arch);
 
             var libvlccorePath1 = string.Empty;
@@ -240,7 +194,7 @@ namespace LibVLCSharp.Shared
 
             var assemblyLocation = Assembly.GetEntryAssembly()?.Location ?? Assembly.GetExecutingAssembly()?.Location;
 
-            var libvlcDirPath2 = Path.Combine(Path.GetDirectoryName(assemblyLocation), 
+            var libvlcDirPath2 = Path.Combine(Path.GetDirectoryName(assemblyLocation),
                 Constants.LibrariesRepositoryFolderName, arch);
 
             var libvlccorePath2 = string.Empty;
@@ -300,53 +254,5 @@ namespace LibVLCSharp.Shared
         }
 #endif // NETFRAMEWORK || NETSTANDARD
     }
-
-    internal static class Constants
-    {
-#if IOS
-        internal const string LibraryName = "@rpath/DynamicMobileVLCKit.framework/DynamicMobileVLCKit";
-#elif TVOS
-        internal const string LibraryName = "@rpath/DynamicTVVLCKit.framework/DynamicTVVLCKit";
-#else
-        internal const string LibraryName = "libvlc";
-#endif
-        internal const string CoreLibraryName = "libvlccore";
-
-        /// <summary>
-        /// The name of the folder that contains the per-architecture folders
-        /// </summary>
-        internal const string LibrariesRepositoryFolderName = "libvlc";
-
-        internal const string Msvcrt = "msvcrt";
-        internal const string Libc = "libc";
-        internal const string LibSystem = "libSystem";
-        internal const string Kernel32 = "kernel32";
-        internal const string LibX11 = "libX11";
-        internal const string WindowsLibraryExtension = ".dll";
-        internal const string MacLibraryExtension = ".dylib";
-    }
-
-    internal static class ArchitectureNames
-    {
-        internal const string Win64 = "win-x64";
-        internal const string Win86 = "win-x86";
-        internal const string Winrt64 = "winrt-x64";
-        internal const string Winrt86 = "winrt-x86";
-        internal const string WinrtArm = "winrt-arm";
-
-        internal const string Lin64 = "linux-x64";
-        internal const string LinArm = "linux-arm";
-
-        internal const string MacOS64 = "osx-x64";
-    }
-
-    [Flags]
-    internal enum ErrorModes : uint
-    {
-        SYSTEM_DEFAULT = 0x0,
-        SEM_FAILCRITICALERRORS = 0x0001,
-        SEM_NOALIGNMENTFAULTEXCEPT = 0x0004,
-        SEM_NOGPFAULTERRORBOX = 0x0002,
-        SEM_NOOPENFILEERRORBOX = 0x8000
-    }
+#endif // ANDROID
 }
