@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !UWP10_0 && !NETSTANDARD1_1
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,7 +20,6 @@ namespace LibVLCSharp.Shared
             internal static extern IntPtr LibVLCVersion();
         }
 
-#if !UWP10_0 && !NETSTANDARD1_1
         /// <summary>
         /// Checks whether the major version of LibVLC and LibVLCSharp match <para/>
         /// Throws an NotSupportedException if the major versions mismatch
@@ -32,6 +32,6 @@ namespace LibVLCSharp.Shared
                 throw new VLCException($"Version mismatch between LibVLC {libvlcMajorVersion} and LibVLCSharp {libvlcsharpMajorVersion}. " +
                     $"They must share the same major version number");
         }
-#endif
     }
 }
+#endif

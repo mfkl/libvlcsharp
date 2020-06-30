@@ -1,4 +1,4 @@
-﻿using LibVLCSharp.Shared.Helpers;
+﻿#if NETFRAMEWORK || NETSTANDARD
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 
 namespace LibVLCSharp.Shared
 {
-#if !ANDROID
     /// <summary>
     /// The Core class handles libvlc loading intricacies on various platforms as well as
     /// the libvlc/libvlcsharp version match check.
@@ -18,10 +17,6 @@ namespace LibVLCSharp.Shared
     {
         partial struct Native
         {
-#if UWP
-            [DllImport(Constants.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
-            internal static extern IntPtr LoadPackagedLibrary(string dllToLoad, uint reserved = 0);
-#elif NETFRAMEWORK || NETSTANDARD
             [DllImport(Constants.Kernel32, SetLastError = true)]
             internal static extern IntPtr LoadLibrary(string dllToLoad);
 
@@ -38,16 +33,10 @@ namespace LibVLCSharp.Shared
 
             [DllImport(Constants.Kernel32, SetLastError = true)]
             internal static extern ErrorModes SetErrorMode(ErrorModes uMode);
-#endif
         }
 
-
-#if NETFRAMEWORK || NETSTANDARD || UWP
         static IntPtr LibvlcHandle;
-#endif
-#if !UWP && NETFRAMEWORK || NETSTANDARD
         static IntPtr LibvlccoreHandle;
-#endif
 
         /// <summary>
         /// Load the native libvlc library (if necessary, depending on platform)
@@ -62,29 +51,13 @@ namespace LibVLCSharp.Shared
         /// </param>
         public static void Initialize(string? libvlcDirectoryPath = null)
         {
-#if UWP
-            InitializeUWP();
-#elif NETFRAMEWORK || NETSTANDARD
             DisableMessageErrorBox();
             InitializeDesktop(libvlcDirectoryPath);
-#endif
-#if !UWP10_0 && !NETSTANDARD1_1
+#if !NETSTANDARD1_1
             EnsureVersionsMatch();
 #endif
         }
-#if UWP
-        static void InitializeUWP()
-        {
-            LibvlcHandle = Native.LoadPackagedLibrary(Constants.LibraryName);
-            if (LibvlcHandle == IntPtr.Zero)
-            {
-                throw new VLCException($"Failed to load {Constants.LibraryName}{Constants.WindowsLibraryExtension}, error {Marshal.GetLastWin32Error()}." +
-                    $"Please make sure that this library, {Constants.CoreLibraryName}{Constants.WindowsLibraryExtension} and the plugins are copied to the `AppX` folder." +
-                    "For that, you can reference the `VideoLAN.LibVLC.UWP` NuGet package.");
-            }
-        }
 
-#elif NETFRAMEWORK || NETSTANDARD
         /// <summary>
         /// Disable error dialogs in case of dll loading failures on older Windows versions.
         /// <para/>
@@ -252,7 +225,6 @@ namespace LibVLCSharp.Shared
 
             return handle != IntPtr.Zero;
         }
-#endif // NETFRAMEWORK || NETSTANDARD
     }
-#endif // ANDROID
 }
+#endif // NETFRAMEWORK || NETSTANDARD
