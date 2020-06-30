@@ -36,6 +36,7 @@ namespace LibVLCSharp.Shared
     public static partial class Core
     {
         static IntPtr LibvlcHandle;
+        static IntPtr LibvlccoreHandle;
 
         /// <summary>
         /// Load the native libvlc library (if necessary, depending on platform)
@@ -69,14 +70,16 @@ namespace LibVLCSharp.Shared
             }
 
             var pluginPath = Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "plugins");
+            Log($"VLC_PLUGIN_PATH: {pluginPath}");
             Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", pluginPath);
 
             var paths = ComputeLibVLCSearchPaths();
 
             foreach (var (libvlccore, libvlc) in paths)
             {
-                var loadResult = LoadNativeLibrary(libvlc, out LibvlcHandle);
-                if (loadResult)
+                var libvlcCoreLoadResult = LoadNativeLibrary(libvlccore, out LibvlccoreHandle);
+                var libvlcLoadResult = LoadNativeLibrary(libvlc, out LibvlcHandle);
+                if (libvlcLoadResult && libvlcCoreLoadResult)
                     break;
             }
 
