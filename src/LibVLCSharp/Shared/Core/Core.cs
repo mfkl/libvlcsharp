@@ -88,8 +88,8 @@ namespace LibVLCSharp.Shared
 
             if (PlatformHelper.IsMac)
             {
+                var libvlcPath4 = Path.Combine(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "lib"), $"libvlc{LibraryExtension}");
                 var libvlccorePath4 = LibVLCCorePath(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "lib"));
-                var libvlcPath4 = LibVLCPath(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "lib"));
                 paths.Add((libvlccorePath4, libvlcPath4));
             }
 
