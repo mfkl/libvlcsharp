@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 
 namespace LibVLCSharp.Shared
 {
@@ -27,7 +28,6 @@ namespace LibVLCSharp.Shared
             EnsureVersionsMatch();
         }
     }
-//#endif
 #elif MAC
      /// <summary>
     /// The Core class handles libvlc loading intricacies on various platforms as well as
@@ -70,7 +70,7 @@ namespace LibVLCSharp.Shared
             }
 
             var pluginPath = Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "plugins");
-            Log($"VLC_PLUGIN_PATH: {pluginPath}");
+            Debug.WriteLine($"VLC_PLUGIN_PATH: {pluginPath}");
             Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", pluginPath);
 
             var paths = ComputeLibVLCSearchPaths();
