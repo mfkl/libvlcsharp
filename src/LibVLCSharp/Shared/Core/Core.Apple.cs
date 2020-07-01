@@ -73,22 +73,7 @@ namespace LibVLCSharp.Shared
             Debug.WriteLine($"VLC_PLUGIN_PATH: {pluginPath}");
             Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", pluginPath);
 
-            var paths = ComputeLibVLCSearchPaths();
-
-            foreach (var (libvlccore, libvlc) in paths)
-            {
-                var libvlcCoreLoadResult = LoadNativeLibrary(libvlccore, out LibvlccoreHandle);
-                var libvlcLoadResult = LoadNativeLibrary(libvlc, out LibvlcHandle);
-                if (libvlcLoadResult && libvlcCoreLoadResult)
-                    break;
-            }
-
-            if (!Loaded)
-            {
-                throw new VLCException("Failed to load required native libraries. " +
-                    $"{Environment.NewLine}Have you installed the latest LibVLC package from nuget for your target platform?" +
-                    $"{Environment.NewLine}Search paths include {string.Join("; ", paths.Select(p => $"{p.libvlc},{p.libvlccore}"))}");
-            }
+           LoadLibVLC();
         }
     }
 #endif
