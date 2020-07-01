@@ -32,7 +32,7 @@ namespace LibVLCSharp.Shared
 #if !UWP10_0 && !NETSTANDARD1_1
         /// <summary>
         /// Checks whether the major version of LibVLC and LibVLCSharp match <para/>
-        /// Throws an NotSupportedException if the major versions mismatch
+        /// Throws a VLCException if the major versions mismatch
         /// </summary>
         static void EnsureVersionsMatch()
         {
