@@ -65,7 +65,7 @@ namespace LibVLCSharp.Shared
 
             if (PlatformHelper.IsMac)
             {
-                arch = ArchitectureNames.MacOS64;
+                arch = Path.Combine(ArchitectureNames.MacOS64, Constants.Lib);
             }
             else
             {
@@ -75,11 +75,8 @@ namespace LibVLCSharp.Shared
             var libvlcDirPath1 = Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location),
                 Constants.LibrariesRepositoryFolderName, arch);
 
-            var libvlccorePath1 = string.Empty;
-            if (PlatformHelper.IsWindows)
-            {
-                libvlccorePath1 = LibVLCCorePath(libvlcDirPath1);
-            }
+            var libvlccorePath1 = LibVLCCorePath(libvlcDirPath1);
+
             var libvlcPath1 = LibVLCPath(libvlcDirPath1);
             paths.Add((libvlccorePath1, libvlcPath1));
 
@@ -103,8 +100,9 @@ namespace LibVLCSharp.Shared
 
             if (PlatformHelper.IsMac)
             {
-                var libvlcPath4 = Path.Combine(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "lib"), $"libvlc{LibraryExtension}");
-                var libvlccorePath4 = LibVLCCorePath(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), "lib"));
+                var libvlcPath4 = Path.Combine(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location),
+                    Constants.Lib), $"{Constants.LibVLC}{LibraryExtension}");
+                var libvlccorePath4 = LibVLCCorePath(Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location), Constants.Lib));
                 paths.Add((libvlccorePath4, libvlcPath4));
             }
 
