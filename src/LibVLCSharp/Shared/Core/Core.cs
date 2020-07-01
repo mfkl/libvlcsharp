@@ -43,6 +43,21 @@ namespace LibVLCSharp.Shared
                     $"They must share the same major version number");
         }
 
+#endif
+        static string LibVLCPath(string dir) => Path.Combine(dir, $"{Constants.LibraryName}{LibraryExtension}");
+        static string LibVLCCorePath(string dir) => Path.Combine(dir, $"{Constants.CoreLibraryName}{LibraryExtension}");
+        static string LibraryExtension => PlatformHelper.IsWindows ? Constants.WindowsLibraryExtension : Constants.MacLibraryExtension;
+        static void Log(string message)
+        {
+#if !UWP10_0 && !NETSTANDARD1_1
+            Trace.WriteLine(message);
+#else
+            Debug.WriteLine(message);
+#endif
+        }
+
+#if (MAC || NETFRAMEWORK || NETSTANDARD) && !NETSTANDARD1_1
+        static bool Loaded => LibvlcHandle != IntPtr.Zero;
         static List<(string libvlccore, string libvlc)> ComputeLibVLCSearchPaths()
         {
             var paths = new List<(string, string)>();
@@ -95,20 +110,45 @@ namespace LibVLCSharp.Shared
 
             return paths;
         }
-#endif
-        static string LibVLCPath(string dir) => Path.Combine(dir, $"{Constants.LibraryName}{LibraryExtension}");
-        static string LibVLCCorePath(string dir) => Path.Combine(dir, $"{Constants.CoreLibraryName}{LibraryExtension}");
-        static string LibraryExtension => PlatformHelper.IsWindows ? Constants.WindowsLibraryExtension : Constants.MacLibraryExtension;
-        static void Log(string message)
+
+        static void LoadLibVLC(string? libvlcDirectoryPath = null)
         {
-#if !UWP10_0 && !NETSTANDARD1_1
-            Trace.WriteLine(message);
-#else
-            Debug.WriteLine(message);
-#endif
+            // full path to directory location of libvlc and libvlccore has been provided
+            if (!string.IsNullOrEmpty(libvlcDirectoryPath))
+            {
+                bool loadResult;
+                var libvlccorePath = LibVLCCorePath(libvlcDirectoryPath!);
+                loadResult = LoadNativeLibrary(libvlccorePath, out LibvlccoreHandle);
+                if (!loadResult)
+                {
+                    Log($"Failed to load required native libraries at {libvlccorePath}");
+                    return;
+                }
+
+                var libvlcPath = LibVLCPath(libvlcDirectoryPath!);
+                loadResult = LoadNativeLibrary(libvlcPath, out LibvlcHandle);
+                if (!loadResult)
+                    Log($"Failed to load required native libraries at {libvlcPath}");
+                return;
+            }
+
+            var paths = ComputeLibVLCSearchPaths();
+
+            foreach (var (libvlccore, libvlc) in paths)
+            {
+                LoadNativeLibrary(libvlccore, out LibvlccoreHandle);
+                var loadResult = LoadNativeLibrary(libvlc, out LibvlcHandle);
+                if (loadResult)
+                    break;
+            }
+
+            if (!Loaded)
+            {
+                throw new VLCException("Failed to load required native libraries. " +
+                    $"{Environment.NewLine}Have you installed the latest LibVLC package from nuget for your target platform?" +
+                    $"{Environment.NewLine}Search paths include {string.Join("; ", paths.Select(p => $"{p.libvlc},{p.libvlccore}"))}");
+            }
         }
-#if MAC || NETFRAMEWORK || NETSTANDARD
-        static bool Loaded => LibvlcHandle != IntPtr.Zero;
 #endif
         static bool LoadNativeLibrary(string nativeLibraryPath, out IntPtr handle)
         {
@@ -133,5 +173,6 @@ namespace LibVLCSharp.Shared
 
             return handle != IntPtr.Zero;
         }
+
     }
 }

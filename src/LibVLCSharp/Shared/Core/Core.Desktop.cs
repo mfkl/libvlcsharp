@@ -80,54 +80,13 @@ namespace LibVLCSharp.Shared
                 // Initializes X threads before calling VLC. This is required for vlc plugins like the VDPAU hardware acceleration plugin.
                 if (Native.XInitThreads() == 0)
                 {
-#if !NETSTANDARD1_1
-                    Trace.WriteLine("XInitThreads failed");
-#endif
+                    Debug.WriteLine("XInitThreads failed");
                 }
                 return;
             }
 
-            // full path to directory location of libvlc and libvlccore has been provided
-            if (!string.IsNullOrEmpty(libvlcDirectoryPath))
-            {
-                bool loadResult;
-                if(PlatformHelper.IsWindows)
-                {
-                    var libvlccorePath = LibVLCCorePath(libvlcDirectoryPath!);
-                    loadResult = LoadNativeLibrary(libvlccorePath, out LibvlccoreHandle);
-                    if(!loadResult)
-                    {
-                        Log($"Failed to load required native libraries at {libvlccorePath}");
-                        return;
-                    }
-                }
-
-                var libvlcPath = LibVLCPath(libvlcDirectoryPath!);
-                loadResult = LoadNativeLibrary(libvlcPath, out LibvlcHandle);
-                if(!loadResult)
-                    Log($"Failed to load required native libraries at {libvlcPath}");
-                return;
-            }
-
 #if !NETSTANDARD1_1
-            var paths = ComputeLibVLCSearchPaths();
-
-            foreach(var path in paths)
-            {
-                if (PlatformHelper.IsWindows)
-                {
-                    LoadNativeLibrary(path.libvlccore, out LibvlccoreHandle);
-                }
-                var loadResult = LoadNativeLibrary(path.libvlc, out LibvlcHandle);
-                if (loadResult) break;
-            }
-
-            if (!Loaded)
-            {
-                throw new VLCException("Failed to load required native libraries. " +
-                    $"{Environment.NewLine}Have you installed the latest LibVLC package from nuget for your target platform?" +
-                    $"{Environment.NewLine}Search paths include {string.Join("; ", paths.Select(p => $"{p.libvlc},{p.libvlccore}"))}");
-            }
+            LoadLibVLC(libvlcDirectoryPath);
 #endif
         }
     }
