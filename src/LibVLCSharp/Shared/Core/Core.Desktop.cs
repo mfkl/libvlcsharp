@@ -86,6 +86,13 @@ namespace LibVLCSharp.Shared
             }
 
 #if !NETSTANDARD1_1
+            if (PlatformHelper.IsMac)
+            {
+                var pluginPath = Path.Combine(Path.GetDirectoryName(typeof(LibVLC).Assembly.Location),
+                    Constants.LibVLC, ArchitectureNames.MacOS64, "plugins");
+                Log($"VLC_PLUGIN_PATH: {pluginPath}");
+                Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", pluginPath);
+            }
             LoadLibVLC(libvlcDirectoryPath);
 #endif
         }
