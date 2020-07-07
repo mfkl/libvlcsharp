@@ -8,8 +8,6 @@ namespace LibVLCSharp.Shared
         internal const string LibraryName = "@rpath/DynamicMobileVLCKit.framework/DynamicMobileVLCKit";
 #elif TVOS
         internal const string LibraryName = "@rpath/DynamicTVVLCKit.framework/DynamicTVVLCKit";
-#elif MAC
-        internal const string LibraryName = "@executable_path/../MonoBundle/lib/libvlc.dylib";
 #else
         internal const string LibraryName = "libvlc";
 #endif
@@ -27,6 +25,8 @@ namespace LibVLCSharp.Shared
         internal const string LibX11 = "libX11";
         internal const string WindowsLibraryExtension = ".dll";
         internal const string MacLibraryExtension = ".dylib";
+        internal const string Lib = "lib";
+        internal const string LibVLC = "libvlc";
     }
 
     internal static class ArchitectureNames

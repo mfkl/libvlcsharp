@@ -56,7 +56,7 @@ namespace LibVLCSharp.Shared
 #endif
         }
 
-#if (MAC || NETFRAMEWORK || NETSTANDARD) && !NETSTANDARD1_1
+#if (NETFRAMEWORK || NETSTANDARD) && !NETSTANDARD1_1
         static bool Loaded => LibvlcHandle != IntPtr.Zero;
         static List<(string libvlccore, string libvlc)> ComputeLibVLCSearchPaths()
         {
