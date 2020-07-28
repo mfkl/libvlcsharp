@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using LibVLCSharp.Helpers;
 
 namespace LibVLCSharp
@@ -647,6 +648,30 @@ namespace LibVLCSharp
         }
 
         /// <summary>
+        /// Starts playback
+        /// </summary>
+        /// <returns></returns>
+        public Task<bool> PlayAsync()
+        {
+            Media?.AddOption(Configuration);
+
+            var tcs = new TaskCompletionSource<bool>();
+
+            void MediaPlayer_Play(object sender, EventArgs e) => tcs.SetResult(true);
+
+            return MarshalUtils.InternalAsync(
+                nativeCall: () =>
+                {
+                    var result = Native.LibVLCMediaPlayerPlay(NativeReference) == 0;
+                    if (!result)
+                        tcs.SetResult(false);
+                },
+                sub: () => Playing += MediaPlayer_Play,
+                unsub: () => Playing -= MediaPlayer_Play,
+                tcs: ref tcs);
+        }
+
+        /// <summary>
         /// Pause or resume (no effect if there is no media).
         /// version LibVLC 1.1.1 or later
         /// </summary>
@@ -666,6 +691,29 @@ namespace LibVLCSharp
         /// </summary>
         /// <returns>true if the player is being stopped, false otherwise</returns>
         public bool Stop() => Native.LibVLCMediaPlayerStop(NativeReference) == 0;
+
+        /// <summary>
+        /// Stop asynchronously (no effect if there is no media)
+        /// Returns when the mediaplayer stopped event fired
+        /// </summary>
+        /// <returns>result of the async operation</returns>
+        public Task<bool> StopAsync()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            void MediaPlayer_Stopped(object sender, EventArgs e) => tcs.SetResult(true);
+
+            return MarshalUtils.InternalAsync(
+                nativeCall: () =>
+                {
+                    var result = Native.LibVLCMediaPlayerStop(NativeReference) == 0;
+                    if (!result)
+                        tcs.SetResult(false);
+                },
+                sub: () => Stopped += MediaPlayer_Stopped,
+                unsub: () => Stopped -= MediaPlayer_Stopped,
+                tcs: ref tcs);
+        }
 
 #if APPLE || NETFRAMEWORK || NETSTANDARD
         /// <summary>

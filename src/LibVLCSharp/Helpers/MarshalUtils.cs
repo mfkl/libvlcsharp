@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LibVLCSharp.Helpers
 {
@@ -523,6 +524,29 @@ namespace LibVLCSharp.Helpers
                     releaseRef(arrayPtr, countSizeT);
                     arrayPtr = IntPtr.Zero;
                 }
+            }
+        }
+
+        /// <summary>
+        /// TODO: Optional cancellation.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="nativeCall"></param>
+        /// <param name="sub"></param>
+        /// <param name="unsub"></param>
+        /// <param name="tcs"></param>
+        /// <returns></returns>
+        internal static Task<T> InternalAsync<T>(Action nativeCall, Action sub, Action unsub, ref TaskCompletionSource<T> tcs)
+        {
+            try
+            {
+                sub();
+                nativeCall();
+                return tcs.Task;
+            }
+            finally
+            {
+                unsub();
             }
         }
 
