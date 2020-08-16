@@ -10,7 +10,9 @@ namespace LibVLCSharp
     public class StreamMediaInput : MediaInput
     {
         private readonly Stream _stream;
+#if !NETSTANDARD2_1 && !ANDROID && !APPLE
         private readonly byte[] _readBuffer = new byte[0x4000];
+#endif
 
         /// <summary>
         /// Initializes a new instance of <see cref="StreamMediaInput"/>, which reads from the given .NET stream.
@@ -65,10 +67,16 @@ namespace LibVLCSharp
         {
             try
             {
+#if NETSTANDARD2_1 || ANDROID || APPLE
+                unsafe
+                {
+                    return _stream.Read(new Span<byte>(buf.ToPointer(), (int)Math.Min(len, int.MaxValue)));
+                }
+#else
                 var read = _stream.Read(_readBuffer, 0, Math.Min((int)len, _readBuffer.Length));
                 Marshal.Copy(_readBuffer, 0, buf, read);
-
                 return read;
+#endif
             }
             catch (Exception)
             {
