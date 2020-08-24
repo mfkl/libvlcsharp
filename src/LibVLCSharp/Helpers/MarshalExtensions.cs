@@ -166,5 +166,29 @@ namespace LibVLCSharp.Helpers
                 MarshalUtils.LibVLCFree(ref nativeString);
             return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
         }
+
+#if !APPLE
+        /// <summary>
+        /// https://github.com/dotnet/runtime/blob/c4b9dabec8186a0d61f0cc3ea0b7efea579bf24e/src/libraries/System.Private.CoreLib/src/System/IO/Stream.cs#L720-L734
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        internal static int Read(this System.IO.Stream stream, Span<byte> buffer)
+        {
+            var sharedBuffer = System.Buffers.ArrayPool<byte>.Shared.Rent(buffer.Length);
+            try
+            {
+                var numRead = stream.Read(sharedBuffer, 0, buffer.Length);
+                if ((uint)numRead > (uint)buffer.Length)
+                {
+                    throw new System.IO.IOException("StreamTooLong");
+                }
+                new Span<byte>(sharedBuffer, 0, numRead).CopyTo(buffer);
+                return numRead;
+            }
+            finally { System.Buffers.ArrayPool<byte>.Shared.Return(sharedBuffer); }
+        }
+#endif
     }
 }
