@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+#if !APPLE && !ANDROID && !NETSTANDARD2_1
 using LibVLCSharp.Helpers;
-
+#endif
 namespace LibVLCSharp
 {
     /// <summary>
