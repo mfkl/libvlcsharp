@@ -553,6 +553,40 @@ namespace LibVLCSharp
             internal static extern void LibVLCMediaPlayerRetain(IntPtr mediaplayer);
 
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_player_program_delete")]
+            internal static extern void LibVLCPlayerProgramDelete(IntPtr program);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_player_programlist_count")]
+
+            // TODO: Move to programList struct
+            internal static extern UIntPtr LibVLCPlayerProgramListCount(IntPtr programList);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_player_programlist_at")]
+            internal static extern IntPtr LibVLCPlayerProgramListAt(IntPtr programList, UIntPtr index);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_player_programlist_delete")]
+            internal static extern void LibVLCPlayerProgramListDelete(IntPtr programList);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_media_player_select_program_id")]
+            internal static extern void LibVLCMediaPlayerSelectProgramId(IntPtr mediaplayer, int programId);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_media_player_get_selected_program")]
+            internal static extern IntPtr LibVLCMediaPlayerGetSelectedProgram(IntPtr mediaplayer);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_media_player_get_program_from_id")]
+            internal static extern IntPtr LibVLCMediaPlayerGetProgramFromId(IntPtr mediaplayer, int groupId);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_media_player_get_programlist")]
+            internal static extern IntPtr LibVLCMediaPlayerGetProgramList(IntPtr mediaplayer);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_video_set_crop_ratio")]
             internal static extern void LibVLCVideoSetCropRatio(IntPtr mediaplayer, uint num, uint den);
 
