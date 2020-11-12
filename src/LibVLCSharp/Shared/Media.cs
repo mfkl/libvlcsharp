@@ -456,7 +456,7 @@ namespace LibVLCSharp.Shared
                 tcs.TrySetCanceled();
             });
 
-            void OnParsedChanged(object sender, MediaParsedChangedEventArgs mediaParsedChangedEventArgs) 
+            void OnParsedChanged(object? sender, MediaParsedChangedEventArgs mediaParsedChangedEventArgs) 
                 => tcs.TrySetResult(mediaParsedChangedEventArgs.ParsedStatus);
 
             try
@@ -583,7 +583,7 @@ namespace LibVLCSharp.Shared
         /// </summary>
         /// <param name="obj">the media to compare this one with</param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Media media &&
                    EqualityComparer<IntPtr>.Default.Equals(NativeReference, media.NativeReference);
