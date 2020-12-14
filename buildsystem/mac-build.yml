@@ -1,9 +1,9 @@
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core SDK 5.0.100'
+  displayName: 'Use .NET Core SDK'
   inputs:
     packageType: sdk
-    version: 5.0.100
+    version: 5.0.101
 
 - script: |
    chmod +x build.sh
