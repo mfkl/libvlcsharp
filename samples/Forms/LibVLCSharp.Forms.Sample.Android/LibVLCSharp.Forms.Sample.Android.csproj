@@ -8,14 +8,13 @@
     <OutputType>Library</OutputType>
     <RootNamespace>LibVLCSharp.Forms.Sample.Droid</RootNamespace>
     <AssemblyName>LibVLCSharp.Forms.Sample.Android</AssemblyName>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -51,22 +50,22 @@
       <Version>3.1.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design">
-      <Version>27.0.2</Version>
+      <Version>28.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v4">
-      <Version>27.0.2</Version>
+      <Version>28.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat">
-      <Version>27.0.2</Version>
+      <Version>28.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.CardView">
-      <Version>27.0.2</Version>
+      <Version>28.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter">
-      <Version>27.0.2</Version>
+      <Version>28.0.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>3.2.0.871581</Version>
+      <Version>4.8.0.1687</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +101,10 @@
     <ProjectReference Include="..\LibVLCSharp.Forms.Sample\LibVLCSharp.Forms.Sample.csproj">
       <Project>{A7F1B21F-CA82-4FC7-871F-2BE5B9D6DA70}</Project>
       <Name>LibVLCSharp.Forms.Sample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\src\LibVLCSharp.Android.AWindow\LibVLCSharp.Android.AWindow.csproj">
+      <Project>{239A82A5-19A1-4382-8F9B-4A9705648017}</Project>
+      <Name>LibVLCSharp.Android.AWindow</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
