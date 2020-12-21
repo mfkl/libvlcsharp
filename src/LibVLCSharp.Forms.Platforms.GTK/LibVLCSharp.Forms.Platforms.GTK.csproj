@@ -26,7 +26,7 @@ Xamarin.Forms support for other platforms are in different packages (namely LibV
     <PackageTags>libvlc;vlc;videolan;native;c/c++;video;audio;player;media;mediaplayer;codec;ffmpeg;xamarin;graphics;ios;android;linux;windows;macos;cross-platform</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms.Platform.GTK" Version="4.8.0.1687" />
+    <PackageReference Include="Xamarin.Forms.Platform.GTK" Version="3.2.0.871581" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibVLCSharp.Forms\LibVLCSharp.Forms.csproj" />
