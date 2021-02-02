@@ -8,7 +8,7 @@ steps:
 - task: UseDotNet@2
   displayName: 'Use .NET Core SDK'
   inputs:
-    version: 5.0.101
+    version: 5.0.102
 
 - task: PowerShell@2
   displayName: 'Build all'
