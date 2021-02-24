@@ -553,6 +553,11 @@ namespace LibVLCSharp
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_video_get_spu_text_scale")]
             internal static extern float LibVLCVideoGetSpuTextScale(IntPtr mediaplayer);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_video_set_output_callbacks")]
+            internal static extern bool LibVLCVideoSetOutputCallbacks(IntPtr mediaplayer, VideoEngine engine, IntPtr setup, IntPtr cleanup, IntPtr resize,
+                IntPtr updateOutput, IntPtr swap, IntPtr makeCurrent, IntPtr getProcAddress, IntPtr metadata, IntPtr selectPlane, IntPtr opaque);
 #if ANDROID
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_media_player_set_android_context")]
@@ -1843,6 +1848,16 @@ namespace LibVLCSharp
         /// <param name="programId">program id</param>
         public void SelectProgram(int programId) => Native.LibVLCMediaPlayerSelectProgramId(NativeReference, programId);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool SetOutputCallbacks(VideoEngine engine, OutputSetup outputSetup, OutputCleanup outputCleanup, OutputSetResize resize,
+            UpdateOutput updateOutput, Swap swap, MakeCurrent makeCurrent, GetProcAddress getProcAddress, FrameMetadata metadata, OutputSelectPlane selectPlane)
+        {
+            return true;
+        }
+
         readonly MediaConfiguration Configuration = new MediaConfiguration();
 
 #if UNITY
@@ -2193,7 +2208,33 @@ namespace LibVLCSharp
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void LibVLCVolumeCb(IntPtr data, float volume, [MarshalAs(UnmanagedType.I1)] bool mute);
 
-#endregion
+        /// <summary>
+        /// Callback prototype called to initialize user data. Setup the rendering environment.
+        /// Note: LibVLC 4.0.0 or later
+        /// <para>
+        /// For libvlc_video_engine_d3d9 the output must be a IDirect3D9*.
+        /// A reference to this object is held until the LIBVLC_VIDEO_DEVICE_CLEANUP is called.
+        /// the device must be created with D3DPRESENT_PARAMETERS.hDeviceWindow set to 0.
+        /// </para>
+        /// <para>
+        /// For libvlc_video_engine_d3d11 the output must be a ID3D11DeviceContext*.
+        /// A reference to this object is held until the \ref LIBVLC_VIDEO_DEVICE_CLEANUP is called.
+        /// The ID3D11Device used to create ID3D11DeviceContext must have multithreading enabled.
+        /// </para>
+        /// </summary>
+        /// <param name="opaque">private pointer passed to the @a libvlc_video_set_output_callbacks()
+        /// on input.The callback can change this value on output to be
+        /// passed to all the other callbacks set on @a libvlc_video_set_output_callbacks().
+        /// [IN/OUT]</param>
+        /// <param name="config">requested configuration of the video device [IN]</param>
+        /// <param name="setup">libvlc_video_setup_device_info_t* to fill [OUT]</param>
+        /// <returns>true on success</returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool OutputSetup(IntPtr opaque, IntPtr config, IntPtr setup);
+
+
+        #endregion
 
         /// <summary>
         /// Get the Event Manager from which the media player send event.
