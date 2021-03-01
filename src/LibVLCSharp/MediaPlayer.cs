@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using LibVLCSharp.Helpers;
+using LibVLCSharp.Structures;
 
 namespace LibVLCSharp
 {
@@ -1791,14 +1792,14 @@ namespace LibVLCSharp
         /// <summary>
         /// Get the program list
         /// version LibVLC 4.0.0 and later.
-        /// 
+        ///
         /// note: This program list is a snapshot of the current programs when this
         /// function is called. If a program is updated after this call, the user will
         /// need to call this function again to get the updated program.
-        /// 
+        ///
         /// The program list can be used to get program informations and to select
         /// specific programs.
-        /// 
+        ///
         /// Return a valid ProgramList or NULL in case of error or empty list,
         /// </summary>
         public ProgramList? ProgramList
@@ -1812,9 +1813,9 @@ namespace LibVLCSharp
 
         /// <summary>
         /// Get a program from a program id
-        /// 
+        ///
         /// version LibVLC 4.0.0 or later
-        /// 
+        ///
         /// </summary>
         /// <param name="groupId">program id</param>
         /// <returns>a valid program or NULL if the program id is not found.</returns>
@@ -1827,7 +1828,7 @@ namespace LibVLCSharp
         /// <summary>
         /// Get the selected program
         /// version LibVLC 4.0.0 or later
-        /// 
+        ///
         /// return a valid program struct or NULL if no programs are selected.
         /// </summary>
         public Program? SelectedProgram
@@ -1841,7 +1842,7 @@ namespace LibVLCSharp
 
         /// <summary>
         /// Select program with a given program id.
-        /// 
+        ///
         /// note program ids are sent via the ProgramAdded event or
         /// can be fetch via ProgramList property
         /// </summary>
@@ -1849,7 +1850,7 @@ namespace LibVLCSharp
         public void SelectProgram(int programId) => Native.LibVLCMediaPlayerSelectProgramId(NativeReference, programId);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool SetOutputCallbacks(VideoEngine engine, OutputSetup outputSetup, OutputCleanup outputCleanup, OutputSetResize resize,
@@ -2233,7 +2234,99 @@ namespace LibVLCSharp
         [return: MarshalAs(UnmanagedType.I1)]
         public delegate bool OutputSetup(IntPtr opaque, IntPtr config, IntPtr setup);
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="opaque"></param>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void OutputCleanup(IntPtr opaque);
 
+        /// <summary>
+        /// Set the callback to call when the host app resizes the rendering area.
+        /// <para/>
+        /// This allows text rendering and aspect ratio to be handled properly when the host
+        /// rendering size changes.
+        /// <para/>
+        /// <para/>
+        /// version LibVLC 4.0.0 or later
+        /// </summary>
+        /// <param name="opaque"></param>
+        /// <param name="report_size_change">callback which must be called when the host size changes.
+        /// <para/>The callback is valid until another call to Resize/>
+        /// is done. This may be called from any thread.</param>
+        /// <param name="report_opaque">private pointer to pass to the <see cref="ResizeReport"/> callback</param>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void OutputSetResize(IntPtr opaque, ResizeReport report_size_change, IntPtr report_opaque);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="report_opaque"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void ResizeReport(IntPtr report_opaque, uint width, uint height);
+
+        /// <summary>
+        /// Update the rendering output setup. <para/>
+        /// Note: the configuration device for Direct3D9 is the IDirect3DDevice9 that VLC
+        /// uses to render. The host must set a Render target and call Present()
+        /// when it needs the drawing from VLC to be done.This object is not valid
+        /// anymore after Cleanup is called. <para/>
+        /// Tone mapping, range and color conversion will be done depending on the values set in the output structure.
+        /// </summary>
+        /// <param name="opaque">private pointer passed to the <see cref="SetOutputCallbacks"/>[IN]</param>
+        /// <param name="config">configuration of the video that will be rendered [IN]</param>
+        /// <param name="output">output configuration describing with how the rendering is setup [OUT]</param>
+        /// <returns>true on success</returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public delegate bool UpdateOutput(IntPtr opaque, IntPtr config, IntPtr output);
+
+        /// <summary>
+        /// Callback prototype called after performing drawing calls.
+        /// This callback is called outside of libvlc_video_makeCurrent_cb current/not-current calls.
+        /// <para/> LibVLC 4.0.0 or later
+        /// </summary>
+        /// <param name="opaque">private pointer passed to the @a libvlc_video_set_output_callbacks() [IN]</param>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void Swap(IntPtr opaque);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="opaque"></param>
+        /// <param name="enter"></param>
+        /// <returns></returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate bool MakeCurrent(IntPtr opaque, bool enter);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="opaque"></param>
+        /// <param name="functionName"></param>
+        /// <returns></returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate IntPtr GetProcAddress(IntPtr opaque, IntPtr functionName);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="opaque"></param>
+        /// <param name="type"></param>
+        /// <param name="metadata"></param>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void FrameMetadata(IntPtr opaque, MetadataType type, IntPtr metadata);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="opaque"></param>
+        /// <param name="plane"></param>
+        /// <returns></returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate bool OutputSelectPlane(IntPtr opaque, UIntPtr plane);
         #endregion
 
         /// <summary>
