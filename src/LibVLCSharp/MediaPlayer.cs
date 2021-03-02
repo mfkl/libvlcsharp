@@ -557,8 +557,9 @@ namespace LibVLCSharp
 
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_video_set_output_callbacks")]
-            internal static extern bool LibVLCVideoSetOutputCallbacks(IntPtr mediaplayer, VideoEngine engine, IntPtr setup, IntPtr cleanup, IntPtr resize,
-                IntPtr updateOutput, IntPtr swap, IntPtr makeCurrent, IntPtr getProcAddress, IntPtr metadata, IntPtr selectPlane, IntPtr opaque);
+            internal static extern bool LibVLCVideoSetOutputCallbacks(IntPtr mediaplayer, VideoEngine engine, OutputSetup? setup, OutputCleanup? cleanup,
+                OutputSetResize? resize, UpdateOutput updateOutput, Swap swap, MakeCurrent makeCurrent, GetProcAddress getProcAddress, FrameMetadata? metadata,
+                OutputSelectPlane? selectPlane, IntPtr? opaque);
 #if ANDROID
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_media_player_set_android_context")]
@@ -1853,11 +1854,42 @@ namespace LibVLCSharp
         ///
         /// </summary>
         /// <returns></returns>
-        public bool SetOutputCallbacks(VideoEngine engine, OutputSetup outputSetup, OutputCleanup outputCleanup, OutputSetResize resize,
-            UpdateOutput updateOutput, Swap swap, MakeCurrent makeCurrent, GetProcAddress getProcAddress, FrameMetadata metadata, OutputSelectPlane selectPlane)
+        public bool SetOutputCallbacks(VideoEngine engine, OutputSetup? outputSetup, OutputCleanup? outputCleanup, OutputSetResize? resize,
+            UpdateOutput updateOutput, Swap swap, MakeCurrent makeCurrent, GetProcAddress getProcAddress, FrameMetadata? metadata,
+            OutputSelectPlane? selectPlane)
         {
-            return true;
+            _outputSetup = outputSetup;
+            _outputCleanup = outputCleanup;
+            _outputResize = resize;
+            _updateOutput = updateOutput ?? throw new ArgumentNullException(nameof(updateOutput));
+            _swap = swap ?? throw new ArgumentNullException(nameof(swap));
+            _makeCurrent = makeCurrent ?? throw new ArgumentNullException(nameof(makeCurrent));
+            _getProcAddress = getProcAddress ?? throw new ArgumentNullException(nameof(getProcAddress));
+            _frameMetadata = metadata;
+            _outputSelectPlane = selectPlane;
+
+            return Native.LibVLCVideoSetOutputCallbacks(NativeReference, engine,
+                _outputSetup == null ? null : OutputSetupHandle,
+                _outputCleanup == null ? null : OutputCleanupHandle,
+                _outputResize == null ? null : OutputSetResizeHandle,
+                UpdateOutputHandle,
+                SwapHandle, 
+                MakeCurrentHandle,
+                GetProcAddressHandle,
+                _frameMetadata == null ? null : FrameMetadataHandle,
+                _outputSelectPlane == null ? null : OutputSelectPlaneHandle,
+                GCHandle.ToIntPtr(_gcHandle));
         }
+
+        OutputSetup? _outputSetup;
+        OutputCleanup? _outputCleanup;
+        OutputSetResize? _outputResize;
+        UpdateOutput? _updateOutput;
+        Swap? _swap;
+        MakeCurrent? _makeCurrent;
+        GetProcAddress? _getProcAddress;
+        FrameMetadata? _frameMetadata;
+        OutputSelectPlane? _outputSelectPlane;
 
         readonly MediaConfiguration Configuration = new MediaConfiguration();
 
@@ -1876,6 +1908,111 @@ namespace LibVLCSharp
 #endif
 
         #region Callbacks
+
+        static readonly OutputSetup OutputSetupHandle = OutputSetupCallback;
+        static readonly OutputCleanup OutputCleanupHandle = OutputCleanupCallback;
+        static readonly OutputSetResize OutputSetResizeHandle = OutputSetResizeCallback;
+        static readonly UpdateOutput UpdateOutputHandle = UpdateOutputCallback;
+        static readonly Swap SwapHandle = SwapCallback;
+        static readonly MakeCurrent MakeCurrentHandle = MakeCurrentCallback;
+        static readonly GetProcAddress GetProcAddressHandle = GetProcAddressCallback;
+        static readonly FrameMetadata FrameMetadataHandle = FrameMetadataCallback;
+        static readonly OutputSelectPlane OutputSelectPlaneHandle = OutputSelectPlaneCallback;
+
+        [MonoPInvokeCallback(typeof(OutputSetup))]
+        private static bool OutputSetupCallback(IntPtr opaque, IntPtr config, IntPtr setup)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._outputSetup != null)
+            {
+                return mediaPlayer._outputSetup(mediaPlayer._videoUserData, config, setup);
+            }
+            return false;
+        }
+
+        [MonoPInvokeCallback(typeof(OutputCleanup))]
+        private static void OutputCleanupCallback(IntPtr opaque)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._outputCleanup != null)
+            {
+                mediaPlayer._outputCleanup(mediaPlayer._videoUserData);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(OutputSetResize))]
+        private static void OutputSetResizeCallback(IntPtr opaque, ResizeReport report_size_change, IntPtr report_opaque)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._outputResize != null)
+            {
+                mediaPlayer._outputResize(mediaPlayer._videoUserData, report_size_change, report_opaque);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(UpdateOutput))]
+        private static bool UpdateOutputCallback(IntPtr opaque, IntPtr config, IntPtr output)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._updateOutput != null)
+            {
+                return mediaPlayer._updateOutput(mediaPlayer._videoUserData, config, output);
+            }
+            return false;
+        }
+
+        [MonoPInvokeCallback(typeof(Swap))]
+        private static void SwapCallback(IntPtr opaque)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._swap != null)
+            {
+                mediaPlayer._swap(mediaPlayer._videoUserData);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(MakeCurrent))]
+        private static bool MakeCurrentCallback(IntPtr opaque, bool enter)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._makeCurrent != null)
+            {
+                return mediaPlayer._makeCurrent(mediaPlayer._videoUserData, enter);
+            }
+            return false;
+        }
+
+        [MonoPInvokeCallback(typeof(GetProcAddress))]
+        private static IntPtr GetProcAddressCallback(IntPtr opaque, IntPtr functionName)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._getProcAddress != null)
+            {
+                return mediaPlayer._getProcAddress(mediaPlayer._videoUserData, functionName);
+            }
+            return IntPtr.Zero;
+        }
+
+        [MonoPInvokeCallback(typeof(FrameMetadata))]
+        private static void FrameMetadataCallback(IntPtr opaque, MetadataType type, IntPtr metadata)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._frameMetadata != null)
+            {
+                mediaPlayer._frameMetadata(mediaPlayer._videoUserData, type, metadata);
+            }
+        }
+
+        [MonoPInvokeCallback(typeof(OutputSelectPlane))]
+        private static bool OutputSelectPlaneCallback(IntPtr opaque, UIntPtr plane)
+        {
+            var mediaPlayer = MarshalUtils.GetInstance<MediaPlayer>(opaque);
+            if (mediaPlayer?._outputSelectPlane != null)
+            {
+                return mediaPlayer._outputSelectPlane(mediaPlayer._videoUserData, plane);
+            }
+            return false;
+        }
 
         static readonly LibVLCVideoLockCb VideoLockCallbackHandle = VideoLockCallback;
         static readonly LibVLCVideoUnlockCb VideoUnlockCallbackHandle = VideoUnlockCallback;
