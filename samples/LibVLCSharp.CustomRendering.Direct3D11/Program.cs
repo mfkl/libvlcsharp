@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 
 using static TerraFX.Interop.Windows;
 using static TerraFX.Interop.D3D_DRIVER_TYPE;
+using System.Text;
 
 namespace LibVLCSharp.CustomRendering.Direct3D11
 {
@@ -133,6 +134,56 @@ namespace LibVLCSharp.CustomRendering.Direct3D11
 
             fixed (ID3D11RenderTargetView** swapchainRenderTarget = &_swapchainRenderTarget)
                 _d3dctx->OMSetRenderTargets(1, swapchainRenderTarget, null);
+
+            ID3DBlob* VS, PS, pErrBlob;
+            
+            using ComPtr<ID3DBlob> vertexShaderBlob = null;
+
+            fixed (void* shader = shaderStr)
+            fixed (char* fileName = @"C:\Users\Martin\Projects\LibVLCSharp\samples\LibVLCSharp.CustomRendering.Direct3D11\bin\Debug\net5.0-windows\shader.hlsl")
+            fixed (byte* entrypoint = Encoding.ASCII.GetBytes("VShader"))
+            fixed (byte* target = Encoding.ASCII.GetBytes("vs_4_0"))
+                //ThrowIfFailed(nameof(D3DCompile), D3DCompile(shader, (nuint)shaderStr.Length, null, null, null, (sbyte*)&entrypoint, (sbyte*)&target, 0, 0, &VS, &pErrBlob));
+                ThrowIfFailed(nameof(D3DCompileFromFile), D3DCompileFromFile((ushort*)fileName, null, null, (sbyte*)&entrypoint, (sbyte*)&target, 0, 0, vertexShaderBlob.GetAddressOf(), null));
+
+            //ThrowIfFailed(nameof(D3DCompileFromFile), D3DCompileFromFile((ushort*)fileName, pDefines: null, pInclude: null, 
+            //    (sbyte*)&entrypoint, (sbyte*)&target, 0u, Flags2: 0, &VS, ppErrorMsgs: null));
+
+            //            Exception thrown: 'System.DllNotFoundException' in System.Private.CoreLib.dll
+            //An unhandled exception of type 'System.DllNotFoundException' occurred in System.Private.CoreLib.dll
+            //Unable to load DLL 'D3DCompiler' or one of its dependencies: The specified module could not be found. (0x8007007E)
         }
+
+        static string shaderStr = @"\
+Texture2D shaderTexture;\n\
+SamplerState samplerState;\n\
+struct PS_INPUT\n\
+{\n\
+    float4 position     : SV_POSITION;\n\
+    float4 textureCoord : TEXCOORD0;\n\
+};\n\
+\n\
+float4 PShader(PS_INPUT In) : SV_TARGET\n\
+{\n\
+    return shaderTexture.Sample(samplerState, In.textureCoord);\n\
+}\n\
+\n\
+struct VS_INPUT\n\
+{\n\
+    float4 position     : POSITION;\n\
+    float4 textureCoord : TEXCOORD0;\n\
+};\n\
+\n\
+struct VS_OUTPUT\n\
+{\n\
+    float4 position     : SV_POSITION;\n\
+    float4 textureCoord : TEXCOORD0;\n\
+};\n\
+\n\
+VS_OUTPUT VShader(VS_INPUT In)\n\
+{\n\
+    return In;\n\
+}\n\
+";
     }
 }
