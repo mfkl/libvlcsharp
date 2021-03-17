@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 
 namespace LibVLCSharp.Benchmarks
@@ -7,7 +8,7 @@ namespace LibVLCSharp.Benchmarks
     {
         static void Main(string[] args)
         {
-            new BenchmarkSwitcher(typeof(Program).GetTypeInfo().Assembly).Run(args);
+            new BenchmarkSwitcher(typeof(Program).GetTypeInfo().Assembly).Run(args, new DebugInProcessConfig());
         }
     }
 }
