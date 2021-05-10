@@ -535,6 +535,10 @@ namespace LibVLCSharp
             internal static extern void LibVLCMediaPlayerSelectTracksByIds(IntPtr mediaplayer, TrackType type, IntPtr ids);
 
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_media_player_record")]
+            internal static extern int LibVLCMediaPlayerRecord(IntPtr mediaplayer, bool enable, IntPtr path);
+
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_video_set_crop_ratio")]
             internal static extern void LibVLCVideoSetCropRatio(IntPtr mediaplayer, uint num, uint den);
 
@@ -559,6 +563,7 @@ namespace LibVLCSharp
             internal static extern bool LibVLCVideoSetOutputCallbacks(IntPtr mediaplayer, VideoEngine engine, OutputSetup? outputSetup, 
                 OutputCleanup? outputCleanup, OutputSetResize? resize, UpdateOutput updateOutput, Swap swap, MakeCurrent makeCurrent, 
                 GetProcAddress? getProcAddress, FrameMetadata? metadata, OutputSelectPlane? selectPlane, IntPtr opaque);
+
 #if ANDROID
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_media_player_set_android_context")]
@@ -1981,6 +1986,17 @@ namespace LibVLCSharp
         /// <param name="programId">program id</param>
         public void SelectProgram(int programId) => Native.LibVLCMediaPlayerSelectProgramId(NativeReference, programId);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public bool StartRecording(string? path) => Native.LibVLCMediaPlayerRecord(NativeReference, enable: true, path.ToUtf8()) == 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void StopRecording() => Native.LibVLCMediaPlayerRecord(NativeReference, enable: false, IntPtr.Zero);
 
         /// <summary>
         /// Set callbacks and data to render decoded video to a custom texture
