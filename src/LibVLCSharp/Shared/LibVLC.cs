@@ -74,6 +74,10 @@ namespace LibVLCSharp.Shared
                 EntryPoint = "libvlc_release")]
             internal static extern void LibVLCRelease(IntPtr libVLC);
 
+            [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
+                EntryPoint = "libvlc_clock")]
+            internal static extern long LibVLCClock(IntPtr libVLC);
+
 #if NETFRAMEWORK || NETSTANDARD
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_add_intf")]
@@ -761,6 +765,16 @@ namespace LibVLCSharp.Shared
         /// Example: "gcc version 4.2.3 (Ubuntu 4.2.3-2ubuntu6)"
         /// </summary>
         public string LibVLCCompiler => Native.LibVLCGetCompiler().FromUtf8()!;
+
+        /// <summary>
+        /// Return the current time as defined by LibVLC. The unit is the microsecond.
+        ///  Time increases monotonically (regardless of time zone changes and RTC
+        ///  adjustements).
+        ///  The origin is arbitrary but consistent across the whole system
+        ///  (e.g.the system uptim, the time since the system was booted).
+        ///  note: On systems that support it, the POSIX monotonic clock is used.
+        /// </summary>
+        public long Clock => Native.LibVLCClock(NativeReference);
 
         #region Exit
 
