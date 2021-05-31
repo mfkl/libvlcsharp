@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LibVLCSharp.Helpers
@@ -535,14 +536,15 @@ namespace LibVLCSharp.Helpers
         /// <param name="sub"></param>
         /// <param name="unsub"></param>
         /// <param name="tcs"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        internal static Task<T> InternalAsync<T>(Action nativeCall, Action sub, Action unsub, ref TaskCompletionSource<T> tcs)
+        internal async static Task<T> InternalAsync<T>(Action nativeCall, Action sub, Action unsub, TaskCompletionSource<T> tcs, CancellationToken token = default)
         {
             try
             {
                 sub();
                 nativeCall();
-                return tcs.Task;
+                return await tcs.Task;
             }
             finally
             {

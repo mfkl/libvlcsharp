@@ -668,7 +668,7 @@ namespace LibVLCSharp
                 },
                 sub: () => Playing += MediaPlayer_Play,
                 unsub: () => Playing -= MediaPlayer_Play,
-                tcs: ref tcs);
+                tcs: tcs);
         }
 
         /// <summary>
@@ -712,7 +712,7 @@ namespace LibVLCSharp
                 },
                 sub: () => Stopped += MediaPlayer_Stopped,
                 unsub: () => Stopped -= MediaPlayer_Stopped,
-                tcs: ref tcs);
+                tcs: tcs);
         }
 
 #if APPLE || NETFRAMEWORK || NETSTANDARD
@@ -1509,10 +1509,44 @@ namespace LibVLCSharp
         {
             if (filePath == null)
                 filePath = string.Empty;
+
             var filePathUtf8 = filePath.ToUtf8();
             return MarshalUtils.PerformInteropAndFree(() =>
                 Native.LibVLCVideoTakeSnapshot(NativeReference, num, filePathUtf8, width, height) == 0,
                 filePathUtf8);
+        }
+
+        /// <summary>
+        /// Take a snapshot of the current video window.
+        /// If i_width AND i_height is 0, original size is used. If i_width XOR
+        /// i_height is 0, original aspect-ratio is preserved. 
+        /// </summary>
+        /// <param name="num">number of video output (typically 0 for the first/only one)</param>
+        /// <param name="filePath">the path where to save the screenshot to</param>
+        /// <param name="width">the snapshot's width</param>
+        /// <param name="height">the snapshot's height</param>
+        /// <returns>the path to the snapshot file saved on disk on success, empty string otherwise</returns>
+        public Task<string> TakeSnapshotAsync(uint num = 0, string? filePath = null, uint width = 0, uint height = 0)
+        {
+            var tcs = new TaskCompletionSource<string>();
+
+            if (filePath == null)
+                filePath = string.Empty;
+
+            var filePathUtf8 = filePath.ToUtf8();
+
+            void MediaPlayer_SnapshotTaken(object sender, MediaPlayerSnapshotTakenEventArgs e) => tcs.SetResult(e.Filename);
+
+            return MarshalUtils.InternalAsync(
+                nativeCall: () =>
+                {
+                    var result = MarshalUtils.PerformInteropAndFree(() => Native.LibVLCVideoTakeSnapshot(NativeReference, num, filePathUtf8, width, height) == 0, filePathUtf8);
+                    if (!result)
+                        tcs.SetResult(string.Empty);
+                },
+                sub: () => SnapshotTaken += MediaPlayer_SnapshotTaken,
+                unsub: () => SnapshotTaken -= MediaPlayer_SnapshotTaken,
+                tcs: tcs);
         }
 
         /// <summary>
