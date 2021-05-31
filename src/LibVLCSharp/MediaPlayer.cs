@@ -1507,6 +1507,8 @@ namespace LibVLCSharp
         /// <returns>true on success</returns>
         public bool TakeSnapshot(uint num, string? filePath, uint width, uint height)
         {
+            if (filePath == null)
+                filePath = string.Empty;
             var filePathUtf8 = filePath.ToUtf8();
             return MarshalUtils.PerformInteropAndFree(() =>
                 Native.LibVLCVideoTakeSnapshot(NativeReference, num, filePathUtf8, width, height) == 0,
