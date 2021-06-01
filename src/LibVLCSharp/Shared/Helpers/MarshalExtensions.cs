@@ -162,11 +162,21 @@ namespace LibVLCSharp.Shared.Helpers
                 length++;
             }
 
+            string? managedString = null;
+
+#if !NET40 && !NETSTANDARD1_1
+            unsafe
+            { 
+                managedString = Encoding.UTF8.GetString((byte*)nativeString, length);
+            }
+#else
             var buffer = new byte[length];
             Marshal.Copy(nativeString, buffer, 0, buffer.Length);
+            managedString = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+#endif
             if (libvlcFree)
                 MarshalUtils.LibVLCFree(ref nativeString);
-            return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+            return managedString;
         }
 
  #if !APPLE && !ANDROID && !NETSTANDARD2_1 && !NET40
