@@ -13,6 +13,7 @@
     <AssemblyName>LibVLCSharp.Android.AWindow</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <AndroidAddKeepAlives>False</AndroidAddKeepAlives> <!-- workaround https://github.com/xamarin/xamarin-android/issues/5764#issuecomment-856062396 for Uno 3 support -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
