@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LibVlcTestShell.Views.AboutTwoPage"
+             xmlns:vm="clr-namespace:LibVlcTestShell.ViewModels"
+             xmlns:vlc="clr-namespace:LibVLCSharp.Forms.Shared;assembly=LibVLCSharp.Forms"
+             
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <vm:AboutViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <vlc:MediaPlayerElement
+            x:Name="viewOne"
+            EnableRendererDiscovery="True" 
+            MediaPlayer="{Binding MediaPlayer}">
+            <vlc:MediaPlayerElement.PlaybackControls>
+                <vlc:PlaybackControls IsVisible="False" />
+            </vlc:MediaPlayerElement.PlaybackControls>
+        </vlc:MediaPlayerElement>
+    </Grid>
+
+</ContentPage>
