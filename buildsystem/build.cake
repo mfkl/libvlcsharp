@@ -50,8 +50,24 @@ Task("Restore-NuGet-Packages")
     MoveDirectory("../src/packages", packagesDir);
 });
 
+Task("BuildNet6")
+    .Does(() =>
+{
+    var msbuildSettings = new DotNetCoreMSBuildSettings();
+    msbuildSettings.WithProperty("Net6", "true");
+
+    var settings = new DotNetCoreBuildSettings
+    {
+        MSBuildSettings = msbuildSettings
+    };
+
+    DotNetCoreBuild(libvlcsharpCsproj, settings);
+});
+
+
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("BuildNet6")
     .Does(() =>
 {
     Build(solutionPath);
