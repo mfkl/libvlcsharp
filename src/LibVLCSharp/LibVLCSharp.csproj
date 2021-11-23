@@ -1,13 +1,14 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Choose>
     <When Condition="'$(MSBuildRuntimeType)' == 'Core'">
       <PropertyGroup>
-        <TargetFrameworks Condition="'$(Net6)' == 'true'">$(TargetFrameworks);net6.0;net6-windows;net6-android;net6-ios;net6-tvos;net6-macos</TargetFrameworks>
+        <!-- disable net6-android for now -->
+        <TargetFrameworks Condition="'$(Net6)' == 'true'">$(TargetFrameworks);net6.0;net6-windows;net6-ios;net6-tvos;net6-macos</TargetFrameworks>
       </PropertyGroup>
     </When>
     <Otherwise>
       <PropertyGroup>
-        <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux')) and $(Net6)!='true'">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10</TargetFrameworks>
+        <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux')) and '$(Net6)'!='true'">$(TargetFrameworks);MonoAndroid81;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0;uap10.0.16299;</TargetFrameworks>
       </PropertyGroup>
     </Otherwise>
