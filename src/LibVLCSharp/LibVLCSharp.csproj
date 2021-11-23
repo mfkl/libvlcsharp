@@ -2,8 +2,7 @@
   <Choose>
     <When Condition="'$(MSBuildRuntimeType)' == 'Core'">
       <PropertyGroup>
-        <!-- disable net6-android for now -->
-        <TargetFrameworks Condition="'$(Net6)' == 'true'">$(TargetFrameworks);net6.0;net6-windows;net6-ios;net6-tvos;net6-macos</TargetFrameworks>
+        <TargetFrameworks Condition="'$(Net6)' == 'true'">$(TargetFrameworks);net6.0;net6.0-windows;net6.0-ios;net6.0-android;net6.0-tvos;net6.0-macos</TargetFrameworks>
       </PropertyGroup>
     </When>
     <Otherwise>
