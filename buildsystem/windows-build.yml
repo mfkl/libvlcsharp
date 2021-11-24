@@ -25,7 +25,7 @@ steps:
     workingDirectory: buildsystem
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build'
+  displayName: 'BuildNet6'
   inputs:
     command: custom
     custom: 'cake --target=BuildNet6'
