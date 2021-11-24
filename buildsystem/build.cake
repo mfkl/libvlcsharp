@@ -67,7 +67,6 @@ Task("BuildNet6")
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
-    .IsDependentOn("BuildNet6")
     .Does(() =>
 {
     Build(solutionPath);
