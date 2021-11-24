@@ -28,7 +28,8 @@ steps:
   displayName: 'BuildNet6'
   inputs:
     command: custom
-    custom: 'cake --target=BuildNet6'
+    custom: 'cake'
+    arguments: '--target=BuildNet6'
     workingDirectory: buildsystem
 
 - task: PublishBuildArtifacts@1
