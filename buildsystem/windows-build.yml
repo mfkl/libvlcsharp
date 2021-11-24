@@ -24,6 +24,13 @@ steps:
     custom: 'cake'
     workingDirectory: buildsystem
 
+- task: DotNetCoreCLI@2
+  displayName: 'Build'
+  inputs:
+    command: custom
+    custom: 'cake --target=BuildNet6'
+    workingDirectory: buildsystem
+
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: 'nugets'
