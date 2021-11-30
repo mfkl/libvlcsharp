@@ -50,18 +50,11 @@ Task("Restore-NuGet-Packages")
     MoveDirectory("../src/packages", packagesDir);
 });
 
-Task("BuildNet6")
-    .Does(() =>
-{
-    DotNetCoreBuild(libvlcsharpCsproj, GetNetCoreBuildSettings());
-});
-
-
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    MSBuild(solutionPath, GetBuildSettings());
+    Build(solutionPath);
 });
 
 // just for (faster) testing
@@ -69,7 +62,7 @@ Task("Build-only-libvlcsharp")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    MSBuild(libvlcsharpCsproj, GetBuildSettings());
+    Build(libvlcsharpCsproj);
 });
 
 Task("Test")
@@ -102,7 +95,7 @@ Task("CIDeploy")
     });
 });
 
-MSBuildSettings GetBuildSettings()
+void Build(string project)
 {
     var settings = new MSBuildSettings();
     settings.SetConfiguration(configuration)
@@ -112,27 +105,8 @@ MSBuildSettings GetBuildSettings()
     {
         settings.WithProperty("VersionSuffix", suffixVersion);
     }
-    return settings;
-}
 
-DotNetCoreBuildSettings GetNetCoreBuildSettings()
-{
-    var settings = new DotNetCoreMSBuildSettings();
-    settings.WithProperty("Net6", "true");
-    settings.SetConfiguration(configuration)
-            .WithProperty("PackageOutputPath", MakeAbsolute(artifactsDir).FullPath);
-    
-    if(isCiBuild)
-    {
-        settings.WithProperty("VersionSuffix", suffixVersion);
-    }
-
-    var netCoreSettings = new DotNetCoreBuildSettings
-    {
-        MSBuildSettings = settings
-    };
-
-    return netCoreSettings;
+    MSBuild(project, settings);
 }
 
 //////////////////////////////////////////////////////////////////////
