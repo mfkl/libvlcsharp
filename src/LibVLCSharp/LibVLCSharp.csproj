@@ -30,7 +30,7 @@ If you need Xamarin.Forms support, see LibVLCSharp.Forms.
 LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Description>
     <TargetFrameworks>netstandard2.1;netstandard2.0;netstandard1.1;net40;net471</TargetFrameworks>
     <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);monoandroid81;xamarin.ios10;xamarin.mac20</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0;uap10.0.16299;net6.0;net6.0-windows;net6.0-windows10.0.19041;net6.0-ios;net6.0-android;net6.0-tvos;net6.0-macos</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0;uap10.0.16299;net6.0;net6.0-windows;net6.0-ios;net6.0-android;net6.0-tvos;net6.0-macos</TargetFrameworks>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
     <RootNamespace>LibVLCSharp</RootNamespace>
     <PackageId>LibVLCSharp</PackageId>
