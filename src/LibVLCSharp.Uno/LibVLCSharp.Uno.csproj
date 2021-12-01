@@ -4,7 +4,7 @@
     <Title>LibVLCSharp.Uno</Title>
     <Summary>Uno integration for LibVLCSharp</Summary>
     <TargetFrameworks>xamarin.ios10;monoandroid81</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);uap10.0.18362</TargetFrameworks>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
     <Description>LibVLCSharp.Uno is the integration of LibVLCSharp with the Uno Platform on Windows, iOS and Android.
 
@@ -12,7 +12,10 @@ It also contains a VLC MediaPlayerElement for the Uno Platform (UWP, Android, iO
     <PackageTags>$(PackageTags);uno</PackageTags>
     <RootNamespace>LibVLCSharp.Uno</RootNamespace>
     <PackageId>LibVLCSharp.Uno</PackageId>
-  </PropertyGroup> 
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
+    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+  </PropertyGroup>
   <ItemGroup>
     <Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
     <PRIResource Include="Strings\**\*.resw" />
