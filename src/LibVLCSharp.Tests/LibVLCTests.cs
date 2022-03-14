@@ -120,7 +120,7 @@ namespace LibVLCSharp.Tests
         [Test]
         public void LibVLCVersion()
         {
-            Assert.True(_libVLC.Version.StartsWith("3"));
+            Assert.True(_libVLC.Version.StartsWith("4"));
         }
 
         [Test]
