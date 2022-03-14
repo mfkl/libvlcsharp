@@ -48,6 +48,10 @@ namespace LibVLCSharp.Tests
                 typeof(MediaList),
                 typeof(Equalizer),
                 typeof(Picture),
+                typeof(PictureList),
+                typeof(MediaTrack),
+                typeof(MediaTrackList),
+                typeof(ProgramList),
                 eventManager
             };
 
@@ -67,6 +71,10 @@ namespace LibVLCSharp.Tests
             foreach (var symLine in deprecatedSymbolsLine)
             {
                 var libvlcIndexStart = symLine.IndexOf("libvlc");
+                if(libvlcIndexStart < 0)
+                {
+                    continue;
+                }
                 var sym1 = symLine.Substring(libvlcIndexStart);
                 var finalSymbol = new string(sym1.TakeWhile(c => c != '(').ToArray());
 
