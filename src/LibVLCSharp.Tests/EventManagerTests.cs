@@ -43,6 +43,7 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
+        [Ignore("libvlc regression https://code.videolan.org/videolan/vlc/-/issues/26705")]
         public async Task OpeningStateChanged()
         {
             var media = new Media(_libVLC, LocalAudioFile);
