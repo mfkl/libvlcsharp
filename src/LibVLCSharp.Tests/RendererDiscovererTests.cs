@@ -18,6 +18,8 @@ namespace LibVLCSharp.Tests
         [Ignore("requires network calls that may fail when run from CI")]
         public async Task DiscoverItems()
         {
+            Console.WriteLine(TestContext.CurrentContext.Test.FullName);
+
             Core.Initialize();
 
             var mp = new MediaPlayer(_libVLC)
@@ -62,6 +64,8 @@ namespace LibVLCSharp.Tests
         [Test]
         public void DisposeRendererDiscoverer()
         {
+            Console.WriteLine(TestContext.CurrentContext.Test.FullName);
+
             var rendererDiscoverer = new RendererDiscoverer(_libVLC, _libVLC.RendererList.LastOrDefault().Name);
             rendererDiscoverer.Dispose();
             Assert.AreEqual(IntPtr.Zero, rendererDiscoverer.NativeReference);
