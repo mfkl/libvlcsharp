@@ -1989,9 +1989,9 @@ namespace LibVLCSharp
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="directory"></param>
         /// <returns></returns>
-        public bool StartRecording(string? path) => Native.LibVLCMediaPlayerRecord(NativeReference, enable: true, path.ToUtf8()) == 0;
+        public bool StartRecording(string? directory) => Native.LibVLCMediaPlayerRecord(NativeReference, enable: true, directory.ToUtf8()) == 0;
 
         /// <summary>
         /// 
