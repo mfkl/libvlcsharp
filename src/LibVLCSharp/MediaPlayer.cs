@@ -2994,6 +2994,16 @@ namespace LibVLCSharp
             add => EventManager.AttachEvent(EventType.MediaPlayerProgramSelected, value);
             remove => EventManager.DetachEvent(EventType.MediaPlayerProgramSelected, value);
         }
+
+        /// <summary>
+        /// The recording state of the mediaplayer changed
+        /// </summary>
+        public event EventHandler<MediaPlayerRecordChangedEventArgs> RecordChanged
+        {
+            add => EventManager.AttachEvent(EventType.MediaPlayerRecordChanged, value);
+            remove => EventManager.DetachEvent(EventType.MediaPlayerRecordChanged, value);
+        }
+
         #endregion
 
         /// <summary>

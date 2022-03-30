@@ -53,6 +53,7 @@ namespace LibVLCSharp
         MediaPlayerTitleListChanged,
         MediaPlayerTitleSelectionChanged,
         MediaPlayerChapterChanged,
+        MediaPlayerRecordChanged,
         MediaListItemAdded = 0x200,
         MediaListWillAddItem,
         MediaListItemDeleted,
@@ -161,6 +162,8 @@ namespace LibVLCSharp
             internal readonly VolumeChanged MediaPlayerVolumeChanged;
             [FieldOffset(0)]
             internal readonly AudioDeviceChanged AudioDeviceChanged;
+            [FieldOffset(0)]
+            internal readonly RecordChanged RecordChanged;
 
             // renderer discoverer
             [FieldOffset(0)]
@@ -294,6 +297,13 @@ namespace LibVLCSharp
         internal readonly struct AudioDeviceChanged
         {
             internal readonly IntPtr Device;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal readonly struct RecordChanged
+        {
+            internal readonly IntPtr FilePath;
+            internal readonly bool IsRecording;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -804,6 +814,28 @@ namespace LibVLCSharp
         {
             UnselectedId = unselectedId;
             SelectedId = selectedId;
+        }
+    }
+
+    /// <summary>
+    /// The mediaplayer started or stopped recording
+    /// </summary>
+    public class MediaPlayerRecordChangedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// filepath of the recorded file
+        /// </summary>
+        public readonly string? FilePath;
+
+        /// <summary>
+        /// True if the mediaplayer is currently recording, false otherwise
+        /// </summary>
+        public readonly bool IsRecording;
+
+        internal MediaPlayerRecordChangedEventArgs(string? filePath, bool isRecording)
+        {
+            FilePath = filePath;
+            IsRecording = isRecording;
         }
     }
 
