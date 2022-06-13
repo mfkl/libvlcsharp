@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Title>LibVLCSharp.WPF.Sample</Title>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <RootNamespace>LibVLCSharp.WPF.Sample</RootNamespace>
   </PropertyGroup>

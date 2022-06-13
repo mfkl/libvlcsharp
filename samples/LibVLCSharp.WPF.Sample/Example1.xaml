@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LibVLCSharp.WPF.Sample"
         xmlns:uc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
         mc:Ignorable="d"
-        Title="Example1" Height="450" Width="800">
+        Title="Example1" Height="450" Width="800" Background="Black">
     <Grid>
        <uc:VideoView x:Name="VideoView" />
     </Grid>
