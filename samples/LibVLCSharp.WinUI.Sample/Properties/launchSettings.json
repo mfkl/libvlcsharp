@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LibVLCSharp.WinUI.Sample (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "LibVLCSharp.WinUI.Sample (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
