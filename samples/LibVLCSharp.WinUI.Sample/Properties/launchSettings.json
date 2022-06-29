@@ -1,10 +1,12 @@
 {
   "profiles": {
     "LibVLCSharp.WinUI.Sample (Package)": {
-      "commandName": "MsixPackage"
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
     },
     "LibVLCSharp.WinUI.Sample (Unpackaged)": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "nativeDebugging": true
     }
   }
 }

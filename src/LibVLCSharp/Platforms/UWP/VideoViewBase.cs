@@ -6,8 +6,13 @@ using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using Windows.ApplicationModel;
+#if WINUI
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+#else
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+#endif
 
 namespace LibVLCSharp.Platforms.UWP
 {
@@ -38,8 +43,9 @@ namespace LibVLCSharp.Platforms.UWP
             if (!DesignMode.DesignModeEnabled)
             {
                 Unloaded += (s, e) => DestroySwapChain();
-
+#if !WINUI
                 Application.Current.Suspending += (s, e) => { Trim(); };
+#endif
             }
         }
 
