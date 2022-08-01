@@ -36,6 +36,7 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     <RootNamespace>LibVLCSharp</RootNamespace>
     <PackageId>LibVLCSharp</PackageId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
   </PropertyGroup>
   <!--Override TFMs when building from the LVS.Win32 solution-->
   <PropertyGroup Condition="$(Configuration.StartsWith('Win32'))">
@@ -69,16 +70,16 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
   </ItemGroup>
   <ItemGroup Condition="$(DefineConstants.Contains('UWP'))">
     <Compile Include="Platforms\UWP\**\*.cs" />
-    <!--<Page Include="Themes\Generic.xaml">
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>-->
+    </Page>
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
     <PackageReference Condition="$(DefineConstants.Contains('WINUI'))" 
                       Include="Microsoft.WindowsAppSDK" 
-                      Version ="1.1.1" />
+                      Version ="1.0.3" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net471' Or '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Memory" Version="4.5.4" />
