@@ -1,5 +1,4 @@
-﻿#if UWP
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace LibVLCSharp
@@ -10,12 +9,29 @@ namespace LibVLCSharp
     /// </summary>
     public static partial class Core
     {
+#if UNITY || UWP
         partial struct Native
         {
             [DllImport(Constants.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
             internal static extern IntPtr LoadPackagedLibrary(string dllToLoad, uint reserved = 0);
         }
 
+        static void InitializeUWP()
+        {
+            LibvlcHandle = Native.LoadPackagedLibrary(Constants.LibraryName);
+            if (LibvlcHandle == IntPtr.Zero)
+            {
+                throw new VLCException($"Failed to load {Constants.LibraryName}{Constants.WindowsLibraryExtension}, error {Marshal.GetLastWin32Error()}." +
+                    $"Please make sure that this library, {Constants.CoreLibraryName}{Constants.WindowsLibraryExtension} and the plugins are copied to the `AppX` folder." +
+                    "For that, you can reference the `VideoLAN.LibVLC.UWP` NuGet package.");
+            }
+#if !UWP10_0
+            EnsureVersionsMatch();
+#endif // !UWP10_0
+            LibVLCLoaded = true;
+        }
+#endif // UNITY || UWP
+#if UWP
         /// <summary>
         /// Load the native libvlc library (if necessary, depending on platform)
         /// <para/> Ensure that you installed the VideoLAN.LibVLC.[YourPlatform] package in your target project
@@ -30,24 +46,7 @@ namespace LibVLCSharp
         public static void Initialize(string? libvlcDirectoryPath = null)
         {
             InitializeUWP();
-
-#if !UWP10_0
-            EnsureVersionsMatch();
-#endif
-            LibVLCLoaded = true;
         }
-
-        static void InitializeUWP()
-        {
-            LibvlcHandle = Native.LoadPackagedLibrary(Constants.LibraryName);
-            if (LibvlcHandle == IntPtr.Zero)
-            {
-                throw new VLCException($"Failed to load {Constants.LibraryName}{Constants.WindowsLibraryExtension}, error {Marshal.GetLastWin32Error()}." +
-                    $"Please make sure that this library, {Constants.CoreLibraryName}{Constants.WindowsLibraryExtension} and the plugins are copied to the `AppX` folder." +
-                    "For that, you can reference the `VideoLAN.LibVLC.UWP` NuGet package.");
-            }
-        }
-
+#endif // UWP
     }
 }
-#endif

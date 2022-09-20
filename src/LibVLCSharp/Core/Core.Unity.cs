@@ -1,5 +1,4 @@
 ﻿#if UNITY
-
 using System.Runtime.InteropServices;
 
 namespace LibVLCSharp
@@ -26,6 +25,12 @@ namespace LibVLCSharp
         {
             if(!PlatformHelper.IsWindows) return; // only VLC for Unity on Windows currently requires pre-initialization logic
 
+            if (PlatformHelper.IsUWP)
+            {
+                Core.InitializeUWP();
+                return;
+            }
+            
             if(string.IsNullOrEmpty(libvlcDirectoryPath))
             {
                 throw new VLCException("Please provide UnityEngine.Application.dataPath to Core.Initialize for proper initialization.");
