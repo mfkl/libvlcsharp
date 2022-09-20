@@ -27,10 +27,6 @@ namespace LibVLCSharp
             [DllImport(Constants.Kernel32, SetLastError = true)]
             internal static extern ErrorModes SetErrorMode(ErrorModes uMode);
         }
-#if !NETSTANDARD1_1
-        static IntPtr LibvlcHandle;
-        static IntPtr LibvlccoreHandle;
-#endif
 
         /// <summary>
         /// Load the native libvlc library (if necessary, depending on platform)

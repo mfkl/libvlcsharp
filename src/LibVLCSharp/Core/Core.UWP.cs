@@ -16,8 +16,6 @@ namespace LibVLCSharp
             internal static extern IntPtr LoadPackagedLibrary(string dllToLoad, uint reserved = 0);
         }
 
-        static IntPtr LibvlcHandle;
-
         /// <summary>
         /// Load the native libvlc library (if necessary, depending on platform)
         /// <para/> Ensure that you installed the VideoLAN.LibVLC.[YourPlatform] package in your target project

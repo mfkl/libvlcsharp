@@ -15,6 +15,10 @@ namespace LibVLCSharp
     /// </summary>
     public static partial class Core
     {
+#if !NETSTANDARD1_1
+        static IntPtr LibvlcHandle;
+        static IntPtr LibvlccoreHandle;
+#endif
         partial struct Native
         {
 #if !UWP10_0 && !NETSTANDARD1_1
