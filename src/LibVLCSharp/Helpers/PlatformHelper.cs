@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace LibVLCSharp
 {
@@ -64,5 +65,49 @@ namespace LibVLCSharp
         /// Returns true if running in 64bit process, false otherwise
         /// </summary>
         internal static bool IsX64BitProcess => IntPtr.Size == 8;
+
+        /// Following code is from Code from DesktopBridgeHelpers
+
+        const long APPMODEL_ERROR_NO_PACKAGE = 15700L;
+
+        [DllImport(Constants.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern int GetCurrentPackageFullName(ref int packageFullNameLength, StringBuilder packageFullName);
+
+        static bool isUwp;
+        static bool uwpChecked;
+
+        internal static bool IsUWP
+        {
+            get
+            {
+                if (uwpChecked)
+                    return isUwp;
+
+                uwpChecked = true;
+
+                if (IsWindows7OrLower)
+                {
+                    isUwp = false;
+                }
+                else
+                {
+                    var length = 0;
+                    var sb = new StringBuilder(length);
+                    isUwp = GetCurrentPackageFullName(ref length, sb) != APPMODEL_ERROR_NO_PACKAGE;
+                }
+                return isUwp;
+            }
+        }
+
+        private static bool IsWindows7OrLower
+        {
+            get
+            {
+                var versionMajor = Environment.OSVersion.Version.Major;
+                var versionMinor = Environment.OSVersion.Version.Minor;
+                var version = versionMajor + (double)versionMinor / 10;
+                return version <= 6.1;
+            }
+        }
     }
 }
