@@ -6,12 +6,12 @@ namespace LibVLCSharp
     /// <summary>
     /// Small helper for determining the current platform
     /// </summary>
-    public class PlatformHelper
+    internal class PlatformHelper
     {
         /// <summary>
         /// Returns true if running on Windows, false otherwise
         /// </summary>
-        public static bool IsWindows
+        internal static bool IsWindows
         {
 #if NET45
             get => Environment.OSVersion.Platform == PlatformID.Win32NT;
@@ -25,7 +25,7 @@ namespace LibVLCSharp
         /// <summary>
         /// Returns true if running on Linux, false otherwise
         /// </summary>
-        public static bool IsLinux
+        internal static bool IsLinux
         {
 #if NET45
             get => Environment.OSVersion.Platform == PlatformID.Unix;
@@ -39,7 +39,7 @@ namespace LibVLCSharp
         /// <summary>
         /// Returns true if running on Linux desktop, false otherwise
         /// </summary>
-        public static bool IsLinuxDesktop
+        internal static bool IsLinuxDesktop
         {
 #if ANDROID
             get => false;
@@ -51,7 +51,7 @@ namespace LibVLCSharp
         /// <summary>
         /// Returns true if running on macOS, false otherwise
         /// </summary>
-        public static bool IsMac
+        internal static bool IsMac
         {
 #if NET45 || UWP
             get => false; // no easy way to detect Mac platform host at runtime under net471
@@ -63,6 +63,6 @@ namespace LibVLCSharp
         /// <summary>
         /// Returns true if running in 64bit process, false otherwise
         /// </summary>
-        public static bool IsX64BitProcess => IntPtr.Size == 8;
+        internal static bool IsX64BitProcess => IntPtr.Size == 8;
     }
 }
