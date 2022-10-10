@@ -6,10 +6,12 @@ steps:
     version: 6.0.400
 
 - bash: |
+   dotnet workload list
    dotnet workload install android
    dotnet workload install ios
    dotnet workload install macos
    dotnet workload install tvos
+   dotnet workload install maccatalyst
   displayName: 'Install mobile workloads'
   condition: ne( variables['Agent.OS'], 'Linux' )
 
