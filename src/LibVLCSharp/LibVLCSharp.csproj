@@ -28,7 +28,8 @@ This package also contains the views for the following platforms:
 If you need Xamarin.Forms support, see LibVLCSharp.Forms. 
 
 LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Description>
-    <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);netstandard2.0;xamarin.mac20</TargetFrameworks>
+    <TargetFramework Condition="!$([MSBuild]::IsOsPlatform('Linux'))">xamarin.mac20</TargetFramework>
+    <!-- <TargetFrameworks Condition="!$([MSBuild]::IsOsPlatform('Linux'))">$(TargetFrameworks);netstandard2.0;xamarin.mac20</TargetFrameworks> -->
     <!-- <TargetFrameworks Condition="$([MSBuild]::IsOsPlatform('Windows'))">$(TargetFrameworks);netstandard2.0;net6.0-macos</TargetFrameworks> -->
     <Configurations>Debug;Release;Win32Debug;Win32Release</Configurations>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeAWindow</TargetsForTfmSpecificBuildOutput>
