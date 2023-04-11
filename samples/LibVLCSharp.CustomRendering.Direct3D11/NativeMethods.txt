@@ -1,0 +1,9 @@
+DXGI.*
+DXGI_SWAP_CHAIN_FLAG
+D3D11_SDK_VERSION
+EnterCriticalSection
+LeaveCriticalSection
+D3D11CreateDeviceAndSwapChain
+ID3D10Multithread
+QueryInterface
+IUnknown
