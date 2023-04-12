@@ -173,7 +173,7 @@ namespace LibVLCSharp.CustomRendering.Direct3D11
 
             ID3D10Multithread* multithread = null;
 
-            ((IUnknown*)_d3dDevice)->QueryInterface((Guid*)Unsafe.AsPointer(ref id3d10multithreadGuid), (void**)&multithread);
+            _d3dDevice->QueryInterface(&id3d10multithreadGuid, (void**)&multithread);
             multithread->SetMultithreadProtected(true);
             multithread->Release();
 
@@ -338,7 +338,7 @@ namespace LibVLCSharp.CustomRendering.Direct3D11
             ID3D11Resource* res;
             var resourceGuid = typeof(ID3D11Resource).GUID;
 
-            ((IUnknown*)pVertexBuffer)->QueryInterface((Guid*)Unsafe.AsPointer(ref resourceGuid), (void**)&res);
+            pVertexBuffer->QueryInterface(&resourceGuid, (void**)&res);
 
             ThrowIfFailed(_d3dctx->Map(res, 0, D3D11_MAP.D3D11_MAP_WRITE_DISCARD, 0, &ms));
             for (var i = 0; i < ourVerticles.Length; i++)
@@ -359,7 +359,7 @@ namespace LibVLCSharp.CustomRendering.Direct3D11
 
             pIndexBuffer = CreateBuffer(bufferDesc);
 
-            ThrowIfFailed(((IUnknown*)pIndexBuffer)->QueryInterface((Guid*)Unsafe.AsPointer(ref resourceGuid), (void**)&res));
+            ThrowIfFailed(pIndexBuffer->QueryInterface(&resourceGuid, (void**)&res));
 
             ThrowIfFailed(_d3dctx->Map(res, 0, D3D11_MAP.D3D11_MAP_WRITE_DISCARD, 0, &ms));
             Marshal.WriteInt16((IntPtr)ms.pData, 0 * sizeof(ushort), 3);
@@ -509,7 +509,7 @@ namespace LibVLCSharp.CustomRendering.Direct3D11
             IDXGIResource1* sharedResource = null;
             var dxgiresource1Guid = typeof(IDXGIResource1).GUID;
 
-            pVertexBuffer->QueryInterface(&dxgiresource1Guid, (void**)&sharedResource);
+            _texture->QueryInterface(&dxgiresource1Guid, (void**)&sharedResource);
 
             fixed (HANDLE* handle = &_sharedHandle)
                 ThrowIfFailed(sharedResource->CreateSharedHandle(null, DXGI_SHARED_RESOURCE_READ | DXGI_SHARED_RESOURCE_WRITE, null, handle));
