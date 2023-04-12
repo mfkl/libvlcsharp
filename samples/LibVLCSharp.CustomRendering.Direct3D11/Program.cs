@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Text;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows.Forms;
 
 using Windows.Win32.System.Threading;
 using Windows.Win32.Graphics.Dxgi;
@@ -12,12 +13,9 @@ using Windows.Win32.Graphics.Direct3D11;
 using Windows.Win32.Graphics.Direct3D;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.Direct3D10;
-using Windows.Win32.System.Com;
 using static Windows.Win32.PInvoke;
 
 using static LibVLCSharp.MediaPlayer;
-using Windows.Win32;
-using System.Runtime.CompilerServices;
 
 namespace LibVLCSharp.CustomRendering.Direct3D11
 {
