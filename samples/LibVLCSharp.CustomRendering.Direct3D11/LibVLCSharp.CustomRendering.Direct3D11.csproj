@@ -6,6 +6,7 @@
     <LangVersion>9.0</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseWindowsForms>true</UseWindowsForms>
+	  <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

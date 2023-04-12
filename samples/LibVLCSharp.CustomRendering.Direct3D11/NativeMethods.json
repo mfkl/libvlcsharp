@@ -1,5 +1,21 @@
 {
   "$schema": "https://aka.ms/CsWin32.schema.json",
-  "emitSingleFile": false,
-  "allowMarshaling": false
+  "allowMarshaling": false,
+  "comInterop": {
+    "preserveSigMethods": [
+      "IUnknown.QueryInterface",
+      "IDXGISwapChain.GetBuffer",
+      "ID3D11Device.CreateBuffer",
+      "ID3D11Device.CreateRenderTargetView",
+      "ID3D11Device.CreateShaderResourceView",
+      "ID3D11Device.CreateVertexShader",
+      "ID3D11Device.CreatePixelShader",
+      "ID3D11Device.CreateInputLayout",
+      "ID3D11Device.CreateSamplerState",
+      "ID3D11Device.CreateTexture2D",
+      "ID3D11DeviceContext.Map",
+      "IDXGIResource1.CreateSharedHandle",
+      "ID3D11Device1.OpenSharedResource1"
+    ]
+  }
 }
