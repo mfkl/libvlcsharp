@@ -21,7 +21,7 @@ namespace LibVLCSharp.WinUI.Sample
         public MainWindow()
         {
             InitializeComponent();
-            VideoView.Initialized += VideoView_Initialized;
+            //VideoView.Initialized += VideoView_Initialized;
             Closed += MainWindow_Closed;
         }
 
@@ -33,12 +33,12 @@ namespace LibVLCSharp.WinUI.Sample
             };
             mp.Stop();
         }
-        private void VideoView_Initialized(object sender, InitializedEventArgs e)
-        {
-            libvlc = new LibVLC(enableDebugLogs: true, e.SwapChainOptions);
-            mp = new MediaPlayer(libvlc);
-            using var media = new Media(new Uri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"));
-            mp.Play(media);
-        }
+        //private void VideoView_Initialized(object sender, InitializedEventArgs e)
+        //{
+        //    libvlc = new LibVLC(enableDebugLogs: true, e.SwapChainOptions);
+        //    mp = new MediaPlayer(libvlc);
+        //    using var media = new Media(new Uri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"));
+        //    mp.Play(media);
+        //}
     }
 }
