@@ -7,8 +7,13 @@ using Windows.Win32.Graphics.Dxgi.Common;
 using Windows.Win32.Graphics.Direct3D11;
 using Windows.Win32.Graphics.Direct3D;
 using Windows.Win32.Foundation;
+using Windows.Win32;
 using Windows.Win32.Graphics.Direct3D10;
 using Windows.System.Profile;
+
+using static Windows.Win32.PInvoke;
+using Windows.Win32.System.Com;
+using System.Runtime.CompilerServices;
 
 #if WINUI
 using Microsoft.UI.Xaml;
@@ -38,7 +43,7 @@ namespace LibVLCSharp.Platforms.Windows
         const string Mobile = "Windows.Mobile";
         bool _loaded;
 
-        //IDXGISwapChain* _swapchain;
+        IDXGISwapChain1* _swapchain;
         //ID3D11RenderTargetView* _swapchainRenderTarget;
 
         //ID3D11Device* _d3dDevice;
@@ -47,8 +52,8 @@ namespace LibVLCSharp.Platforms.Windows
         //int WIDTH = 1500;
         //int HEIGHT = 900;
 
-        //ID3D11Device* _d3deviceVLC;
-        //ID3D11DeviceContext* _d3dctxVLC;
+        ID3D11Device* _d3deviceVLC;
+        ID3D11DeviceContext* _d3dctxVLC;
 
         //ID3D11Texture2D* _textureVLC;
         //ID3D11RenderTargetView* _textureRenderTarget;
@@ -95,6 +100,14 @@ namespace LibVLCSharp.Platforms.Windows
                 Application.Current.Suspending += (s, e) => { Trim(); };
             }
 #endif
+        }
+
+        void ThrowIfFailed(HRESULT hr)
+        {
+            if (hr.Failed)
+            {
+                Marshal.ThrowExceptionForHR(hr);
+            }
         }
 
         /// <summary>
@@ -144,85 +157,59 @@ namespace LibVLCSharp.Platforms.Windows
             if (_panel == null || _panel.ActualHeight == 0)
                 return;
 
+            D3D11_CREATE_DEVICE_FLAG creationFlags = 0;
+#if DEBUG
+            creationFlags |= D3D11_CREATE_DEVICE_FLAG.D3D11_CREATE_DEVICE_DEBUG;
+#endif
+            fixed (ID3D11Device** device = &_d3deviceVLC)
+            fixed (ID3D11DeviceContext** context = &_d3dctxVLC)
+            {
+                ThrowIfFailed(D3D11CreateDevice(null,
+                      D3D_DRIVER_TYPE.D3D_DRIVER_TYPE_HARDWARE,
+                      HINSTANCE.Null,
+                      creationFlags | D3D11_CREATE_DEVICE_FLAG.D3D11_CREATE_DEVICE_VIDEO_SUPPORT, /* needed for hardware decoding */
+                      null, 0,
+                      D3D11_SDK_VERSION,
+                      device, null, context));
+            }
+
+            var desc = new DXGI_SWAP_CHAIN_DESC1
+            {
+                Width = (uint)(_panel.ActualWidth * _panel.CompositionScaleX),
+                Height = (uint)(_panel.ActualHeight * _panel.CompositionScaleY),
+                Format = DXGI_FORMAT.DXGI_FORMAT_B8G8R8A8_UNORM,
+                Stereo = false,
+                SampleDesc = new DXGI_SAMPLE_DESC { Count = 1, Quality = 0 },
+                BufferUsage = DXGI_USAGE.DXGI_USAGE_RENDER_TARGET_OUTPUT,
+                BufferCount = 2,
+                SwapEffect = DXGI_SWAP_EFFECT.DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL,
+                AlphaMode = DXGI_ALPHA_MODE.DXGI_ALPHA_MODE_UNSPECIFIED
+            };
+
+            IUnknown* res;
+            var iunknownGuid = typeof(IUnknown).GUID;
+            _d3deviceVLC->QueryInterface(&iunknownGuid, (void**)&res);
+
             var factory = new IDXGIFactory2();
-            //factory.
-            //factory.CreateSwapChainForComposition()
+            //fixed (DXGI_SWAP_CHAIN_DESC1* descc = &desc)
+            fixed (IDXGISwapChain1** swapchain = &_swapchain)
+            { 
+                factory.CreateSwapChainForComposition(res, (DXGI_SWAP_CHAIN_DESC1*)Unsafe.AsPointer(ref desc), null, swapchain);
+            }
 
             factory.Release();
-            //Windows.Win32.Graphics.Dxgi.Factory2? dxgiFactory = null;
-            //try
-            // {
-            //                var deviceCreationFlags =
-            //                    DeviceCreationFlags.BgraSupport | DeviceCreationFlags.VideoSupport;
-
-            //#if DEBUG
-            //                if (AnalyticsInfo.VersionInfo.DeviceFamily != Mobile)
-            //                    deviceCreationFlags |= DeviceCreationFlags.Debug;
-
-            //                try
-            //                {
-            //                    dxgiFactory = new SharpDX.DXGI.Factory2(true);
-            //                }
-            //                catch (SharpDXException)
-            //                {
-            //                    dxgiFactory = new SharpDX.DXGI.Factory2(false);
-            //                }
-            //#else
-            //                dxgiFactory = new SharpDX.DXGI.Factory2(false);
-            //#endif
-            //                //CreateSwapChainForComposition
-            //                _d3D11Device = null;
-            //                for (var i = 0; i < dxgiFactory.GetAdapterCount(); i++)
-            //                {
-            //                    try
-            //                    {
-            //                        var adapter = dxgiFactory.GetAdapter(i);
-            //                        _d3D11Device = new SharpDX.Direct3D11.Device(adapter, deviceCreationFlags);
-            //                        adapter.Dispose();
-            //                        adapter = null;
-            //                        break;
-            //                    }
-            //                    catch (SharpDXException)
-            //                    {
-            //                    }
-            //                }
-
-            //                if (_d3D11Device is null)
-            //                {
-            //                    throw new VLCException("Could not create Direct3D11 device : No compatible adapter found.");
-            //                }
-
-            //                var device = _d3D11Device.QueryInterface<SharpDX.DXGI.Device1>();
-
-            //                //Create the swapchain
-            //                var swapChainDescription = new SharpDX.DXGI.SwapChainDescription1
-            //                {
-            //                    Width = (int)(_panel.ActualWidth * _panel.CompositionScaleX),
-            //                    Height = (int)(_panel.ActualHeight * _panel.CompositionScaleY),
-            //                    Format = SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-            //                    Stereo = false,
-            //                    SampleDescription =
-            //                    {
-            //                        Count = 1,
-            //                        Quality = 0
-            //                    },
-            //                    Usage = Usage.RenderTargetOutput,
-            //                    BufferCount = 2,
-            //                    SwapEffect = SwapEffect.FlipSequential,
-            //                    Flags = SwapChainFlags.None,
-            //                    AlphaMode = AlphaMode.Unspecified
-            //                };
-
-            //                _swapChain = new SharpDX.DXGI.SwapChain1(dxgiFactory, _d3D11Device, ref swapChainDescription);
-            //                dxgiFactory.Dispose();
-            //                dxgiFactory = null;
 
             //                device.MaximumFrameLatency = 1;
+            //var sw = (Windows.Win32.System.WinRT.Xaml.ISwapChainPanelNative)_panel;
 
-            //                using (var panelNative = ComObject.As<ISwapChainPanelNative>(_panel))
-            //                {
-            //                    panelNative.SwapChain = _swapChain;
-            //                }
+            //fixed (* sw = _panel)
+            //{
+
+            //}
+            //using (var panelNative = ComObject.As<>(_panel))
+            //{
+            //    panelNative.SwapChain = _swapChain;
+            //}
 
             //                // This is necessary so we can call Trim() on suspend
             //                _device3 = device.QueryInterface<SharpDX.DXGI.Device3>();

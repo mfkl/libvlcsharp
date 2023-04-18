@@ -79,6 +79,7 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.</Descri
     </PackageReference>
     <None Remove="NativeMethods.txt" />
     <AdditionalFiles Include="NativeMethods.txt" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   
    <ItemGroup Condition="$(TargetFramework.StartsWith('net4')) Or '$(TargetFramework)' == 'netstandard2.0' ">

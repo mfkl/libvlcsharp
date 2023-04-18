@@ -16,11 +16,7 @@
 
     <Grid>
       <lvs:VideoView MediaPlayer="{Binding MediaPlayer}">
-            <interactivity:Interaction.Behaviors>
-                <interactions:EventTriggerBehavior EventName="Initialized">
-                    <interactions:InvokeCommandAction Command="{Binding InitializedCommand}"/>
-                </interactions:EventTriggerBehavior>
-            </interactivity:Interaction.Behaviors>
+
         </lvs:VideoView>
     </Grid>
 </Page>
