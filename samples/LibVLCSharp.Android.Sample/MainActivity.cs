@@ -28,6 +28,7 @@ namespace LibVLCSharp.Android.Sample
             base.OnResume();
 
             _libVLC = new LibVLC(enableDebugLogs: true);
+            _libVLC.Log += (s, e) => { System.Diagnostics.Debug.WriteLine(e.FormattedLog); };
             _mediaPlayer = new MediaPlayer(_libVLC)
             {
                 EnableHardwareDecoding = true

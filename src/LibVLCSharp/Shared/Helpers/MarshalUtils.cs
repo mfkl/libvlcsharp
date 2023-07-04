@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -72,6 +73,11 @@ namespace LibVLCSharp.Shared.Helpers
 #if APPLE
             return AppleLogCallback(format, args);
 #else
+
+#if ANDROID
+            if (PlatformHelper.IsIntelAndroid)
+                return LinuxX64LogCallback(format, args);
+#endif
             // special marshalling is needed on Linux desktop 64 bits.
             if (PlatformHelper.IsLinuxDesktop && PlatformHelper.IsX64BitProcess)
             {
@@ -174,15 +180,11 @@ namespace LibVLCSharp.Shared.Helpers
 #pragma warning disable IDE1006 // Naming Styles
         static int vsnprintf(IntPtr buffer, UIntPtr size, IntPtr format, IntPtr args)
         {
-#if ANDROID
-            return Native.vsnprintf_linux(buffer, size, format, args);
-#else
             if (PlatformHelper.IsWindows)
                 return Native.vsnprintf_windows(buffer, size, format, args);
             else if (PlatformHelper.IsLinux)
                 return Native.vsnprintf_linux(buffer, size, format, args);
             return -1;
-#endif
         }
 
         static int vsprintf(IntPtr buffer, IntPtr format, IntPtr args)

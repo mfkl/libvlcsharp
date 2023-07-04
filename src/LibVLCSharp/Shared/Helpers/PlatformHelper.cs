@@ -64,5 +64,21 @@ namespace LibVLCSharp.Shared
         /// Returns true if running in 64bit process, false otherwise
         /// </summary>
         public static bool IsX64BitProcess => IntPtr.Size == 8;
+
+#if ANDROID
+        /// <summary>
+        /// Returns true if
+        /// </summary>
+        public static bool IsIntelAndroid
+        {
+            get
+            {
+                var r = Android.OS.Build.SupportedAbis;
+                return true;
+            }
+        }
+#endif
+
+
     }
 }
