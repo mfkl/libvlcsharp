@@ -57,7 +57,7 @@ namespace LibVLCSharp
 
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
                 EntryPoint = "libvlc_media_player_is_playing")]
-            internal static extern int LibVLCMediaPlayerIsPlaying(IntPtr mediaPlayer);
+            internal static extern bool LibVLCMediaPlayerIsPlaying(IntPtr mediaPlayer);
 
 
             [DllImport(Constants.LibraryName, CallingConvention = CallingConvention.Cdecl,
@@ -646,7 +646,7 @@ namespace LibVLCSharp
         /// <summary>
         /// return true if the media player is playing, false otherwise
         /// </summary>
-        public bool IsPlaying => Native.LibVLCMediaPlayerIsPlaying(NativeReference) != 0;
+        public bool IsPlaying => Native.LibVLCMediaPlayerIsPlaying(NativeReference);
 
         /// <summary>
         /// Starts playback with Media that is set
