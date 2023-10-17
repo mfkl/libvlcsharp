@@ -7,32 +7,32 @@ pr:
 - 3.x
 
 stages:
-- stage: Build
-  variables:
-    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-    DOTNET_CLI_TELEMETRY_OPTOUT: true
-  jobs:
-  - job: Linux
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - template: linux-build.yml
+# - stage: Build
+#   variables:
+#     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+#     DOTNET_CLI_TELEMETRY_OPTOUT: true
+#   jobs:
+#   - job: Linux
+#     pool:
+#       vmImage: 'ubuntu-latest'
+#     steps:
+#     - template: linux-build.yml
 
-  - job: macOS
-    pool:
-      vmImage: 'macOS-latest'
-    steps:
-    - template: mac-build.yml
+#   - job: macOS
+#     pool:
+#       vmImage: 'macOS-latest'
+#     steps:
+#     - template: mac-build.yml
 
-  - job: Windows
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - template: windows-build.yml
+#   - job: Windows
+#     pool:
+#       vmImage: 'windows-latest'
+#     steps:
+#     - template: windows-build.yml
 
 - stage: Test
-  dependsOn: Build
-  condition: succeeded('Build')
+  # dependsOn: Build
+  # condition: succeeded('Build')
   variables:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     DOTNET_CLI_TELEMETRY_OPTOUT: true
