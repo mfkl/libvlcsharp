@@ -72,7 +72,8 @@ Task("Test")
 {
     var settings = new DotNetTestSettings
     {
-        Loggers = new []{ "console;verbosity=detailed" }
+        Loggers = new []{ "console;verbosity=detailed" },
+        Blame = true
     };
 
     DotNetTest(testCsproj, settings);
