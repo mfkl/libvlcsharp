@@ -154,7 +154,6 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
-        [Ignore("sometimes fails on CI")]
         public async Task CreateMediaFromStreamMultiplePlay()
         {
             using var mp = new MediaPlayer(_libVLC);
@@ -173,7 +172,6 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
-        [Ignore("sometimes fails on CI")]
         public async Task CreateMultipleMediaFromStreamPlay()
         {
             var libVLC1 = new LibVLC("--no-audio", "--no-video");
