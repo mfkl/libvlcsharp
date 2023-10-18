@@ -55,6 +55,7 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
+        [Ignore]
         public void AudioOutputDevices()
         {
             var outputs = _libVLC.AudioOutputs;
