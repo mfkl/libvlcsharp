@@ -37,31 +37,14 @@ namespace LibVLCSharp
             {
                 throw new VLCException("Please provide UnityEngine.Application.dataPath to Core.Initialize for proper initialization.");
             }
-
-            if(IsUWP())
+          
+            LibvlcHandle = Native.LoadPackagedLibrary(Constants.LibraryName);
+            if (LibvlcHandle == IntPtr.Zero)
             {
-                LibvlcHandle = Native.LoadPackagedLibrary(Constants.LibraryName);
-                if (LibvlcHandle == IntPtr.Zero)
-                {
-                    throw new VLCException($"Failed to load {Constants.LibraryName}{Constants.WindowsLibraryExtension}, error {Marshal.GetLastWin32Error()}." +
-                        $"Please make sure that this library, {Constants.CoreLibraryName}{Constants.WindowsLibraryExtension} and the plugins are copied to the `AppX` folder." +
-                        "For that, you can reference the `VideoLAN.LibVLC.UWP` NuGet package.");
-                }
-                return;
+                throw new VLCException($"Failed to load {Constants.LibraryName}{Constants.WindowsLibraryExtension}, error {Marshal.GetLastWin32Error()}." +
+                    $"Please make sure that this library, {Constants.CoreLibraryName}{Constants.WindowsLibraryExtension} and the plugins are copied to the `AppX` folder." +
+                    "For that, you can reference the `VideoLAN.LibVLC.UWP` NuGet package.");
             }
-            if (PlatformHelper.IsMac)
-            {
-                var arch = PlatformHelper.IsArm64BitProcess ? "ARM64" : "x86_64";
-                Native.SetPluginPath($"{libvlcDirectoryPath!}/VLCUnity/Plugins/macOS/{arch}/vlc/plugins/:{libvlcDirectoryPath!}/PlugIns/{arch}");
-                libvlcDirectoryPath = $"{libvlcDirectoryPath}\\PlugIns\\{arch}";
-            }
-            else
-            {
-                Native.SetPluginPath(libvlcDirectoryPath!);
-            }
-            libvlcDirectoryPath = $"{libvlcDirectoryPath}\\Plugins";
-
-            InitializeDesktop(libvlcDirectoryPath);
         }
 
         // from https://github.com/qmatteoq/DesktopBridgeHelpers
