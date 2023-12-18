@@ -63,6 +63,13 @@ namespace LibVLCSharp.Shared
         /// <summary>
         /// Returns true if running in 64bit process, false otherwise
         /// </summary>
-        public static bool IsX64BitProcess => IntPtr.Size == 8;
+        public static bool IsX64BitProcess
+        {
+#if NET40
+            get => IntPtr.Size == 8; // no easy way to detect arm64 on net40
+#else
+            get => RuntimeInformation.ProcessArchitecture == Architecture.X64;
+#endif
+        }
     }
 }
