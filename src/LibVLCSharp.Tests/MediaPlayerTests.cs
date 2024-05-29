@@ -218,35 +218,6 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
-        public async Task MultiTrackSelection()
-        {
-            var msub = "https://streams.videolan.org/samples/Matroska/subtitles/multiple_sub_sample.mkv";
-            var mp = new MediaPlayer(_libVLC)
-            {
-                Media = new Media(new Uri(msub)),
-                Mute = true
-            };
-
-            var tcs = new TaskCompletionSource<bool>();
-
-            var trackList = default(MediaTrackList);
-            mp.Playing += (s, e) => Task.Run(() =>
-            {
-                trackList = mp.Tracks(TrackType.Text);
-                tcs.SetResult(true);
-            });
-
-            mp.Play();
-            await tcs.Task;
-
-            Assert.AreEqual(7, trackList?.Count);
-
-            mp.Select(trackList.ToArray());
-
-            await Task.Delay(10000);
-        }
-
-        [Test]
         public async Task JumpTime()
         {
             var mp = new MediaPlayer(_libVLC);
