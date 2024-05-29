@@ -621,7 +621,7 @@ namespace LibVLCSharp
         /// <summary>
         /// True if dialog handlers are set
         /// </summary>
-        public bool DialogHandlersSet => _error != null;
+        public bool DialogHandlersSet => _login != null;
         DisplayError? _error;
         DisplayLogin? _login;
         DisplayQuestion? _question;
