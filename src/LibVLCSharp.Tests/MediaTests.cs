@@ -243,11 +243,11 @@ namespace LibVLCSharp.Tests
         public async Task MediaFileStat()
         {
             using var media = new Media(new Uri(Directory.GetParent(typeof(MediaTests).Assembly.Location).FullName));
-            await media.ParseAsync(_libVLC);
+            await media.ParseAsync(_libVLC, MediaParseOptions.ParseForced);
 
             var sample = media.SubItems.Single(m => m.Mrl.EndsWith("sample.mp3"));
             sample.FileStat(FileStat.Mtime, out var mtime);
-            Assert.AreEqual(1618993056, mtime);
+            Assert.AreEqual(1648530642, mtime);
 
             sample.FileStat(FileStat.Size, out var size);
             Assert.AreEqual(24450, size);
