@@ -1,5 +1,4 @@
-﻿using LibVLCSharp;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -100,22 +99,10 @@ namespace LibVLCSharp.Tests
             var missingApisCount = missingApis.Count();
 
             Debug.WriteLine($"we have {dllImports.Count} dll import statements");
-            Debug.WriteLine($"{missingApisCount} missing APIs implementation");
 
-            foreach (var miss in missingApis)
-            {
-                Debug.WriteLine(miss);
-            }
+            Assert.Zero(missingApis.Count(), string.Concat("missing APIs are: ", string.Join(", ", missingApis)));
 
-            var unusedDllImportsCount = unusedDllImports.Count();
-            Debug.WriteLine($"{unusedDllImportsCount} unused DllImports implementation");
-            foreach (var unused in unusedDllImports)
-            {
-                Debug.WriteLine(unused);
-            }
-
-            Assert.Zero(missingApisCount);
-            Assert.Zero(unusedDllImportsCount);
+            Assert.Zero(unusedDllImports.Count(), string.Concat("unused dll imports are: ", string.Join(", ", unusedDllImports)));
         }
     }
 }
