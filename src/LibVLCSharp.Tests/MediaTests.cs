@@ -62,14 +62,19 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
-        public async Task CreateRealMedia()
+        public async Task CheckStats()
         {
-            using var media = new Media(new Uri(LocalAudioFile));
+            using var media = new Media(new Uri(RemoteVideoStream));
             Assert.NotZero(media.Duration);
             using var mp = new MediaPlayer(_libVLC, media);
+
             Assert.True(mp.Play());
-            await Task.Delay(4000); // have to wait a bit for statistics to populate
-            Assert.Greater(media.Statistics.DemuxBitrate, 0);
+            
+            await Task.Delay(5000); // have to wait a bit for statistics to populate
+
+            Assert.NotZero(media.Statistics.DemuxBitrate);
+            Assert.NotZero(media.Statistics.ReadBytes);
+
             mp.Stop();
         }
 
