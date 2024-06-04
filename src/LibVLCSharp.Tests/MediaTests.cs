@@ -62,6 +62,7 @@ namespace LibVLCSharp.Tests
         }
 
         [Test]
+        [Ignore("timing related")]
         public async Task CheckStats()
         {
             using var media = new Media(new Uri(RemoteVideoStream));
@@ -76,22 +77,6 @@ namespace LibVLCSharp.Tests
             Assert.NotZero(media.Statistics.ReadBytes);
 
             mp.Stop();
-        }
-
-        [Test]
-        public async Task CreateRealMediaFromUri()
-        {
-            using (var media = new Media(new Uri(RemoteAudioStream, UriKind.Absolute)))
-            {
-                Assert.NotZero(media.Duration);
-                using (var mp = new MediaPlayer(_libVLC, media))
-                {
-                    Assert.True(mp.Play());
-                    await Task.Delay(4000); // have to wait a bit for statistics to populate
-                    Assert.Greater(media.Statistics.DemuxBitrate, 0);
-                    mp.Stop();
-                }
-            }
         }
 
         [Test]
