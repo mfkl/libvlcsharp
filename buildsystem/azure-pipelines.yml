@@ -44,10 +44,10 @@ stages:
       steps:
         - template: base-template.yml
         - task: UseDotNet@2
-          displayName: 'Use .NET Core SDK6'
+          displayName: 'Use .NET Core SDK'
           inputs:
             packageType: sdk
-            version: 6.x
+            version: 7.0.x
         - task: DotNetCoreCLI@2
           displayName: 'Test'
           inputs:
