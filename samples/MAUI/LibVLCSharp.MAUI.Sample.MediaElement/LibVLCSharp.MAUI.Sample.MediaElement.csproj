@@ -41,6 +41,8 @@
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Include="Resources\Images\play.svg" />
+		<MauiImage Include="Resources\Images\pause.svg" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -51,12 +53,19 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-		<PackageReference Include="VideoLAN.LibVLC.Android" Version="3.5.3" />
 	</ItemGroup>
 
+	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+		<PackageReference Include="VideoLAN.LibVLC.Android" Version="3.5.3" />
+	</ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.Contains('-ios'))">
+		<PackageReference Include="VideoLAN.LibVLC.iOS" Version="3.3.18" />
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\LibVLCSharp.MAUI\LibVLCSharp.MAUI.csproj" />
 	  <ProjectReference Include="..\..\..\src\LibVLCSharp\LibVLCSharp.csproj" />
+	  <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.60" />
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadDebuggerTimeoutExceptionLibVLCSharpMAUISampleMediaElementHideInfoBar="True" /></VisualStudio></ProjectExtensions>

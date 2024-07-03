@@ -125,14 +125,14 @@
         <Setter Property="CornerRadius" Value="27" />
         <Setter Property="HeightRequest" Value="54" />
         <Setter Property="WidthRequest" Value="54" />
-        <Setter Property="Source" Value="Resources/Images/play.svg" />
+        <Setter Property="Source" Value="play.png" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="PlayPauseStates">
                     <VisualState x:Name="PlayState" />
                     <VisualState x:Name="PauseState">
                         <VisualState.Setters>
-                            <Setter Property="Source" Value="Resources/Images/pause.svg" />
+                            <Setter Property="Source" Value="pause.png" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>

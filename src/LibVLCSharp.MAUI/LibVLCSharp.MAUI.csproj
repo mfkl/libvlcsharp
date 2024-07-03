@@ -33,7 +33,6 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <MauiImage Include="Resources\Images\*.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,21 +42,6 @@
     <MauiCss Remove="Handlers\**" />
     <MauiXaml Remove="Handlers\**" />
     <None Remove="Handlers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Shared\Resources\Images\background.png" />
-    <None Remove="Shared\Resources\Images\backward.svg" />
-    <None Remove="Shared\Resources\Images\check.svg" />
-    <None Remove="Shared\Resources\Images\chromecast.svg" />
-    <None Remove="Shared\Resources\Images\forward.svg" />
-    <None Remove="Shared\Resources\Images\list.svg" />
-    <None Remove="Shared\Resources\Images\lock.svg" />
-    <None Remove="Shared\Resources\Images\maximize.svg" />
-    <None Remove="Shared\Resources\Images\pause.svg" />
-    <None Remove="Shared\Resources\Images\play.svg" />
-    <None Remove="Shared\Resources\Images\stop.svg" />
-    <None Remove="Shared\Resources\Images\unlock.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -102,25 +86,6 @@
 	<ItemGroup>
 	  <Folder Include="Shared\Resources\Fonts\" />
 	</ItemGroup>
-
-
-
-	<ItemGroup>
-	  <MauiImage Include="Shared\Resources\Images\background.png" />
-	  <MauiImage Include="Shared\Resources\Images\backward.svg" />
-	  <MauiImage Include="Shared\Resources\Images\check.svg" />
-	  <MauiImage Include="Shared\Resources\Images\chromecast.svg" />
-	  <MauiImage Include="Shared\Resources\Images\forward.svg" />
-	  <MauiImage Include="Shared\Resources\Images\list.svg" />
-	  <MauiImage Include="Shared\Resources\Images\lock.svg" />
-	  <MauiImage Include="Shared\Resources\Images\maximize.svg" />
-	  <MauiImage Include="Shared\Resources\Images\pause.svg" />
-	  <MauiImage Include="Shared\Resources\Images\play.svg" />
-	  <MauiImage Include="Shared\Resources\Images\stop.svg" />
-	  <MauiImage Include="Shared\Resources\Images\unlock.svg" />
-	</ItemGroup>
-
-
 
 	<ItemGroup>
 	  <EmbeddedResource Update="Shared\Resources\Strings.resx">
