@@ -1,25 +1,25 @@
 ﻿using System;
-using LibVLCSharp;
+using LibVLCSharp.Shared;
 using Microsoft.Maui.Controls.Xaml;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
 
-namespace LibVLCSharp.MAUI
+namespace LibVLCSharp.MAUI.Shared
 {
     /// <summary>
-    /// 
+    /// Represents event data for page-related events.
     /// </summary>
     public class PageEventArgs : EventArgs
     {
         /// <summary>
-        /// 
+        /// Gets the associated <see cref="Page"/> instance.
         /// </summary>
         public Page Page { get; }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="PageEventArgs"/> class with the specified page.
         /// </summary>
-        /// <param name="page"></param>
+        /// <param name="page">The page associated with the event.</param>
         public PageEventArgs(Page page)
         {
             Page = page;
@@ -27,7 +27,7 @@ namespace LibVLCSharp.MAUI
     }
 
     /// <summary>
-    /// 
+    /// Provides helper methods for handling page lifecycle events.
     /// </summary>
     public static class LifecycleHelper
     {
@@ -35,7 +35,7 @@ namespace LibVLCSharp.MAUI
         private static readonly WeakEventManager _pageDisappearingEventManager = new();
 
         /// <summary>
-        /// 
+        /// Occurs when a page is appearing.
         /// </summary>
         public static event EventHandler<PageEventArgs> PageAppearing
         {
@@ -44,7 +44,7 @@ namespace LibVLCSharp.MAUI
         }
 
         /// <summary>
-        /// 
+        /// Occurs when a page is disappearing.
         /// </summary>
         public static event EventHandler<PageEventArgs> PageDisappearing
         {
@@ -53,11 +53,10 @@ namespace LibVLCSharp.MAUI
         }
 
         /// <summary>
-        /// 
+        /// Registers the page lifecycle events to track page appearing and disappearing.
         /// </summary>
         public static void RegisterPageLifecycleEvents()
         {
-            //JKN check supported build version
             if (Application.Current != null)
             {
                 Application.Current.PageAppearing += (s, e) => _pageAppearingEventManager.HandleEvent(s ?? Application.Current, new PageEventArgs(e), nameof(PageAppearing));
@@ -67,7 +66,7 @@ namespace LibVLCSharp.MAUI
     }
 
     /// <summary>
-    /// Represents an object that uses a <see cref="LibVLCSharp.MediaPlayer"/> to render audio and video to the display.
+    /// Represents an object that uses a <see cref="LibVLCSharp.Shared.MediaPlayer"/> to render audio and video to the display.
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MediaPlayerElement : ContentView
@@ -88,8 +87,9 @@ namespace LibVLCSharp.MAUI
         /// </summary>
         public static readonly BindableProperty LibVLCProperty = BindableProperty.Create(nameof(LibVLC), typeof(LibVLC),
             typeof(MediaPlayerElement), propertyChanged: LibVLCPropertyChanged);
+
         /// <summary>
-        /// Gets the <see cref="LibVLCSharp.LibVLC"/> instance.
+        /// Gets the <see cref="LibVLCSharp.Shared.LibVLC"/> instance.
         /// </summary>
         public LibVLC LibVLC
         {
@@ -101,18 +101,20 @@ namespace LibVLCSharp.MAUI
         /// Identifies the <see cref="MediaPlayer"/> dependency property.
         /// </summary>
         public static readonly BindableProperty MediaPlayerProperty = BindableProperty.Create(nameof(MediaPlayer),
-            typeof(MediaPlayer), typeof(MediaPlayerElement), propertyChanged: MediaPlayerPropertyChanged);
+            typeof(LibVLCSharp.Shared.MediaPlayer), typeof(MediaPlayerElement), propertyChanged: MediaPlayerPropertyChanged);
+
         /// <summary>
-        /// Gets the <see cref="LibVLCSharp.MediaPlayer"/> instance.
+        /// Gets the <see cref="LibVLCSharp.Shared.MediaPlayer"/> instance.
         /// </summary>
-        public MediaPlayer MediaPlayer
+        public LibVLCSharp.Shared.MediaPlayer MediaPlayer
         {
-            get => (MediaPlayer)GetValue(MediaPlayerProperty);
+            get => (LibVLCSharp.Shared.MediaPlayer)GetValue(MediaPlayerProperty);
             set => SetValue(MediaPlayerProperty, value);
         }
 
         private static readonly BindableProperty PlaybackControlsProperty = BindableProperty.Create(nameof(PlaybackControls),
             typeof(PlaybackControls), typeof(MediaPlayerElement), propertyChanged: PlaybackControlsPropertyChanged);
+
         /// <summary>
         /// Gets or sets the playback controls for the media.
         /// </summary>
@@ -127,6 +129,7 @@ namespace LibVLCSharp.MAUI
         /// </summary>
         private static readonly BindableProperty VideoViewProperty = BindableProperty.Create(nameof(VideoView), typeof(VideoView),
          typeof(MediaPlayerElement), propertyChanged: VideoViewPropertyChanged);
+
         /// <summary>
         /// Gets or sets the video view.
         /// </summary>
@@ -147,7 +150,6 @@ namespace LibVLCSharp.MAUI
             get => (bool)GetValue(EnableRendererDiscoveryProperty);
             set => SetValue(EnableRendererDiscoveryProperty, value);
         }
-
 
         private void OnVideoViewChanged(VideoView videoView)
         {
@@ -171,7 +173,7 @@ namespace LibVLCSharp.MAUI
             }
         }
 
-        private void OnMediaPlayerChanged(MediaPlayer mediaPlayer)
+        private void OnMediaPlayerChanged(LibVLCSharp.Shared.MediaPlayer mediaPlayer)
         {
             var videoView = VideoView;
             if (videoView != null)
@@ -217,7 +219,7 @@ namespace LibVLCSharp.MAUI
 
         private static void MediaPlayerPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            ((MediaPlayerElement)bindable).OnMediaPlayerChanged((MediaPlayer)newValue);
+            ((MediaPlayerElement)bindable).OnMediaPlayerChanged((LibVLCSharp.Shared.MediaPlayer)newValue);
         }
 
         private static void PlaybackControlsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -231,7 +233,7 @@ namespace LibVLCSharp.MAUI
         }
 
         /// <summary>
-        /// Invoked whenever the <see cref="Element.Parent"/> of an element is set.
+        /// Invoked whenever the <see cref="Element.Parent"/> of an element is set. 
         /// Implement this method in order to add behavior when the element is added to a parent.
         /// </summary>
         /// <remarks>Implementors must call the base method.</remarks>
@@ -299,8 +301,7 @@ namespace LibVLCSharp.MAUI
                     if (Preferences.Get($"VLC_{mediaPlayer.NativeReference}_MediaPlayerElement_IsPlaying", false))
                     {
                         mediaPlayer.Play();
-                        //JKN
-                        mediaPlayer.SetPosition(Preferences.Get($"VLC_{mediaPlayer.NativeReference}_MediaPlayerElement_Position", 0f));
+                        mediaPlayer.Position = Preferences.Get($"VLC_{mediaPlayer.NativeReference}_MediaPlayerElement_Position", 0f);
                     }
                 }
             }

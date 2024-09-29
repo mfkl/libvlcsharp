@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 
-namespace LibVLCSharp.MAUI.Effects
+namespace LibVLCSharp.MAUI.Shared.Effects
 {
     /// <summary>
     /// Click effect.

@@ -1,7 +1,7 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace LibVLCSharp.MAUI
+namespace LibVLCSharp.MAUI.Shared
 {
     /// <summary>
     /// Defines the <see cref="TrackViewModel" />.
@@ -11,7 +11,7 @@ namespace LibVLCSharp.MAUI
         /// <summary>
         /// Track description Id
         /// </summary>
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Track description
@@ -37,7 +37,7 @@ namespace LibVLCSharp.MAUI
         /// </summary>
         /// <param name="id">Track description Id</param>
         /// <param name="name">Track description</param>
-        internal TrackViewModel(string id, string name)
+        internal TrackViewModel(int id, string name)
         {
             Id = id;
             Name = name;

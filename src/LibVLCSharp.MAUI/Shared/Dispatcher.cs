@@ -1,9 +1,15 @@
-﻿namespace LibVLCSharp.MAUI
+﻿using System;
+using System.Threading.Tasks;
+using LibVLCSharp.Shared.MediaPlayerElement;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui;
+
+namespace LibVLCSharp.MAUI.Shared
 {
     /// <summary>
     /// Object that provides services for managing the queue of work items for a thread
     /// </summary>
-    internal class Dispatcher : LibVLCSharp.MediaPlayerElement.IDispatcher
+    internal class Dispatcher : LibVLCSharp.Shared.MediaPlayerElement.IDispatcher
     {
         /// <summary>
         /// Schedules the provided callback on the UI thread from a worker thread
