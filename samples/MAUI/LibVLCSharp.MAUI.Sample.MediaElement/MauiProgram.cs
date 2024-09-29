@@ -16,16 +16,17 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                })
-                .ConfigureMauiHandlers(handlers =>
-                {
-                    // Adds a custom handler for the VideoView control.
-                    handlers.AddHandler<VideoView, VideoViewHandler>();
-                });
+                .UseLibVLCSharp();
+                //.ConfigureFonts(fonts =>
+                //{
+                //    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                //    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                //})
+                //.ConfigureMauiHandlers(handlers =>
+                //{
+                //    // Adds a custom handler for the VideoView control.
+                //    handlers.AddHandler<VideoView, VideoViewHandler>();
+                //});
 
 #if DEBUG
             builder.Logging.AddDebug();

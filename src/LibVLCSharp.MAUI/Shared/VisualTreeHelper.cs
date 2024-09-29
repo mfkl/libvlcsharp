@@ -2,7 +2,7 @@
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 
-namespace LibVLCSharp.MAUI
+namespace LibVLCSharp.MAUI.Shared
 {
     internal static class VisualTreeHelper
     {

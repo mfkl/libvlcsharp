@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using LibVLCSharp;
+using LibVLCSharp.Shared;
 
 namespace LibVLCSharp.MAUI.Sample.MediaElement
 {
@@ -24,11 +24,11 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
 
         private LibVLC _libVLC;
 
-        private MediaPlayer _mediaPlayer1;
-        private MediaPlayer _mediaPlayer2;
+        private LibVLCSharp.Shared.MediaPlayer _mediaPlayer1;
+        private LibVLCSharp.Shared.MediaPlayer _mediaPlayer2;
 
         /// <summary>
-        /// Gets the <see cref="LibVLCSharp.LibVLC"/> instance.
+        /// Gets the <see cref="LibVLCSharp.Shared.LibVLC"/> instance.
         /// </summary>
         public LibVLC LibVLC
         {
@@ -37,18 +37,18 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
         }
 
         /// <summary>
-        /// Gets the first <see cref="LibVLCSharp.MediaPlayer"/> instance.
+        /// Gets the first <see cref="LibVLCSharp.Shared.MediaPlayer"/> instance.
         /// </summary>
-        public LibVLCSharp.MediaPlayer MediaPlayer1
+        public LibVLCSharp.Shared.MediaPlayer MediaPlayer1
         {
             get => _mediaPlayer1;
             private set => SetProperty(ref _mediaPlayer1, value);
         }
 
         /// <summary>
-        /// Gets the second <see cref="LibVLCSharp.MediaPlayer"/> instance.
+        /// Gets the second <see cref="LibVLCSharp.Shared.MediaPlayer"/> instance.
         /// </summary>
-        public LibVLCSharp.MediaPlayer MediaPlayer2
+        public LibVLCSharp.Shared.MediaPlayer MediaPlayer2
         {
             get => _mediaPlayer2;
             private set => SetProperty(ref _mediaPlayer2, value);
@@ -66,8 +66,8 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
 
             if (MediaPlayer1 == null)
             {
-                var media1 = new Media(new Uri("http://streams.videolan.org/streams/mkv/multiple_tracks.mkv"));
-                MediaPlayer1 = new LibVLCSharp.MediaPlayer(LibVLC, media1)
+                var media1 = new Media(LibVLC, new Uri("http://streams.videolan.org/streams/mkv/multiple_tracks.mkv"));
+                MediaPlayer1 = new LibVLCSharp.Shared.MediaPlayer(media1)
                 {
                     EnableHardwareDecoding = true
                 };
@@ -77,8 +77,8 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
 
             if (MediaPlayer2 == null)
             {
-                var media2 = new Media(new Uri("https://streams.videolan.org/streams/mp4/h264-sample-thefluff.mp4"));
-                MediaPlayer2 = new LibVLCSharp.MediaPlayer(LibVLC, media2)
+                var media2 = new Media(LibVLC, new Uri("https://streams.videolan.org/streams/mp4/h264-sample-thefluff.mp4"));
+                MediaPlayer2 = new LibVLCSharp.Shared.MediaPlayer(media2)
                 {
                     EnableHardwareDecoding = true
                 };

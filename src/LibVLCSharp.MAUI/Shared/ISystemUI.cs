@@ -1,4 +1,4 @@
-﻿namespace LibVLCSharp.MAUI
+﻿namespace LibVLCSharp.MAUI.Shared
 {
     internal interface ISystemUI
     {

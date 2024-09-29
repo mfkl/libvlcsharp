@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using LibVLCSharp;
+using LibVLCSharp.Shared;
 
 namespace LibVLCSharp.MAUI.Sample.MediaElement
 {
@@ -25,7 +25,7 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
         private LibVLC _libVLC;
 		
         /// <summary>
-        /// Gets the <see cref="LibVLCSharp.LibVLC"/> instance.
+        /// Gets the <see cref="LibVLCSharp.Shared.LibVLC"/> instance.
         /// </summary>
         public LibVLC LibVLC
         {
@@ -33,11 +33,11 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
             private set => SetProperty(ref _libVLC, value);
         }
 
-        private LibVLCSharp.MediaPlayer _mediaPlayer;
+        private LibVLCSharp.Shared.MediaPlayer _mediaPlayer;
         /// <summary>
-        /// Gets the <see cref="LibVLCSharp.MediaPlayer"/> instance.
+        /// Gets the <see cref="LibVLCSharp.Shared.MediaPlayer"/> instance.
         /// </summary>
-        public LibVLCSharp.MediaPlayer MediaPlayer
+        public LibVLCSharp.Shared.MediaPlayer MediaPlayer
         {
             get => _mediaPlayer;
             private set => SetProperty(ref _mediaPlayer, value);
@@ -55,8 +55,8 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
 
             if (MediaPlayer == null)
             {
-                var media = new Media(new Uri("http://streams.videolan.org/streams/mkv/multiple_tracks.mkv"));
-                MediaPlayer = new MediaPlayer(LibVLC, media)
+                var media = new Media(LibVLC, new Uri("http://streams.videolan.org/streams/mkv/multiple_tracks.mkv"));
+                MediaPlayer = new LibVLCSharp.Shared.MediaPlayer(media)
                 {
                     EnableHardwareDecoding = true
                 };

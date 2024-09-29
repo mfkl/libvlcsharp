@@ -10,10 +10,23 @@
         /// </summary>
         /// <param name="builder">MauiAppBuilder</param>
         /// <returns>configured builder for libvlcsharp</returns>
-        public static MauiAppBuilder UseLibVLCSharp(this MauiAppBuilder builder) =>
+        public static MauiAppBuilder UseLibVLCSharp(this MauiAppBuilder builder)
+        {
+            // Register LibVLCSharp handlers
             builder.ConfigureMauiHandlers(handlers =>
             {
                 handlers.AddHandler(typeof(VideoView), typeof(VideoViewHandler));
             });
+
+            // Configure custom fonts
+            builder.ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("Resources/Fonts/FontAwesome5Brands.otf", "FontAwesomeBrands");
+                fonts.AddFont("Resources/Fonts/FontAwesome5Solid.otf", "FontAwesomeSolid");
+                fonts.AddFont("Resources/Fonts/FontAwesome5Regular.otf", "FontAwesomeRegular");
+            });
+
+            return builder;
+        }
     }
 }

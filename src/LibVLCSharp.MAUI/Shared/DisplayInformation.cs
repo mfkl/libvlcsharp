@@ -1,8 +1,8 @@
-﻿using LibVLCSharp.MediaPlayerElement;
+﻿using LibVLCSharp.Shared.MediaPlayerElement;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui;
 
-namespace LibVLCSharp.MAUI
+namespace LibVLCSharp.MAUI.Shared
 {
     /// <summary>
     /// Monitors display-related information for an application view.

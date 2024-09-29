@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LibVLCSharp.MAUI.Resources {
+namespace LibVLCSharp.MAUI.Shared.Resources {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace LibVLCSharp.MAUI.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace LibVLCSharp.MAUI.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LibVLCSharp.Forms.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LibVLCSharp.MAUI.Shared.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace LibVLCSharp.MAUI.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 16:9.
         /// </summary>
-        internal static string AspectRatio_16_9 {
+        public static string AspectRatio_16_9 {
             get {
                 return ResourceManager.GetString("AspectRatio_16_9", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 4:3.
         /// </summary>
-        internal static string AspectRatio_4_3 {
+        public static string AspectRatio_4_3 {
             get {
                 return ResourceManager.GetString("AspectRatio_4_3", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Best fit.
         /// </summary>
-        internal static string AspectRatioBestFit {
+        public static string AspectRatioBestFit {
             get {
                 return ResourceManager.GetString("AspectRatioBestFit", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Fill.
         /// </summary>
-        internal static string AspectRatioFill {
+        public static string AspectRatioFill {
             get {
                 return ResourceManager.GetString("AspectRatioFill", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Fit screen.
         /// </summary>
-        internal static string AspectRatioFitScreen {
+        public static string AspectRatioFitScreen {
             get {
                 return ResourceManager.GetString("AspectRatioFitScreen", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Original.
         /// </summary>
-        internal static string AspectRatioOriginal {
+        public static string AspectRatioOriginal {
             get {
                 return ResourceManager.GetString("AspectRatioOriginal", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Audio tracks.
         /// </summary>
-        internal static string AudioTracks {
+        public static string AudioTracks {
             get {
                 return ResourceManager.GetString("AudioTracks", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cast to.
         /// </summary>
-        internal static string CastTo {
+        public static string CastTo {
             get {
                 return ResourceManager.GetString("CastTo", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Subtitles.
         /// </summary>
-        internal static string ClosedCaptions {
+        public static string ClosedCaptions {
             get {
                 return ResourceManager.GetString("ClosedCaptions", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Disable.
         /// </summary>
-        internal static string Disable {
+        public static string Disable {
             get {
                 return ResourceManager.GetString("Disable", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static string Error {
+        public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Error with media {0}.
         /// </summary>
-        internal static string ErrorWithMedia {
+        public static string ErrorWithMedia {
             get {
                 return ResourceManager.GetString("ErrorWithMedia", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No track found.
         /// </summary>
-        internal static string NoTrackFoundMessage {
+        public static string NoTrackFoundMessage {
             get {
                 return ResourceManager.GetString("NoTrackFoundMessage", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
-        internal static string OK {
+        public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Track {0}.
         /// </summary>
-        internal static string Track {
+        public static string Track {
             get {
                 return ResourceManager.GetString("Track", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to SWIPE TO UNLOCK.
         /// </summary>
-        internal static string Unlock {
+        public static string Unlock {
             get {
                 return ResourceManager.GetString("Unlock", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace LibVLCSharp.MAUI.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Video tracks.
         /// </summary>
-        internal static string VideoTracks {
+        public static string VideoTracks {
             get {
                 return ResourceManager.GetString("VideoTracks", resourceCulture);
             }
