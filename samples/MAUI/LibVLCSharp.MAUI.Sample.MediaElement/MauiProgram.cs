@@ -16,7 +16,12 @@ namespace LibVLCSharp.MAUI.Sample.MediaElement
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseLibVLCSharp();
+                .ConfigureFonts(fonts =>
+                 {
+                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                 })
+                .UseLibVLCSharp(); // Add your custom fonts and handler from your library
 
 #if DEBUG
             builder.Logging.AddDebug();
