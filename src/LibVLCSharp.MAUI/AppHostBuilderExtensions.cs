@@ -21,12 +21,12 @@
             // Configure custom fonts
             builder.ConfigureFonts(fonts =>
             {
-                fonts.AddFont("Resources/Fonts/FontAwesome5Brands.otf", "FontAwesomeBrands");
-                fonts.AddFont("Resources/Fonts/FontAwesome5Solid.otf", "FontAwesomeSolid");
-                fonts.AddFont("Resources/Fonts/FontAwesome5Regular.otf", "FontAwesomeRegular");
+                fonts.AddFont("FontAwesome5Brands.otf", "FontAwesomeBrands");
+                fonts.AddFont("FontAwesome5Solid.otf", "FontAwesomeSolid");
+                fonts.AddFont("FontAwesome5Regular.otf", "FontAwesomeRegular");
             });
 
             return builder;
-        }
+        }   
     }
 }

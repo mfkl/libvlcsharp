@@ -1,4 +1,4 @@
-﻿namespace FontAwesome
+﻿namespace LibVLCSharp.MAUI.Resources
 {
     /// <summary>
     /// Simplified list of FontAwesome icons used in the project.

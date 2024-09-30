@@ -4,7 +4,7 @@
                     xmlns:converters="clr-namespace:LibVLCSharp.MAUI.Shared.Converters"
                     xmlns:effects="clr-namespace:LibVLCSharp.MAUI.Shared.Effects"
                     xmlns:local="clr-namespace:LibVLCSharp.MAUI.Shared"
-                    xmlns:fontAwesome="clr-namespace:FontAwesome"
+                    xmlns:fontAwesome="clr-namespace:LibVLCSharp.MAUI.Resources"
                     x:Class="LibVLCSharp.MAUI.Shared.Themes.Generic">
     <converters:BufferingProgressToBoolConverter x:Key="BufferingProgressToBoolConverter" />
     <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
@@ -12,10 +12,6 @@
     <Color x:Key="Foreground">White</Color>
     <Color x:Key="MainColor">#E57A00</Color>
     <Color x:Key="ButtonColor">#A0E57A00</Color>
-
-    <!--<x:String x:Key="FontAwesomeBrands">FontAwesome5Brands</x:String>
-    <x:String x:Key="FontAwesomeRegular">FontAwesomeRegular</x:String>
-    <x:String x:Key="FontAwesomeSolid">FontAwesomeSolid</x:String>-->
 
     <Style x:Key="MessageStyle" TargetType="Label">
         <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -253,7 +249,6 @@
                         <ProgressBar Style="{TemplateBinding BufferingProgressBarStyle}" Progress="{TemplateBinding BufferingProgress}" 
                              IsVisible="{TemplateBinding BufferingProgress, Converter={StaticResource BufferingProgressToBoolConverter}}" />
                         <Label x:Name="AspectRatioLabel" Style="{TemplateBinding MessageStyle}"/>
-
                         <!-- ControlsPanel -->
                         <StackLayout x:Name="ControlsPanel" Style="{TemplateBinding ControlsPanelStyle}">
                             <StackLayout Orientation="Horizontal" >
@@ -274,13 +269,6 @@
                                 </StackLayout>
                                 <ContentPresenter Content="{TemplateBinding ButtonBarStartArea}" HorizontalOptions="Start" VerticalOptions="Center" />
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-                                    <Image>
-                                        <Image.Source>
-                                            <FontImageSource Glyph="&#xf85;"
-                                                 FontFamily="FontAwesomeBrands"
-                                                 Size="24" />
-                                        </Image.Source>
-                                    </Image>
                                     <Button x:Name="RewindButton" Style="{TemplateBinding RewindButtonStyle}" />
                                     <Button x:Name="PlayPauseButton" Style="{TemplateBinding PlayPauseButtonStyle}" />
                                     <Button x:Name="StopButton" Style="{TemplateBinding StopButtonStyle}" />
