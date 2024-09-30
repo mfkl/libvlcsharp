@@ -2,7 +2,7 @@
 using Microsoft.Maui.Controls;
 using Microsoft.Maui;
 
-namespace LibVLCSharp.MAUI.Shared
+namespace LibVLCSharp.MAUI
 {
     /// <summary>
     /// Monitors display-related information for an application view.

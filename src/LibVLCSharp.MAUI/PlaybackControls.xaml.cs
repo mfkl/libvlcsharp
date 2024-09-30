@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Resources;
 using System.Threading.Tasks;
-using LibVLCSharp.MAUI.Shared.Resources;
+using LibVLCSharp.MAUI.Resources;
 using LibVLCSharp.Shared;
 using LibVLCSharp.Shared.MediaPlayerElement;
 using Microsoft.Maui.Controls.Xaml;
@@ -11,7 +11,7 @@ using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui;
 
-namespace LibVLCSharp.MAUI.Shared
+namespace LibVLCSharp.MAUI
 {
     /// <summary>
     /// Represents the playback controls for a <see cref="LibVLCSharp.Shared.MediaPlayer"/>.

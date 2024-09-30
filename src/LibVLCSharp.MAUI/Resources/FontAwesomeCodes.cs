@@ -4,7 +4,7 @@
     /// Simplified list of FontAwesome icons used in the project.
     /// Each constant represents a FontAwesome icon's Unicode value.
     /// </summary>
-    public static class FontAwesomeIcons
+    public static class FontAwesomeCodes
     {
         /// <summary>
         /// Gets the Unicode character for the FontAwesome Chromecast icon.

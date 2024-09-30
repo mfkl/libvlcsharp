@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    xmlns:converters="clr-namespace:LibVLCSharp.MAUI.Shared.Converters"
-                    xmlns:effects="clr-namespace:LibVLCSharp.MAUI.Shared.Effects"
-                    xmlns:local="clr-namespace:LibVLCSharp.MAUI.Shared"
+                    xmlns:converters="clr-namespace:LibVLCSharp.MAUI.Converters"
+                    xmlns:effects="clr-namespace:LibVLCSharp.MAUI.Effects"
+                    xmlns:local="clr-namespace:LibVLCSharp.MAUI"
                     xmlns:fontAwesome="clr-namespace:LibVLCSharp.MAUI.Resources"
-                    x:Class="LibVLCSharp.MAUI.Shared.Themes.Generic">
+                    x:Class="LibVLCSharp.MAUI.Themes.Generic">
     <converters:BufferingProgressToBoolConverter x:Key="BufferingProgressToBoolConverter" />
     <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
 
@@ -102,7 +102,7 @@
     <Style x:Key="CastButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
         <Setter Property="IsVisible" Value="False" />
         <Setter Property="FontFamily" Value="FontAwesomeBrands" />
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Chromecast}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Chromecast}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CastAvailabilityStates">
@@ -122,14 +122,14 @@
         <Setter Property="FontSize" Value="36" />
         <Setter Property="HeightRequest" Value="54" />
         <Setter Property="WidthRequest" Value="54" />
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Play}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Play}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="PlayPauseStates">
                     <VisualState x:Name="PlayState" />
                     <VisualState x:Name="PauseState">
                         <VisualState.Setters>
-                            <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Pause}" />
+                            <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Pause}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -147,36 +147,36 @@
 
     <Style x:Key="StopButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
         <Setter Property="IsVisible" Value="{TemplateBinding IsStopButtonVisible}" />
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Stop}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Stop}" />
     </Style>
 
     <Style x:Key="LockButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.UnlockAlt}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.UnlockAlt}" />
         <Setter Property="IsVisible" Value="{TemplateBinding IsLockButtonVisible}" />
     </Style>
 
     <Style x:Key="UnLockButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Lock}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Lock}" />
     </Style>
 
     <Style x:Key="TracksButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.ListAlt}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.ListAlt}" />
         <Setter Property="IsVisible" Value="{TemplateBinding IsTracksButtonVisible}" />
     </Style>
 
     <Style x:Key="AspectRatioButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
         <Setter Property="IsVisible" Value="{TemplateBinding IsAspectRatioButtonVisible}" />
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.ExpandArrowsAlt}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.ExpandArrowsAlt}" />
     </Style>
 
     <Style x:Key="RewindButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
         <Setter Property="IsVisible" Value="{TemplateBinding IsRewindButtonVisible}" />
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Backward}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Backward}" />
     </Style>
 
     <Style x:Key="SeekButtonStyle" BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
         <Setter Property="IsVisible" Value="{TemplateBinding IsSeekButtonVisible}" />
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Forward}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Forward}" />
     </Style>
 
     <Style x:Key="TracksListViewStyle" TargetType="ListView">
@@ -213,7 +213,7 @@
 
     <Style x:Key="CheckedTrackStyle" TargetType="Button">
         <Setter Property="FontFamily" Value="FontAwesomeSolid" />
-        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeIcons.Check}" />
+        <Setter Property="Text" Value="{x:Static fontAwesome:FontAwesomeCodes.Check}" />
         <Setter Property="TextColor" Value="#FE8A03" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="WidthRequest" Value="40" />

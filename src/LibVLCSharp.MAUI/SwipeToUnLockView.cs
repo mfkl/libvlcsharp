@@ -6,7 +6,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Layouts;
 
 
-namespace LibVLCSharp.MAUI.Shared
+namespace LibVLCSharp.MAUI
 {
     /// <summary>
     /// Custom view that allows user to unlock the MediaPlayerElement View.
