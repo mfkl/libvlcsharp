@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace LibVLCSharp.MAUI.Shared
+namespace LibVLCSharp.MAUI
 {
     /// <summary>
     /// Defines the <see cref="TrackViewModel" />.

@@ -1,4 +1,4 @@
-namespace LibVLCSharp.MAUI.Shared.Themes;
+namespace LibVLCSharp.MAUI.Themes;
 
 /// <summary>
 /// Represents the generic theme resource dictionary for the MAUI components.

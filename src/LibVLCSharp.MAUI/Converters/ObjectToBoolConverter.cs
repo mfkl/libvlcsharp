@@ -2,7 +2,7 @@
 using System.Globalization;
 using Microsoft.Maui.Controls;
 
-namespace LibVLCSharp.MAUI.Shared.Converters
+namespace LibVLCSharp.MAUI.Converters
 {
     /// <summary>
     /// Converts not null object to true.

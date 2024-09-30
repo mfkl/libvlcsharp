@@ -25,12 +25,6 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Fonts\FontAwesome5Brands.otf" />
-    <None Remove="Resources\Fonts\FontAwesome5Regular.otf" />
-    <None Remove="Resources\Fonts\FontAwesome5Solid.otf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <MauiFont Include="Resources\Fonts\FontAwesome5Brands.otf" />
     <MauiFont Include="Resources\Fonts\FontAwesome5Regular.otf" />
     <MauiFont Include="Resources\Fonts\FontAwesome5Solid.otf" />
@@ -42,11 +36,28 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.
   </ItemGroup>
 
   <ItemGroup>
-    <MauiXaml Update="Shared\MediaPlayerElement.xaml">
+    <Compile Update="MediaPlayerElement.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PlaybackControls.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Themes\Generic.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="MediaPlayerElement.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Shared\PlaybackControls.xaml">
+    <MauiXaml Update="PlaybackControls.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </MauiXaml>
   </ItemGroup>
 

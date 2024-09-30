@@ -1,4 +1,4 @@
-﻿namespace LibVLCSharp.MAUI.Shared
+﻿namespace LibVLCSharp.MAUI
 {
     /// <summary>
     /// Force Device Orientation.
