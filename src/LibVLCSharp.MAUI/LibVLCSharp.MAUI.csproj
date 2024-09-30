@@ -25,15 +25,15 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Shared\Resources\Fonts\FontAwesome5Brands.otf" />
-    <None Remove="Shared\Resources\Fonts\FontAwesome5Regular.otf" />
-    <None Remove="Shared\Resources\Fonts\FontAwesome5Solid.otf" />
+    <None Remove="Resources\Fonts\FontAwesome5Brands.otf" />
+    <None Remove="Resources\Fonts\FontAwesome5Regular.otf" />
+    <None Remove="Resources\Fonts\FontAwesome5Solid.otf" />
   </ItemGroup>
 
   <ItemGroup>
-    <MauiFont Include="Shared\Resources\Fonts\FontAwesome5Brands.otf" />
-    <MauiFont Include="Shared\Resources\Fonts\FontAwesome5Regular.otf" />
-    <MauiFont Include="Shared\Resources\Fonts\FontAwesome5Solid.otf" />
+    <MauiFont Include="Resources\Fonts\FontAwesome5Brands.otf" />
+    <MauiFont Include="Resources\Fonts\FontAwesome5Regular.otf" />
+    <MauiFont Include="Resources\Fonts\FontAwesome5Solid.otf" />
   </ItemGroup>
 
   <ItemGroup>
