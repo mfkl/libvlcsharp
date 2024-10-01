@@ -16,14 +16,6 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.
     </Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
-    <DefineConstants>ANDROID</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
-    <DefineConstants>IOS</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <MauiFont Include="Resources\Fonts\FontAwesome5Brands.otf" />
     <MauiFont Include="Resources\Fonts\FontAwesome5Regular.otf" />
