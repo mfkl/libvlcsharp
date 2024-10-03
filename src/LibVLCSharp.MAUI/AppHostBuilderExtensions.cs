@@ -23,7 +23,6 @@
             {
                 fonts.AddFont("FontAwesome5Brands.otf", "FontAwesomeBrands");
                 fonts.AddFont("FontAwesome5Solid.otf", "FontAwesomeSolid");
-                fonts.AddFont("FontAwesome5Regular.otf", "FontAwesomeRegular");
             });
 
             return builder;

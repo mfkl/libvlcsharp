@@ -18,7 +18,6 @@ LibVLC needs to be installed separately, see VideoLAN.LibVLC.* packages.
 
   <ItemGroup>
     <MauiFont Include="Resources\Fonts\FontAwesome5Brands.otf" />
-    <MauiFont Include="Resources\Fonts\FontAwesome5Regular.otf" />
     <MauiFont Include="Resources\Fonts\FontAwesome5Solid.otf" />
   </ItemGroup>
 
