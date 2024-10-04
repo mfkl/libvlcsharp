@@ -771,6 +771,7 @@ namespace LibVLCSharp.MAUI
             if (SeekBar != null)
             {
                 Manager.Get<SeekBarManager>().SeekBarMaximum = SeekBar.Maximum;
+                SeekBar.DragCompleted += SeekBar_DragCompleted;
                 SeekBar.ValueChanged += SeekBar_ValueChanged;
             }
 
@@ -796,6 +797,22 @@ namespace LibVLCSharp.MAUI
             UpdatePauseAvailability();
             UpdateTime();
             OnBuffering();
+        }
+
+        /// <summary>
+        /// Handles the event when the user completes dragging the seek bar.
+        /// </summary>
+        private void SeekBar_DragCompleted(object? sender, EventArgs e)
+        {
+            var seekBarManager = Manager.Get<SeekBarManager>();
+            if (seekBarManager != null && SeekBar != null)
+            {
+                Show();
+
+                seekBarManager.SetSeekBarPosition(SeekBar.Value);
+
+                UpdateTime();
+            }
         }
 
         private static void IsPlayPauseButtonVisiblePropertyChanged(BindableObject bindable, object? oldValue, object? newValue)
