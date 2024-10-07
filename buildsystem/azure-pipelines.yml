@@ -38,7 +38,12 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-      - template: base-template.yml
+      - task: DotNetCoreCLI@2
+        displayName: 'Install Cake'
+        inputs:
+          command: custom
+          custom: 'tool'
+          arguments: 'install cake.tool --global'
       - task: DownloadBuildArtifacts@0
         inputs:
           buildType: 'current'
