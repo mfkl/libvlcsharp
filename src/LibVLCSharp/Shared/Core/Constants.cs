@@ -8,6 +8,8 @@ namespace LibVLCSharp.Shared
         internal const string LibraryName = "@rpath/DynamicMobileVLCKit.framework/DynamicMobileVLCKit";
 #elif TVOS
         internal const string LibraryName = "@rpath/TVVLCKit.framework/TVVLCKit";
+#elif MAC
+        internal const string LibraryName = "@rpath/VLCKit.framework/VLCKit";
 #else
         internal const string LibraryName = "libvlc";
 #endif

@@ -1,0 +1,11 @@
+install_name_tool -id "@rpath/VLCKit.framework/VLCKit" /Users/martin/code/vlckit/build/VLCKit.xcframework/macos-arm64/VLCKit.framework/VLCKit
+
+codesign --force --sign - /Users/martin/code/vlckit/build/VLCKit.xcframework/macos-arm64/VLCKit.framework/VLCKit
+
+then try with a nuget
+setup ci
+test regular macos
+test netcore macos
+
+catalyst later
+maui-catalyst last
