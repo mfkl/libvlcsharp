@@ -58,14 +58,45 @@ steps:
               [string] $InstallerPath
           )
           Write-Host "Installing Windows SDK 10.0.18362 silently..."
-          & $InstallerPath /features + /quiet /norestart
-          if ($LASTEXITCODE -eq 0) {
-              Write-Host "SDK installed successfully." -ForegroundColor Green
+          Write-Host "Running: $InstallerPath /features + /quiet /norestart"
+
+          # Try multiple installation approaches
+          $installArgs = @(
+              @("/features", "+", "/quiet", "/norestart"),
+              @("/quiet", "/norestart", "/features", "OptionId.WindowsDesktopSoftwareDevelopmentKit"),
+              @("/S", "/v/qn")
+          )
+
+          foreach ($args in $installArgs) {
+              Write-Host "Trying: $InstallerPath $($args -join ' ')"
+              try {
+                  $process = Start-Process -FilePath $InstallerPath -ArgumentList $args -Wait -PassThru -NoNewWindow
+                  Write-Host "Exit code: $($process.ExitCode)"
+
+                  if ($process.ExitCode -eq 0 -or $process.ExitCode -eq 3010) {
+                      Write-Host "SDK installed successfully." -ForegroundColor Green
+                      return
+                  } elseif ($process.ExitCode -eq 1001) {
+                      Write-Warning "Exit code 1001: Another installation in progress or installer conflict"
+                      continue
+                  } else {
+                      Write-Warning "Attempt failed with exit code: $($process.ExitCode)"
+                      continue
+                  }
+              } catch {
+                  Write-Warning "Attempt failed with exception: $($_.Exception.Message)"
+                  continue
+              }
           }
-          else {
-              Write-Error "SDK installer failed with exit code $LASTEXITCODE"
-              exit $LASTEXITCODE
+
+          # If all attempts failed, check if SDK got installed anyway
+          if (Is-SDKInstalled18362) {
+              Write-Host "SDK appears to be installed despite installation errors." -ForegroundColor Yellow
+              return
           }
+
+          Write-Error "All SDK installation attempts failed"
+          exit 1
       }
 
       # Main execution
