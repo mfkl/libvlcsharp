@@ -16,54 +16,73 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # Check if Windows 10 SDK 18362 is already installed
-      $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0"
-      if (Test-Path $sdkPath) {
-        Write-Host "Windows 10 SDK 18362 is already installed at: $sdkPath"
-        exit 0
-      }
-
-      Write-Host "Installing Windows 10 SDK 18362..."
-
-      # Method 1: Try Visual Studio installer first (more reliable on CI)
-      $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-      if (Test-Path $vsInstaller) {
-        Write-Host "Using Visual Studio installer..."
-        try {
-          $process = Start-Process -FilePath $vsInstaller -ArgumentList "modify", "--installPath", "C:\Program Files\Microsoft Visual Studio\2022\Enterprise", "--add", "Microsoft.VisualStudio.Component.Windows10SDK.18362", "--quiet", "--norestart" -Wait -PassThru
-          if ($process.ExitCode -eq 0) {
-            Write-Host "Windows 10 SDK 18362 installed successfully via Visual Studio installer"
-            exit 0
-          } else {
-            Write-Warning "Visual Studio installer failed with exit code: $($process.ExitCode)"
+      function Get-InstalledWindowsSDKRoot {
+          $key = "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots"
+          try {
+              $vals = Get-ItemProperty -Path $key -ErrorAction Stop
+              return $vals.KitsRoot10
           }
-        } catch {
-          Write-Warning "Failed to use Visual Studio installer: $($_.Exception.Message)"
-        }
+          catch {
+              return $null
+          }
       }
 
-      # Method 2: Direct download and install as fallback
-      try {
-        $sdkUrl = "https://go.microsoft.com/fwlink/?linkid=2083338"
-        $sdkPath = "$env:TEMP\winsdksetup.exe"
+      function Is-SDKInstalled18362 {
+          $root = Get-InstalledWindowsSDKRoot
+          if (-not $root) {
+              return $false
+          }
+          $candidate = Join-Path $root "Include\10.0.18362.0"
+          return (Test-Path $candidate)
+      }
 
-        Write-Host "Downloading Windows 10 SDK installer..."
-        Invoke-WebRequest -Uri $sdkUrl -OutFile $sdkPath -UseBasicParsing
+      function Download-SDKInstaller {
+          param (
+              [string] $DestinationPath
+          )
+          # Microsoft fwlink for Windows 10 SDK, version 1903 (10.0.18362.1)
+          $uri = "https://go.microsoft.com/fwlink/?linkid=2083338"
+          Write-Host "Downloading Windows SDK 10.0.18362 from $uri..."
+          try {
+              Invoke-WebRequest -Uri $uri -OutFile $DestinationPath -UseBasicParsing
+              return $true
+          }
+          catch {
+              Write-Error "Download failed: $_"
+              return $false
+          }
+      }
 
-        Write-Host "Installing Windows 10 SDK (this may take several minutes)..."
-        $process = Start-Process -FilePath $sdkPath -ArgumentList "/quiet", "/norestart", "/features", "OptionId.WindowsDesktopSoftwareDevelopmentKit" -Wait -PassThru
+      function Install-SDK {
+          param (
+              [string] $InstallerPath
+          )
+          Write-Host "Installing Windows SDK 10.0.18362 silently..."
+          & $InstallerPath /features + /quiet /norestart
+          if ($LASTEXITCODE -eq 0) {
+              Write-Host "SDK installed successfully." -ForegroundColor Green
+          }
+          else {
+              Write-Error "SDK installer failed with exit code $LASTEXITCODE"
+              exit $LASTEXITCODE
+          }
+      }
 
-        if ($process.ExitCode -eq 0 -or $process.ExitCode -eq 3010) {
-          Write-Host "Windows 10 SDK installed successfully (exit code: $($process.ExitCode))"
-          # Force refresh environment variables to simulate reboot effect
-          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-        } else {
-          Write-Warning "Windows 10 SDK installation failed with exit code: $($process.ExitCode)"
-          exit 1
-        }
-      } catch {
-        Write-Error "Failed to install Windows 10 SDK: $($_.Exception.Message)"
-        exit 1
+      # Main execution
+      if (-not (Is-SDKInstalled18362)) {
+          $tempInstaller = Join-Path $env:TEMP "winsdk_18362_setup.exe"
+
+          if (-not (Download-SDKInstaller -DestinationPath $tempInstaller)) {
+              throw "Failed to download Windows SDK 18362 installer."
+          }
+
+          Install-SDK -InstallerPath $tempInstaller
+
+          # Clean up
+          Remove-Item -Path $tempInstaller -ErrorAction SilentlyContinue
+      }
+      else {
+          Write-Host "Windows SDK 10.0.18362 already installed."
       }
 
 - task: JavaToolInstaller@0
