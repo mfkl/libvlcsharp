@@ -116,6 +116,43 @@ steps:
           Write-Host "Windows SDK 10.0.18362 already installed."
       }
 
+      # Verify SDK installation and set environment variables
+      Write-Host "Verifying SDK installation..."
+      $sdkRoot = Get-InstalledWindowsSDKRoot
+      if ($sdkRoot) {
+          Write-Host "Windows SDK Root: $sdkRoot"
+          $sdkIncludePath = Join-Path $sdkRoot "Include\10.0.18362.0"
+          $sdkLibPath = Join-Path $sdkRoot "Lib\10.0.18362.0"
+
+          if (Test-Path $sdkIncludePath) {
+              Write-Host "SDK Include path exists: $sdkIncludePath"
+              $dirs = Get-ChildItem -Path $sdkIncludePath -Directory | Select-Object -ExpandProperty Name
+              Write-Host "Available SDK components: $($dirs -join ', ')"
+          } else {
+              Write-Error "SDK Include path not found: $sdkIncludePath"
+          }
+
+          if (Test-Path $sdkLibPath) {
+              Write-Host "SDK Lib path exists: $sdkLibPath"
+          } else {
+              Write-Error "SDK Lib path not found: $sdkLibPath"
+          }
+
+          # Set environment variables for this agent session
+          Write-Host "##vso[task.setvariable variable=WindowsSdkDir]$sdkRoot"
+          Write-Host "##vso[task.setvariable variable=WindowsSDKVersion]10.0.18362.0\"
+      } else {
+          Write-Error "Could not find Windows SDK installation root"
+          exit 1
+      }
+
+- task: PowerShell@2
+  displayName: 'Test UAP Build'
+  inputs:
+    targetType: 'filePath'
+    filePath: 'test-uap-build.ps1'
+    failOnStderr: false
+
 - task: JavaToolInstaller@0
   displayName: 'Setup Java 17'
   inputs:
