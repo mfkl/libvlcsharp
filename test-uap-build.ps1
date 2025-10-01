@@ -36,6 +36,14 @@ if ($sdkRoot) {
     Write-Host "Set WindowsSDKVersion=$env:WindowsSDKVersion"
 }
 
+Write-Host "`nRestoring NuGet packages..." -ForegroundColor Cyan
+dotnet restore src\LibVLCSharp\LibVLCSharp.csproj
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "NuGet restore failed"
+    exit $LASTEXITCODE
+}
+
 Write-Host "`nBuilding LibVLCSharp for uap10.0.18362 only..." -ForegroundColor Cyan
 
 # Find MSBuild.exe
