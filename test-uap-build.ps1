@@ -77,13 +77,11 @@ if ($sdkRoot) {
 
 # Add diagnostic properties
 Write-Host "`nMSBuild Properties:"
-Write-Host "  TargetPlatformVersion=10.0.18362.0"
 Write-Host "  TargetPlatformMinVersion=10.0.18362.0"
 
 & $msbuildPath src\LibVLCSharp\LibVLCSharp.csproj `
     /t:Build `
     /p:TargetFramework=uap10.0.18362 `
-    /p:TargetPlatformVersion=10.0.18362.0 `
     /p:TargetPlatformMinVersion=10.0.18362.0 `
     /v:n
 
