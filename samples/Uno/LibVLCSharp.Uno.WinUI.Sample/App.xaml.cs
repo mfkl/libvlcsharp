@@ -15,8 +15,12 @@ public partial class App : Application
     public App()
     {
         this.InitializeComponent();
+#if HAS_UNO
+        // Suspending/Resuming are UWP/Uno lifecycle events provided by Uno.WinUI on the mobile heads.
+        // WinUI 3 (native Windows head) removed them, so guard this wiring to the Uno targets.
         Suspending += OnSuspending;
         Resuming += OnResuming;
+#endif
     }
 
     protected Window? MainWindow { get; private set; }
@@ -140,6 +144,7 @@ public partial class App : Application
     /// </summary>
     /// <param name="sender">The source of the suspend request.</param>
     /// <param name="e">Details about the suspend request.</param>
+#if HAS_UNO
     private void OnSuspending(object sender, SuspendingEventArgs e)
     {
         var deferral = e.SuspendingOperation.GetDeferral();
@@ -151,4 +156,5 @@ public partial class App : Application
     {
         ViewModel?.Resume();
     }
+#endif
 }

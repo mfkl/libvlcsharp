@@ -6,6 +6,9 @@ using LibVLCSharp.Shared;
 using LibVLCSharp.Shared.MediaPlayerElement;
 using LibVLCSharp.Shared.Structures;
 using Windows.ApplicationModel.Resources;
+#if WINDOWS
+using MrtResourceLoader = Microsoft.Windows.ApplicationModel.Resources.ResourceLoader;
+#endif
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -107,10 +110,24 @@ namespace LibVLCSharp.Uno
         private MenuFlyout? ZoomMenu { get; set; }
         private IDictionary<MenuFlyout, TracksMenu> TracksMenus { get; } = new Dictionary<MenuFlyout, TracksMenu>();
 
+#if WINDOWS
+        // WinUI 3 desktop has no CoreWindow, so Windows.ApplicationModel.Resources.ResourceLoader
+        // .GetForCurrentView() throws ("Resource Contexts may not be created on threads that do not
+        // have a CoreWindow"). Use the Windows App SDK MRT Core loader, scoped to this library's
+        // resource subtree. (GetForViewIndependentUse("LibVLCSharp.Uno/Resources") is NOT a fix: a
+        // full library resource path throws COMException "ResourceMap Not Found" — WindowsAppSDK#4669.)
+        private static readonly MrtResourceLoader _resourceLoader =
+            new MrtResourceLoader(MrtResourceLoader.GetDefaultResourceFilePath(), "LibVLCSharp.Uno/Resources");
+        /// <summary>
+        /// Gets the <see cref="MrtResourceLoader"/>
+        /// </summary>
+        protected MrtResourceLoader ResourceLoader => _resourceLoader;
+#else
         /// <summary>
         /// Gets the <see cref="ResourceLoader"/>
         /// </summary>
         protected ResourceLoader ResourceLoader => ResourceLoader.GetForCurrentView("LibVLCSharp.Uno/Resources");
+#endif
 
         private TextBlock? ErrorTextBlock { get; set; }
         private Slider? VolumeSlider { get; set; }
