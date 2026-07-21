@@ -111,4 +111,5 @@
     <PackageReference Include="VideoLAN.LibVLC.Android" Version="3.6.5" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project="..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

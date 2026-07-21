@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia.Controls;
 using LibVLCSharp.Shared;
+using libVlcSharp.Samples;
 
 namespace LibVLCSharp.Avalonia.Sample.ViewModels
 {
@@ -22,7 +23,7 @@ namespace LibVLCSharp.Avalonia.Sample.ViewModels
                 return;
             }
             
-            using var media = new Media(_libVlc, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            using var media = new Media(_libVlc, new Uri(Consts.SampleVideoUrl));
             MediaPlayer.Play(media);
         }
         

@@ -1,6 +1,7 @@
 ﻿using Gtk;
 using LibVLCSharp.Shared;
 using System;
+using libVlcSharp.Samples;
 
 namespace LibVLCSharp.GTK.Sample
 {
@@ -27,7 +28,7 @@ namespace LibVLCSharp.GTK.Sample
 
             //Starts playing
             using var media = new Media(libvlc,
-                new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+                new Uri(Consts.SampleVideoUrl));
 
             mediaPlayer.Play(media);
 

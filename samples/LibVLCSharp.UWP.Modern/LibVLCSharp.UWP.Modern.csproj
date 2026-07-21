@@ -37,4 +37,5 @@
     <ProjectReference Include="..\..\src\LibVLCSharp.UWP\LibVLCSharp.UWP.csproj" />
   </ItemGroup>
 
+  <Import Project="..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

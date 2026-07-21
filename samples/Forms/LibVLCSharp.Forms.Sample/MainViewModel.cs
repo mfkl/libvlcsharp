@@ -1,5 +1,6 @@
 ﻿using LibVLCSharp.Shared;
 using System;
+using libVlcSharp.Samples;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -38,7 +39,7 @@ namespace LibVLCSharp.Forms.Sample
         private void Initialize()
         {
             LibVLC = new LibVLC(enableDebugLogs: true);
-            var media = new Media(LibVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            var media = new Media(LibVLC, new Uri(Consts.SampleVideoUrl));
 
             MediaPlayer = new MediaPlayer(LibVLC)
             {

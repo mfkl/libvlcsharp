@@ -1,6 +1,7 @@
 ﻿using LibVLCSharp.Platforms.iOS;
 using LibVLCSharp.Shared;
 using System;
+using libVlcSharp.Samples;
 using UIKit;
 
 namespace LibVLCSharp.iOS.Sample
@@ -22,7 +23,7 @@ namespace LibVLCSharp.iOS.Sample
 
             View = _videoView;
 
-            using var media = new Media(_libVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            using var media = new Media(_libVLC, new Uri(Consts.SampleVideoUrl));
             _videoView.MediaPlayer.Play(media);
         }
 
