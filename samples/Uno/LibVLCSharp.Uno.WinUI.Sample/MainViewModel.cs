@@ -83,7 +83,6 @@ namespace LibVLCSharp.Uno.WinUI.Sample
         private void Initialize(string[] swapChainOptions)
         {
             LibVLC = new LibVLC(enableDebugLogs: true, swapChainOptions);
-            // Surface libvlc's own diagnostics (otherwise invisible) in the VS Output window.
             LibVLC.Log += (s, e) => System.Diagnostics.Debug.WriteLine($"[VLC:{e.Level}] {e.Module}: {e.Message}");
 
             MediaPlayer = new LibVLCSharp.Shared.MediaPlayer(LibVLC);
