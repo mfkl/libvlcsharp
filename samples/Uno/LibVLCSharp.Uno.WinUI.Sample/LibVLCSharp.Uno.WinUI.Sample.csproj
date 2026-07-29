@@ -2,13 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
-
-		<!-- Build the Windows head as an unpackaged desktop app. Without this,
-         UnoSingleProject defaults the Windows head to packaged MSIX, which re-exposes APPX1101
-				 (duplicate Microsoft.Web.WebView2.Core.dll) under WindowsAppSDK 1.8 self-contained bundling.
-				 MUST be unconditional: at VS's outer (design-time) evaluation $(TargetFramework) is empty, so a
-				 Condition on '-windows' leaves it unset there, Uno.Sdk then treats the Windows head as packaged
-				 MSIX and VS drops it as a launch target (reverts to Android). -->
 		<WindowsPackageType>None</WindowsPackageType>
 
     <OutputType>Exe</OutputType>
@@ -34,10 +27,7 @@
 	  <Nullable>enable</Nullable>
 	  <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
 
-		<!-- windowsSdk-maui9: Uno.Sdk 5.3.96's implicit WindowsAppSDK is below the version
-				 required transitively by LibVLCSharp.Uno on Windows (NU1605 downgrade). 
-				 Apps _can_ raise the implicit versions cleanly. 
-				 The libs declare a lower floor (centralized in
+		<!-- The libs declare a lower floor (centralized in
 				 src/Directory.Build.props), but is not picked up here? -->
 	  <WinAppSdkVersion>1.8.251106002</WinAppSdkVersion>
 	  <WinAppSdkBuildToolsVersion>10.0.26100.7175</WinAppSdkBuildToolsVersion>
@@ -56,14 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\LibVLCSharp.Uno\LibVLCSharp.Uno.csproj" />
-    <!-- On the Windows head, LibVLCSharp.Uno references LibVLCSharp.WinUI, whose AssemblyName is
-         "LibVLCSharp" and which contains the SwapChainPanel-based Windows VideoView. The core
-         LibVLCSharp.csproj has no net9.0-windows TFM, so it falls back to plain net9 and emits a
-         *second* LibVLCSharp.dll (no Windows platform types). Both claim the same assembly identity;
-         whichever wins the copy-to-output race can leave the core one in bin, causing TypeLoadException
-         (0xc000027b) when XAML loads MediaPlayerElement/VideoView. Reference core only off-Windows,
-         matching LibVLCSharp.Uno's own conditional references. -->
-    <ProjectReference Include="..\..\..\src\LibVLCSharp\LibVLCSharp.csproj" Condition="!$(TargetFramework.Contains('-windows'))" />
+    <ProjectReference Include="..\..\..\src\LibVLCSharp\LibVLCSharp.csproj"
+                      Condition="!$(TargetFramework.Contains('-windows'))" />
   </ItemGroup>
 	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
 		<PackageReference Include="VideoLAN.LibVLC.Android" Version="3.6.5" />
