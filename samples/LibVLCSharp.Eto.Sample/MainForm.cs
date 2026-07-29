@@ -5,6 +5,7 @@ namespace LibVLCSharp.Eto.Sample
     using global::Eto.Drawing;
     using LibVLCSharp.Shared;
     using System;
+    using libVlcSharp.Samples;
 
     public class MainForm : Form
     {
@@ -27,7 +28,7 @@ namespace LibVLCSharp.Eto.Sample
         protected override void OnShown(EventArgs e)
         {
             videoView.MediaPlayer = _mp;
-            var media = new Media(_libVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            var media = new Media(_libVLC, new Uri(Consts.SampleVideoUrl));
             _mp.Play(media);
             media.Dispose();
             base.OnShown(e);

@@ -1,5 +1,6 @@
 ﻿using LibVLCSharp.Platforms.Windows;
 using LibVLCSharp.Shared;
+using libVlcSharp.Samples;
 using Microsoft.UI.Xaml;
 using System;
 using System.Diagnostics;
@@ -37,7 +38,7 @@ namespace LibVLCSharp.WinUI.Sample
         {
             libvlc = new LibVLC(enableDebugLogs: true, e.SwapChainOptions);
             mp = new MediaPlayer(libvlc);
-            using var media = new Media(libvlc, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            using var media = new Media(libvlc, new Uri(Consts.SampleVideoUrl));
             mp.Play(media);
         }
     }

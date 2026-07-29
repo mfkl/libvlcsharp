@@ -4,6 +4,7 @@ using Android.Views;
 using Android.Widget;
 using LibVLCSharp.Shared;
 using System;
+using libVlcSharp.Samples;
 using VideoView = LibVLCSharp.Platforms.Android.VideoView;
 
 namespace LibVLCSharp.Android.Sample
@@ -35,7 +36,7 @@ namespace LibVLCSharp.Android.Sample
 
             _videoView = new VideoView(this) { MediaPlayer = _mediaPlayer };
             AddContentView(_videoView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent));
-            using var media = new Media(_libVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            using var media = new Media(_libVLC, new Uri(Consts.SampleVideoUrl));
             _videoView.MediaPlayer.Play(media);
         }
 

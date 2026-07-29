@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using LibVLCSharp.Shared;
 using LibVLCSharp.Uno;
+using libVlcSharp.Samples;
 
 namespace LibVLCSharp.Uno.WinUI.Sample
 {
@@ -83,8 +84,10 @@ namespace LibVLCSharp.Uno.WinUI.Sample
         private void Initialize(string[] swapChainOptions)
         {
             LibVLC = new LibVLC(enableDebugLogs: true, swapChainOptions);
+            LibVLC.Log += (s, e) => System.Diagnostics.Debug.WriteLine($"[VLC:{e.Level}] {e.Module}: {e.Message}");
+
             MediaPlayer = new LibVLCSharp.Shared.MediaPlayer(LibVLC);
-            MediaPlayer.Play(new Media(LibVLC, "https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi",
+            MediaPlayer.Play(new Media(LibVLC, Consts.SampleVideoUrl,
                 FromType.FromLocation));
         }
 

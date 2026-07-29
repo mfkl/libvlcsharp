@@ -67,4 +67,5 @@
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
 	</ItemGroup>
+	<Import Project="..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

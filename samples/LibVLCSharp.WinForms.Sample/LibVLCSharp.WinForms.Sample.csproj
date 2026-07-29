@@ -12,4 +12,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\LibVLCSharp.WinForms\LibVLCSharp.WinForms.csproj" />
   </ItemGroup>
+  <Import Project="..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

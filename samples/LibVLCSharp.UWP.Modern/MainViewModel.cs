@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using LibVLCSharp.Platforms.Windows;
 using LibVLCSharp.Shared;
+using libVlcSharp.Samples;
 
 namespace LibVLCSharp.UWP.Modern
 {
@@ -43,7 +44,7 @@ namespace LibVLCSharp.UWP.Modern
         {
             LibVLC = new LibVLC(enableDebugLogs: true, eventArgs.SwapChainOptions);
             MediaPlayer = new MediaPlayer(LibVLC);
-            using var media = new Media(LibVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            using var media = new Media(LibVLC, new Uri(Consts.SampleVideoUrl));
             MediaPlayer.Play(media);
         }
 

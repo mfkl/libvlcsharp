@@ -1,32 +1,36 @@
 ﻿<Project Sdk="Uno.Sdk/5.3.96">
   <PropertyGroup>
-    <TargetFrameworks>
-      net9.0-android;
-      net9.0-ios;
-    </TargetFrameworks>
+    <TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
+		<WindowsPackageType>None</WindowsPackageType>
 
-    <OutputType>Exe</OutputType>
-    <UnoSingleProject>true</UnoSingleProject>
+		<OutputType>Exe</OutputType>
+		<UnoSingleProject>true</UnoSingleProject>
 
-    <!-- Display name -->
-    <ApplicationTitle>LibVLCSharp.Uno.WinUI.Sample</ApplicationTitle>
-    <!-- App Identifier -->
-    <ApplicationId>com.companyname.LibVLCSharp.Uno.WinUI.Sample</ApplicationId>
-    <!-- Versions -->
-    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-    <ApplicationVersion>1</ApplicationVersion>
+		<!-- Display name -->
+		<ApplicationTitle>LibVLCSharp.Uno.WinUI.Sample</ApplicationTitle>
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.LibVLCSharp.Uno.WinUI.Sample</ApplicationId>
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
 
-    <!--
-      UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
-      https://aka.platform.uno/singleproject-features
-    -->
-    <UnoFeatures>
+		<!--
+			UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
+			https://aka.platform.uno/singleproject-features
+		-->
+		<UnoFeatures>
 		Mvvm;
-    </UnoFeatures>
+		</UnoFeatures>
 
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <Nullable>enable</Nullable>
-	  <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+
+		<!-- The libs declare a lower floor (centralized in
+				 src/Directory.Build.props), but is not picked up here? -->
+		<WinAppSdkVersion>1.8.251106002</WinAppSdkVersion>
+		<WinAppSdkBuildToolsVersion>10.0.26100.7175</WinAppSdkBuildToolsVersion>
 
 	  <!--
       Adding NoWarn to remove build warnings
@@ -42,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\LibVLCSharp.Uno\LibVLCSharp.Uno.csproj" />
-    <ProjectReference Include="..\..\..\src\LibVLCSharp\LibVLCSharp.csproj" />
+    <ProjectReference Include="..\..\..\src\LibVLCSharp\LibVLCSharp.csproj"
+                      Condition="!$(TargetFramework.Contains('-windows'))" />
   </ItemGroup>
 	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
 		<PackageReference Include="VideoLAN.LibVLC.Android" Version="3.6.5" />
@@ -50,4 +55,8 @@
 	<ItemGroup Condition="$(TargetFramework.Contains('-ios'))">
 		<PackageReference Include="VideoLAN.LibVLC.iOS" Version="3.6.1" />
 	</ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
+		<PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
+	</ItemGroup>
+	<Import Project="..\..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

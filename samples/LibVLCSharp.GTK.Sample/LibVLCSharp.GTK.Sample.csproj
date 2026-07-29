@@ -65,4 +65,5 @@
     </Reference>
   </ItemGroup>
 
+  <Import Project="..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

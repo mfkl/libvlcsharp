@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using LibVLCSharp.Shared;
+using libVlcSharp.Samples;
 
 namespace LibVLCSharp.WinForms.Sample
 {
@@ -33,7 +34,7 @@ namespace LibVLCSharp.WinForms.Sample
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var media = new Media(_libVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            var media = new Media(_libVLC, new Uri(Consts.SampleVideoUrl));
             _mp.Play(media);
             media.Dispose();
         }

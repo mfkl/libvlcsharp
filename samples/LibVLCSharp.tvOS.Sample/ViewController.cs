@@ -1,6 +1,7 @@
 ﻿using LibVLCSharp.Platforms.tvOS;
 using LibVLCSharp.Shared;
 using System;
+using libVlcSharp.Samples;
 using UIKit;
 
 namespace LibVLCSharp.tvOS.Sample
@@ -22,7 +23,7 @@ namespace LibVLCSharp.tvOS.Sample
 
             View = _videoView;
 
-            var media = new Media(_libVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi"));
+            var media = new Media(_libVLC, new Uri(Consts.SampleVideoUrl));
 
             _videoView.MediaPlayer.Play(media);
 

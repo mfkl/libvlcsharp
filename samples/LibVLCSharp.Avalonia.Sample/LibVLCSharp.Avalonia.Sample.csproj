@@ -25,4 +25,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\LibVLCSharp.Avalonia\LibVLCSharp.Avalonia.csproj" />
   </ItemGroup>
+  <Import Project="..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

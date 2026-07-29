@@ -10,6 +10,17 @@ namespace LibVLCSharp.Uno
     public class VideoView : VideoView<InitializedEventArgs>, IVideoView, IVideoControl
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="VideoView"/> class.
+        /// </summary>
+        public VideoView()
+        {
+            // Re-key the default style to this type. VideoViewBase keys it to
+            // LibVLCSharp.Platforms.Windows.VideoView and does not resolve from here; the SwapChainPanel
+            // template for this type is in Themes/VideoView.UWP.xaml instead.
+            DefaultStyleKey = typeof(VideoView);
+        }
+
+        /// <summary>
         /// Creates args for <see cref="VideoView{TInitializedEventArgs}.Initialized"/> event
         /// </summary>
         /// <returns>args for <see cref="VideoView{TInitializedEventArgs}.Initialized"/> event</returns>

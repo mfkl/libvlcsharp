@@ -20,4 +20,5 @@
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <Import Project="..\..\libVlcSharp.Samples\libVlcSharp.Samples.projitems" Label="Shared" />
 </Project>

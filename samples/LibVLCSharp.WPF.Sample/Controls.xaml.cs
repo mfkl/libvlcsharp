@@ -1,5 +1,6 @@
 ﻿using LibVLCSharp.Shared;
 using System;
+using libVlcSharp.Samples;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -51,7 +52,7 @@ namespace LibVLCSharp.WPF.Sample
         {
             if (!parent.VideoView.MediaPlayer.IsPlaying)
             {
-                using (var media = new Media(_libVLC, new Uri("https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi")))
+                using (var media = new Media(_libVLC, new Uri(Consts.SampleVideoUrl)))
                     parent.VideoView.MediaPlayer.Play(media);
             }
         }
