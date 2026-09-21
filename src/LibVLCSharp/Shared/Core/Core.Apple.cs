@@ -9,6 +9,10 @@ namespace LibVLCSharp.Shared
     /// </summary>
     public static partial class Core
     {
+#if MAC
+        static IntPtr LibvlcHandle;
+        static IntPtr LibvlccoreHandle;
+#endif
         /// <summary>
         /// Load the native libvlc library (if necessary, depending on platform)
         /// <para/> Ensure that you installed the VideoLAN.LibVLC.[YourPlatform] package in your target project
@@ -22,6 +26,24 @@ namespace LibVLCSharp.Shared
         /// </param>
         public static void Initialize(string? libvlcDirectoryPath = null)
         {
+#if MAC
+            if (string.IsNullOrEmpty(libvlcDirectoryPath))
+            {
+                // Preserve Apple loading through the runtime or an already loaded
+                // library. Only a missing library triggers explicit path discovery;
+                // version mismatches and missing entry points must still propagate.
+                try
+                {
+                    EnsureVersionsMatch();
+                    LibVLCLoaded = true;
+                    return;
+                }
+                catch (DllNotFoundException)
+                {
+                }
+            }
+            LoadLibVLC(libvlcDirectoryPath);
+#endif
             EnsureVersionsMatch();
             LibVLCLoaded = true;
         }
